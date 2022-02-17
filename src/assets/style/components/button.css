@@ -1,0 +1,34 @@
+.switch {
+  padding: 0.125rem;
+  width: 5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--gray-line);
+  background-color: var(--white);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s;
+}
+.switch__control {
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 1rem;
+  background-color: var(--gray-line);
+}
+.switch__txt{
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  margin: 0 0.125rem;
+}
+.switch.active {
+  border: 1px solid var(--primary);
+  flex-direction: row-reverse;
+}
+.switch.active .switch__control {
+  background-color: var(--primary);
+}
+.switch.active .switch__txt {
+  color: var(--primary);
+}
