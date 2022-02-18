@@ -2,15 +2,22 @@
 import { ref, watch } from 'vue';
 import _ from 'lodash';
 import { apiMethod } from '@/methods/api.js';
+import emitter from '@/methods/emitter';
+import ImgCropperPopModal from '@/components/helpers/ImgCropperPopModal.vue';
+
 export default {
   props: ['imgName'],
   emits: ['sendImgUrl'],
+  components: {
+    ImgCropperPopModal,
+  },
   setup(props, { emit }) {
     const imgCoverUploader = ref(null);
     const imgsData = ref({
       useUrl: false,
       url: '',
     });
+    let imgData = {};
     watch(
       () => imgsData.value.url,
       _.debounce((url) => {
@@ -23,15 +30,31 @@ export default {
     function sendImgUrl(url) {
       emit('sendImgUrl', url, props.imgName);
     }
-    function upload() {
-      console.dir(imgCoverUploader);
-      const [file] = imgCoverUploader.value.files;
-      apiMethod.adminImageUpload(file).then((url) => {
+    function getImg(data) {
+      imgData = data;
+    }
+    function uploadmgToDB() {
+      const base64String = imgData.replace('data:image/jpeg;base64,', '');
+      console.log(base64String);
+      apiMethod.adminImageUpload(base64String).then((url) => {
         console.log(url);
-        sendImgUrl(url);
+        // imgsData.value.useUrl = true;
+        // sendImgUrl(url);
       });
     }
-    return { imgsData, imgCoverUploader, sendImgUrl, upload };
+    function toogleCropper() {
+      console.dir(imgCoverUploader);
+      const [file] = imgCoverUploader.value.files;
+      emitter.emit('open-pop-modal', file);
+    }
+    return {
+      imgsData,
+      imgCoverUploader,
+      sendImgUrl,
+      toogleCropper,
+      uploadmgToDB,
+      getImg,
+    };
   },
 };
 </script>
@@ -51,12 +74,13 @@ export default {
       class="form-control"
       id="productImgCover"
       placeholder="請選擇上傳檔案"
+      @change="toogleCropper"
     />
     <button
       v-show="!imgsData.useUrl"
       class="border border-gray-200 rounded py-2 px-3 hover:border-gray-30 mr-2"
       type="button"
-      @click="upload"
+      @click="uploadmgToDB"
     >
       上傳
     </button>
@@ -68,5 +92,10 @@ export default {
       切換
     </button>
   </div>
+  <ImgCropperPopModal
+    @send-img-data="getImg"
+    imgNumber="1"
+    dataName="dataName"
+  />
 </template>
 <style lang="scss"></style>

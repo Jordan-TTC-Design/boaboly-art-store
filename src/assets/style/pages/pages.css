@@ -1,31 +1,28 @@
 .siderBox{
-  width: 50%;
-  height: 100%;
-  overflow-y: scroll;
+  width: 100%;
+  height: 95%;
   position: fixed;
-  right: 0;
-  top: 0;
+  left: 0;
+  bottom: 0;
   background-color: var(--white);
-  z-index: 999;
   transition: all 0.3s;
-  transform:translateX(100%);
+  transform:translateY(100%);
 }
 .siderBox.active{
-  transform:translateX(0)
+  transform:translateY(0)
   }
 .siderBg{
   background-color: var(--bgBlackTrans);
-  height: 100%;
-  width:50% ;
+  height: 5%;
+  width: 100% ;
   position: fixed;
   top: 0;
   left: 0;
-  transform:translateX(-100%);
-  z-index: 998;
+  transform:translateY(-100%);
   transition: all 0.3s;
 }
 .siderBg.active{
-  transform:translateX(0)
+  transform:translateY(0)
   }
 .adminList__item{
   background-color: var(--white);
@@ -35,4 +32,17 @@
 }
 .adminList__item:hover{
   background-color: var(--bgGrayTrans);
+}
+.popModal{
+  background-color: var(--white);
+  width: 80%;
+  position: fixed;
+  top: 50%;
+  transform:translateY(-50%);
+}
+.z-popModal{
+  z-index: 999;
+}
+.z-sider{
+  z-index: 900;
 }

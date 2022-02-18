@@ -6,6 +6,7 @@ import router from './router';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import '@/assets/index.css';
+import 'cropperjs/dist/cropper.min.css';
 
 const app = createApp(App);
 

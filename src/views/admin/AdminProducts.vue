@@ -14,6 +14,7 @@ export default {
   setup() {
     const products = ref([]);
     let listState = ref(1);
+    let showed = ref(true);
     const productList = computed(() => {
       let array = [];
       if (listState.value === 2) {
@@ -78,6 +79,7 @@ export default {
       modalState,
       modalOpen,
       selectItem,
+      showed,
       openProductDetail,
       deleteProduct,
       changeProductState,
@@ -88,7 +90,7 @@ export default {
 };
 </script>
 <template>
-  <div class="relative px-4">
+  <div class="relative px-4 bg-white">
     <div class="sticky top-0 bg-white z-40 px-5 pt-6 pb-4">
       <div class="grid grid-cols-3 mb-8">
         <div class="col-span-1">
@@ -130,11 +132,11 @@ export default {
     </div>
   </div>
   <div
-    class="siderBg"
+    class="siderBg z-sider"
     :class="{ active: modalOpen }"
     @click="modalOpen = false"
   ></div>
-  <div class="siderBox" :class="{ active: modalOpen }">
+  <div class="siderBox z-sider" :class="{ active: modalOpen }">
     <AdminProductEdit
       :select-item="selectItem"
       :modal-state="modalState"
