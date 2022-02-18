@@ -97,103 +97,131 @@ export default {
       @submit.prevent="newProduct"
       class="flex flex-col flex-shrink overflow-y-scroll"
     >
-      <div class="flex flex-shrink flex-wrap gap-y-6 p-5">
-        <FormInput
-          v-model="productItem.title"
-          input-id="productTitle"
-          type="text"
-        >
-          <template v-slot:default>產品標題</template>
-        </FormInput>
-        <div class="w-full md:w-1/2">
-          <FormInput
-            v-model="productItem.category"
-            input-id="productCategory"
-            type="text"
-          >
-            <template v-slot:default>產品分類</template>
-          </FormInput>
-        </div>
-        <div class="w-full md:w-1/2">
-          <FormInput
-            v-model="productItem.unit"
-            input-id="productUnit"
-            type="text"
-          >
-            <template v-slot:default>產品單位</template>
-          </FormInput>
-        </div>
-        <div class="w-full md:w-1/2">
-          <FormInput
-            v-model="productItem.origin_price"
-            input-id="productOriginPrice"
-            input-type="number"
-          >
-            <template v-slot:default>產品原價</template>
-          </FormInput>
-        </div>
-        <div class="w-full md:w-1/2">
-          <FormInputNumber v-model="productItem.price" input-id="productPrice">
-            <template v-slot:default>產品價格</template>
-          </FormInputNumber>
-        </div>
-        <div class="w-full px-3 mb-6 md:mb-0">
-          <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"
-            for="productDescription"
-          >
-            產品描述
-          </label>
-          <div class="flex items-center border-b border-gray-200 py-2">
-            <textarea
-              class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-              id="productDescription"
-              rows="3"
-              v-model="productItem.description"
-            ></textarea>
-          </div>
-        </div>
-        <div class="w-full px-3 mb-6 md:mb-0">
+      <div class="grid grid-cols-6 gap-4 p-4 flex-shrink">
+        <div class="col-span-2">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"
             for="productImgCover"
           >
             產品主圖
           </label>
-          <ImgUploader @send-img-url="getUrl" :img-name="'主要圖片'" />
+          <ImgUploader
+            @send-img-url="getUrl"
+            :img-name="`${productItem.title}產品主要圖片`"
+          />
         </div>
-        <div class="w-full px-3 mb-6 md:mb-0">
-          <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"
-            for="productImgCover"
-          >
-            產品附圖
-          </label>
-          <div
-            class="mb-4"
-            v-for="(img, index) in productItem.imagesUrl"
-            :key="`img${index}`"
-          >
-            <ImgUploader @send-img-url="getUrl" :img-name="index" />
+        <div class="col-span-4 grid grid-cols-2 gap-4">
+          <div class="col-span-2 lg:col-span-1">
+            <FormInput
+              v-model="productItem.title"
+              input-id="productTitle"
+              type="text"
+            >
+              <template v-slot:default>產品標題</template>
+            </FormInput>
           </div>
-          <button
-            v-if="
-              !productItem.imagesUrl.length ||
-              productItem.imagesUrl[productItem.imagesUrl.length - 1] !== ''
-            "
-            type="button"
-            class="w-full border border-gray-200 rounded py-2 px-3 hover:border-gray-300 mb-2"
-            @click="productItem.imagesUrl.push('')"
-          >
-            新增圖片欄位
-          </button>
-          <button
-            type="button"
-            class="w-full border border-gray-200 rounded py-2 px-3 hover:border-gray-300"
-            @click="productItem.imagesUrl.pop()"
-          >
-            刪除圖片欄位
-          </button>
+          <div class="col-span-2 lg:col-span-1">
+            <FormInput
+              v-model="productItem.category"
+              input-id="productCategory"
+              type="text"
+            >
+              <template v-slot:default>產品分類</template>
+            </FormInput>
+          </div>
+          <div class="col-span-2 lg:col-span-1">
+            <FormInput
+              v-model="productItem.unit"
+              input-id="productUnit"
+              type="text"
+            >
+              <template v-slot:default>產品單位</template>
+            </FormInput>
+          </div>
+          <div class="col-span-2 lg:col-span-1">
+            <FormInput
+              v-model="productItem.origin_price"
+              input-id="productOriginPrice"
+              input-type="number"
+            >
+              <template v-slot:default>產品原價</template>
+            </FormInput>
+          </div>
+          <div class="col-span-2 lg:col-span-1">
+            <FormInputNumber
+              v-model="productItem.price"
+              input-id="productPrice"
+            >
+              <template v-slot:default>產品價格</template>
+            </FormInputNumber>
+          </div>
+          <div class="col-span-2">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"
+              for="productDescription"
+            >
+              產品描述
+            </label>
+            <textarea
+              class="appearance-none bg-transparent border border-gray-300 w-full text-gray-700 py-2 px-2 leading-tight focus:outline-none"
+              id="productDescription"
+              rows="5"
+              v-model="productItem.description"
+            ></textarea>
+          </div>
+          <div class="col-span-2">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"
+            >
+              產品附圖
+            </label>
+            <div class="grid grid-cols-3 gap-4">
+              <div
+                class="relative"
+                v-for="(img, index) in productItem.imagesUrl"
+                :key="`img${index}`"
+              >
+                <ImgUploader
+                  @send-img-url="getUrl"
+                  :img-name="`${productItem.title}產品附圖-${index}`"
+                />
+                <button
+                  type="button"
+                  class="h-7 w-7 p-1 bg-gray-200 active:scale-90 rounded-md cursor-pointer transition-all absolute top-0 right-0 translate-x-3 -translate-y-3"
+                  @click="productItem.imagesUrl.splice(index, 1)"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-full w-full"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div
+                v-if="
+                  !productItem.imagesUrl.length ||
+                  productItem.imagesUrl[productItem.imagesUrl.length - 1] !== ''
+                "
+              >
+                <button
+                  type="button"
+                  class="w-full min-h-full py-24 border border-gray-300 rounded py-2 px-3 hover:bg-gray-100"
+                  @click="productItem.imagesUrl.push('')"
+                >
+                  新增圖片欄位
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="flex p-4 w-full border-t border-gray-200 bg-white">

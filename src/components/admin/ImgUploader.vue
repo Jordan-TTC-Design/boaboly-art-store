@@ -31,12 +31,12 @@ export default {
       emit('sendImgUrl', url, props.imgName);
     }
     function getImg(data) {
+      imgsData.value.url = data.src;
       imgData = data;
     }
     function uploadmgToDB() {
-      const base64String = imgData.replace('data:image/jpeg;base64,', '');
-      console.log(base64String);
-      apiMethod.adminImageUpload(base64String).then((url) => {
+      console.log(imgData);
+      apiMethod.adminImageUpload(imgData).then((url) => {
         console.log(url);
         // imgsData.value.useUrl = true;
         // sendImgUrl(url);
@@ -45,7 +45,7 @@ export default {
     function toogleCropper() {
       console.dir(imgCoverUploader);
       const [file] = imgCoverUploader.value.files;
-      emitter.emit('open-pop-modal', file);
+      emitter.emit(`open-pop-modal-${props.imgName}`, file);
     }
     return {
       imgsData,
@@ -59,43 +59,59 @@ export default {
 };
 </script>
 <template>
-  <div class="p-8 border border-gray-200 rounded">
+  <div class="w-full mb-2">
     <input
       v-show="imgsData.useUrl"
       type="text"
-      class="form-control"
+      class="appearance-none bg-transparent border border-gray-300 w-full text-gray-700 py-2 px-2 leading-tight focus:outline-none"
       placeholder="請輸入圖片網址"
       v-model="imgsData.url"
+      id="productImgCoverUrl"
     />
+  </div>
+  <div class="p-4 border border-gray-300 border-b-0" v-show="!imgsData.useUrl">
     <input
       v-show="!imgsData.useUrl"
       ref="imgCoverUploader"
       type="file"
-      class="form-control"
-      id="productImgCover"
+      class="hidden"
+      :id="`productImgCover-${imgName}`"
       placeholder="請選擇上傳檔案"
       @change="toogleCropper"
     />
+    <div class="bg-gray-100 h-72 relative">
+      <img
+        v-if="imgsData.url"
+        :src="imgsData.url"
+        alt="圖片"
+        class="w-full h-full absolute top-0 left-0 object-contain object-center"
+      />
+      <label
+        class="w-full h-full absolute flex justify-center items-center uppercase tracking-wide text-gray-700 font-medium cursor-pointer"
+        :class="{ 'bg-gray-700/50 text-white': imgsData.url }"
+        :for="`productImgCover-${imgName}`"
+      >
+        {{ imgsData.url ? '重新選擇檔案' : '點擊選擇檔案' }}
+      </label>
+    </div>
+  </div>
+  <div class="flex border border-gray-300">
     <button
       v-show="!imgsData.useUrl"
-      class="border border-gray-200 rounded py-2 px-3 hover:border-gray-30 mr-2"
+      class="py-2 px-3 hover:border-gray-30 flex-1 border-r border-gray-300"
       type="button"
       @click="uploadmgToDB"
     >
       上傳
     </button>
     <button
-      class="border border-gray-200 rounded py-2 px-3 hover:border-gray-300"
+      class="py-2 px-3 hover:border-gray-300 flex-1"
       type="button"
       @click="imgsData.useUrl = !imgsData.useUrl"
     >
-      切換
+      {{ imgsData.useUrl ? '切換為上傳工具' : '切換為圖片網址' }}
     </button>
   </div>
-  <ImgCropperPopModal
-    @send-img-data="getImg"
-    imgNumber="1"
-    dataName="dataName"
-  />
+  <ImgCropperPopModal @send-img-data="getImg" :img-name="imgName" />
 </template>
 <style lang="scss"></style>

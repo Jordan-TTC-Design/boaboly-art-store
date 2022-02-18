@@ -1,22 +1,19 @@
 <script>
-import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import Cropper from 'cropperjs';
 import emitter from '@/methods/emitter';
 
 export default {
-  props: ['imgNumber', 'dataName'],
+  props: ['imgName'],
   emits: ['send-img-data'],
   setup(props, { emit }) {
-    let showed = ref(true);
+    let showed = ref(false);
     let isImg = ref(false);
     let cropsrc = ref('');
     let cropper = {};
     let imgData = {};
     const cropperImage = ref(null);
     const destination = ref({});
-    watch(props.showModal, (newValue) => {
-      showed.value = newValue;
-    });
     function closeModal() {
       showed.value = false;
       cleanImg();
@@ -45,32 +42,46 @@ export default {
             zoomable: true,
             scalable: true,
             crop: () => {
-              const canves = cropper.getCroppedCanvas({
+              const canvas = cropper.getCroppedCanvas({
                 maxWidth: 960,
                 maxHeight: 720,
               });
-              destination.value = canves.toDataURL('image/jpeg');
+              destination.value = canvas.toDataURL('image/jpeg');
             },
           });
         };
       }
     }
+    // function changeFile(dataURL) {
+    //   const blobBin = atob(dataURL.split(',')[1]);
+    //   const array = [];
+    //   for (let i = 0; i < blobBin.length; i++) {
+    //     array.push(blobBin.charCodeAt(i));
+    //   }
+    //   const file = new Blob([new Uint8Array(array)], { type: 'image/png' });
+    //   const formData = new FormData();
+    //   formData.append('file', file, 'test.png');
+    //   console.log(file);
+    //   sendbackImg(formData);
+    // }
+    function convertCanvasToImage(canvas) {
+      const image = new Image();
+      image.src = canvas.toDataURL('image/jpeg');
+      return image;
+    }
     function processImage() {
-      const canves = cropper.getCroppedCanvas({
+      const canvas = cropper.getCroppedCanvas({
         maxWidth: 4096,
         maxHeight: 4096,
         fillColor: '#fff',
         imageSmoothingEnabled: false,
         imageSmoothingQuality: 'high',
       });
-      cropsrc.value = canves.toDataURL('image/jpeg');
-      // cropsrc.value = canves;
-      console.log(cropsrc.value);
-      sendbackImg();
+      // cropsrc.value = canvas.toDataURL('image/jpeg');
+      const imgData = convertCanvasToImage(canvas);
+      console.log(imgData);
+      emit('send-img-data', imgData);
       closeModal();
-    }
-    function sendbackImg() {
-      emit('send-img-data', cropsrc.value);
     }
     function cleanImg() {
       if (isImg.value) {
@@ -89,13 +100,12 @@ export default {
       }, 100);
     }
     onMounted(() => {
-      showed.value = props.showModal;
-      emitter.on('open-pop-modal', openModal);
-      emitter.on('close-pop-modal', closeModal);
+      emitter.on(`open-pop-modal-${props.imgName}`, openModal);
+      // emitter.on('close-pop-modal', closeModal);
     });
     onUnmounted(() => {
-      emitter.off('open-pop-modal', openModal);
-      emitter.off('close-pop-modal', closeModal);
+      emitter.off(`open-pop-modal-${props.imgName}`, openModal);
+      // emitter.off('close-pop-modal', closeModal);
     });
 
     return {

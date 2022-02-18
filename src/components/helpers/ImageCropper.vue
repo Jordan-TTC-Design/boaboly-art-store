@@ -43,7 +43,7 @@
 import Cropper from 'cropperjs';
 
 export default {
-  props: ['imgNumber', 'dataName'],
+  props: [ 'dataName'],
   emits: ['send-img-data'],
   data() {
     return {
@@ -74,11 +74,11 @@ export default {
             zoomable: true,
             scalable: true,
             crop: () => {
-              const canves = this.cropper.getCroppedCanvas({
+              const canvas = this.cropper.getCroppedCanvas({
                 maxWidth: 960,
                 maxHeight: 720,
               });
-              this.destination = canves.toDataURL('image/jpeg');
+              this.destination = canvas.toDataURL('image/jpeg');
             },
           });
           this.openModal();
@@ -86,14 +86,14 @@ export default {
       }
     },
     processImage() {
-      const canves = this.cropper.getCroppedCanvas({
+      const canvas = this.cropper.getCroppedCanvas({
         maxWidth: 4096,
         maxHeight: 4096,
         fillColor: '#fff',
         imageSmoothingEnabled: false,
         imageSmoothingQuality: 'high',
       });
-      this.cropsrc = canves.toDataURL('image/jpeg');
+      this.cropsrc = canvas.toDataURL('image/jpeg');
       this.sendbackImg();
     },
     sendbackImg() {

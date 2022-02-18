@@ -119,7 +119,7 @@ const apiMethod = {
         return res.data.imageUrl;
       })
       .catch((err) => {
-        console.log(err.response);
+        console.log(err);
       });
   },
   turnBackLogin(status) {
