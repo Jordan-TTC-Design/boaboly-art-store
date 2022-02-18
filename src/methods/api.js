@@ -112,6 +112,7 @@ const apiMethod = {
   adminImageUpload(file) {
     const formData = new FormData(); // 產生表單格式
     formData.append('file-to-upload', file);
+    console.log(formData);
     return axios
       .post(`${apiPath.imgUpload}`, formData)
       .then((res) => {

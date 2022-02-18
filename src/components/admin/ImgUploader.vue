@@ -34,9 +34,43 @@ export default {
       imgsData.value.url = data.src;
       imgData = data;
     }
+    function dataURLtoFile(dataurl, filename) {
+      var arr = dataurl.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, { type: mime });
+    }
+    // //將base64轉換為blob
+    // function dataURLtoBlob(dataurl) {
+    //   var arr = dataurl.split(','),
+    //     mime = arr[0].match(/:(.*?);/)[1],
+    //     bstr = atob(arr[1]),
+    //     n = bstr.length,
+    //     u8arr = new Uint8Array(n);
+    //   while (n--) {
+    //     u8arr[n] = bstr.charCodeAt(n);
+    //   }
+    //   return new Blob([u8arr], { type: mime });
+    // }
+    // //將blob轉換為file
+    // function blobToFile(theBlob, fileName) {
+    //   theBlob.lastModifiedDate = new Date();
+    //   theBlob.name = fileName;
+    //   return theBlob;
+    // }
+    //呼叫
     function uploadmgToDB() {
-      console.log(imgData);
-      apiMethod.adminImageUpload(imgData).then((url) => {
+      var file = dataURLtoFile(imgData.src, 'file-to-upload');
+      // var blob = dataURLtoBlob(imgData.src);
+      // var file = blobToFile(blob, 'file-to-upload');
+      // console.log(blob);
+      console.log(file);
+      apiMethod.adminImageUpload(file).then((url) => {
         console.log(url);
         // imgsData.value.useUrl = true;
         // sendImgUrl(url);

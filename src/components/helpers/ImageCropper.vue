@@ -43,7 +43,7 @@
 import Cropper from 'cropperjs';
 
 export default {
-  props: [ 'dataName'],
+  props: ['dataName'],
   emits: ['send-img-data'],
   data() {
     return {

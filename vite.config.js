@@ -9,5 +9,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  server: {
+    host: '0.0.0.0',
+  },
   base: process.env.NODE_ENV === 'production' ? '/vue-2022-hw/' : './',
 });
