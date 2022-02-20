@@ -52,18 +52,6 @@ export default {
         };
       }
     }
-    // function changeFile(dataURL) {
-    //   const blobBin = atob(dataURL.split(',')[1]);
-    //   const array = [];
-    //   for (let i = 0; i < blobBin.length; i++) {
-    //     array.push(blobBin.charCodeAt(i));
-    //   }
-    //   const file = new Blob([new Uint8Array(array)], { type: 'image/png' });
-    //   const formData = new FormData();
-    //   formData.append('file', file, 'test.png');
-    //   console.log(file);
-    //   sendbackImg(formData);
-    // }
     function convertCanvasToImage(canvas) {
       const image = new Image();
       image.src = canvas.toDataURL('image/jpeg');
@@ -77,9 +65,7 @@ export default {
         imageSmoothingEnabled: false,
         imageSmoothingQuality: 'high',
       });
-      // cropsrc.value = canvas.toDataURL('image/jpeg');
       const imgData = convertCanvasToImage(canvas);
-      console.log(imgData);
       emit('send-img-data', imgData);
       closeModal();
     }

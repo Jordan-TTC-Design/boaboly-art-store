@@ -1,15 +1,18 @@
 <script>
 import { ref, computed } from 'vue';
 import { apiMethod } from '@/methods/api.js';
+import { productCategory } from '@/methods/data.js';
 import AdminProductEdit from '@/components/admin/AdminProductEdit.vue';
+import AdminProductSider from '@/components/admin/AdminProductSider.vue';
 import RowNav from '@/components/helpers/RowNav.vue';
-import AdminProductListItem from '@/components/admin/AdminProductListItem.vue';
+import AdminProductListItemSquare from '@/components/admin/AdminProductListItemSquare.vue';
 
 export default {
   components: {
     AdminProductEdit,
+    AdminProductSider,
     RowNav,
-    AdminProductListItem,
+    AdminProductListItemSquare,
   },
   setup() {
     const products = ref([]);
@@ -26,27 +29,22 @@ export default {
       }
       return array;
     });
-    let selectItem = ref({
-      imagesUrl: [],
-    });
+    let selectItem = ref({});
     let modalState = ref(null);
     let modalOpen = ref(false);
     function clearItem() {
       modalOpen.value = false;
       modalState.value = null;
-      selectItem.value = {
-        imagesUrl: [],
-      };
+      selectItem.value = {};
     }
     function openProductDetail(state, item) {
       modalOpen.value = true;
       modalState.value = state;
       if (state === 'isNew') {
-        selectItem.value = {
-          imagesUrl: [],
-        };
+        selectItem.value = {};
       } else if (state === 'edit') {
         selectItem.value = JSON.parse(JSON.stringify(item));
+        console.log(selectItem.value);
       }
     }
     async function deleteProduct(itemId) {
@@ -66,8 +64,10 @@ export default {
     }
     function getProduct() {
       apiMethod.adminGetProductsAll().then((res) => {
-        products.value = Object.values(res);
-        console.log(products.value);
+        if (res) {
+          products.value = Object.values(res);
+          console.log(products.value);
+        }
       });
     }
     apiMethod.checkLogin().then(() => {
@@ -80,6 +80,7 @@ export default {
       modalOpen,
       selectItem,
       showed,
+      productCategory,
       openProductDetail,
       deleteProduct,
       changeProductState,
@@ -112,22 +113,50 @@ export default {
         @return-state="listState = $event"
       />
     </div>
-    <div class="grid grid-cols-3 p-5 gap-4">
+    <div class="grid grid-cols-5 p-5 gap-4">
       <div class="col-span-1 min-h-screen">
-        <h5 class="mb-4">分類</h5>
-        <div class="bg-gray-100 rounded p-4 h-full"></div>
+        <ul class="mb-6">
+          <li class="text-sm text-gray-400 mb-2">商品狀態</li>
+          <li class="group py-2 px-5 cursor-pointer hover:text-yellow-600">
+            <span
+              class="w-3 h-px bg-gray-300 block absolute top-1/2 left-0 group-hover:bg-yellow-400"
+            ></span
+            >一般商品
+          </li>
+          <li class="group py-2 px-5 cursor-pointer hover:text-yellow-600">
+            <span
+              class="w-3 h-px bg-gray-300 block absolute top-1/2 left-0 group-hover:bg-yellow-400"
+            ></span
+            >活動商品
+          </li>
+        </ul>
+        <ul class="mb-6">
+          <li class="text-sm text-gray-400 mb-2">商品類別</li>
+          <template v-for="category in productCategory" :key="category">
+            <li
+              class="group py-2 px-5 cursor-pointer relative hover:text-yellow-600"
+            >
+              <span
+                class="w-3 h-px bg-gray-300 block absolute top-1/2 left-0 group-hover:bg-yellow-400"
+              ></span
+              >{{ category }}
+            </li>
+          </template>
+        </ul>
       </div>
-      <div class="col-start-2 col-span-2">
+      <div class="col-start-2 col-span-4">
         <h5 class="mb-4">商品</h5>
-        <template v-for="(product, index) in productList" :key="product.id">
-          <AdminProductListItem
-            :product="product"
-            :list-index="index"
-            @change-product-state="changeProductState"
-            @open-product-detail="openProductDetail"
-            @delete-product="deleteProduct"
-          />
-        </template>
+        <div class="grid grid-cols-3 gap-4">
+          <template v-for="(product, index) in productList" :key="product.id">
+            <AdminProductListItemSquare
+              :product="product"
+              :list-index="index"
+              @change-product-state="changeProductState"
+              @open-product-detail="openProductDetail"
+              @delete-product="deleteProduct"
+            />
+          </template>
+        </div>
       </div>
     </div>
   </div>
@@ -138,6 +167,14 @@ export default {
   ></div>
   <div class="siderBox z-sider" :class="{ active: modalOpen }">
     <AdminProductEdit
+      :select-item="selectItem"
+      :modal-state="modalState"
+      @get-product="getProduct"
+      @clear-item="clearItem"
+    />
+  </div>
+  <div class="siderBox z-sider">
+    <AdminProductSider
       :select-item="selectItem"
       :modal-state="modalState"
       @get-product="getProduct"

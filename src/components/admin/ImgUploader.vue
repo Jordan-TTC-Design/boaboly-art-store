@@ -16,8 +16,9 @@ export default {
     const imgsData = ref({
       useUrl: false,
       url: '',
+      finish: false,
     });
-    let imgData = {};
+    let imgData = { src: '' };
     watch(
       () => imgsData.value.url,
       _.debounce((url) => {
@@ -30,12 +31,15 @@ export default {
     function sendImgUrl(url) {
       emit('sendImgUrl', url, props.imgName);
     }
-    function getImg(data) {
-      imgsData.value.url = data.src;
-      imgData = data;
+    function getImg(image) {
+      imgsData.value.url = image.src;
+      imgData.src = image.src;
+      console.log(image);
+      console.log(imgData);
     }
     function dataURLtoFile(dataurl, filename) {
-      var arr = dataurl.split(','),
+      console.log(dataurl);
+      let arr = dataurl.split(','),
         mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]),
         n = bstr.length,
@@ -45,41 +49,21 @@ export default {
       }
       return new File([u8arr], filename, { type: mime });
     }
-    // //將base64轉換為blob
-    // function dataURLtoBlob(dataurl) {
-    //   var arr = dataurl.split(','),
-    //     mime = arr[0].match(/:(.*?);/)[1],
-    //     bstr = atob(arr[1]),
-    //     n = bstr.length,
-    //     u8arr = new Uint8Array(n);
-    //   while (n--) {
-    //     u8arr[n] = bstr.charCodeAt(n);
-    //   }
-    //   return new Blob([u8arr], { type: mime });
-    // }
-    // //將blob轉換為file
-    // function blobToFile(theBlob, fileName) {
-    //   theBlob.lastModifiedDate = new Date();
-    //   theBlob.name = fileName;
-    //   return theBlob;
-    // }
-    //呼叫
     function uploadmgToDB() {
-      var file = dataURLtoFile(imgData.src, 'file-to-upload');
-      // var blob = dataURLtoBlob(imgData.src);
-      // var file = blobToFile(blob, 'file-to-upload');
-      // console.log(blob);
-      console.log(file);
+      const file = dataURLtoFile(imgData.src, 'file-to-upload.jpeg');
       apiMethod.adminImageUpload(file).then((url) => {
         console.log(url);
-        // imgsData.value.useUrl = true;
-        // sendImgUrl(url);
+        sendImgUrl(url);
       });
     }
     function toogleCropper() {
       console.dir(imgCoverUploader);
       const [file] = imgCoverUploader.value.files;
       emitter.emit(`open-pop-modal-${props.imgName}`, file);
+    }
+    function imgsDataDefault() {
+      imgsData.value.url = '';
+      imgsData.value.finish = false;
     }
     return {
       imgsData,
@@ -88,6 +72,7 @@ export default {
       toogleCropper,
       uploadmgToDB,
       getImg,
+      imgsDataDefault,
     };
   },
 };
@@ -131,12 +116,28 @@ export default {
   </div>
   <div class="flex border border-gray-300">
     <button
-      v-show="!imgsData.useUrl"
+      v-show="imgsData.finish"
+      class="py-2 px-3 hover:border-gray-30 flex-1 border-r border-gray-300"
+      type="button"
+      @click="imgsDataDefault"
+    >
+      清除
+    </button>
+    <button
+      v-show="!imgsData.useUrl && !imgsData.finish"
       class="py-2 px-3 hover:border-gray-30 flex-1 border-r border-gray-300"
       type="button"
       @click="uploadmgToDB"
     >
       上傳
+    </button>
+    <button
+      v-show="imgsData.useUrl && !imgsData.finish"
+      class="py-2 px-3 hover:border-gray-30 flex-1 border-r border-gray-300"
+      type="button"
+      @click="imgsData.finish = true"
+    >
+      保存
     </button>
     <button
       class="py-2 px-3 hover:border-gray-300 flex-1"

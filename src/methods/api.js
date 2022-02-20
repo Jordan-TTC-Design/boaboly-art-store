@@ -114,7 +114,11 @@ const apiMethod = {
     formData.append('file-to-upload', file);
     console.log(formData);
     return axios
-      .post(`${apiPath.imgUpload}`, formData)
+      .post(`${apiPath.imgUpload}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
       .then((res) => {
         console.log(res);
         return res.data.imageUrl;
