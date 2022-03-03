@@ -4,31 +4,51 @@ import { apiMethod } from '@/methods/api.js';
 import ImgUploader from '@/components/admin/ImgUploader.vue';
 import FormInput from '@/components/form/FormInput.vue';
 import FormInputNumber from '@/components/form/FormInputNumber.vue';
+import FormInputTextArea from '@/components/form/FormInputTextArea.vue';
 import emitter from '@/methods/emitter';
+import RowNav from '@/components/helpers/RowNav.vue';
 
 export default {
   components: {
     ImgUploader,
     FormInput,
     FormInputNumber,
+    FormInputTextArea,
+    RowNav,
   },
   props: ['selectItem', 'modal-state'],
   emits: ['get-product', 'clear-item'],
   setup(props, { emit }) {
-    const productItem = computed(() => props.selectItem);
-    const state = computed(() => props.modalState);
-    const newProductItem = ref({
-      title: '',
-      category: '',
-      origin_price: 0,
-      price: 0,
-      unit: '',
-      description: '',
-      content: '',
-      is_enabled: 1,
-      imageUrl: '',
-      imagesUrl: [''],
+    const productItem = computed(() => {
+      console.log(props.selectItem);
+      const newProductItem = {
+        title: '',
+        category: '',
+        origin_price: 0,
+        price: 0,
+        unit: '',
+        description: '',
+        content: '',
+        is_enabled: 1,
+        imageUrl: '',
+        imagesUrl: [''],
+        material: '',
+        size: {
+          sizeLength: '',
+          sizeWidth: '',
+          sizeHeight: '',
+        },
+        reserve: 1,
+      };
+      if (props.selectItem.id) {
+        return props.selectItem;
+      } else {
+        return newProductItem;
+      }
     });
+    console.log(productItem.value.imagesUrl.length);
+    let listState = ref(1);
+    const state = computed(() => props.modalState);
     const imgCoverUploader = ref(null);
     const imgsData = ref([{ useUrl: true, url: '' }]);
     function upload() {
@@ -41,7 +61,8 @@ export default {
       if (name === '主要圖片') {
         productItem.value.imageUrl = url;
       } else {
-        productItem.value.imagesUrl[name] = url;
+        const newName = name.slice(2);
+        productItem.value.imagesUrl[newName] = url;
       }
       console.log(productItem.value);
     }
@@ -67,9 +88,9 @@ export default {
     }
     return {
       imgsData,
+      listState,
       productItem,
       state,
-      newProductItem,
       imgCoverUploader,
       openPopModal,
       upload,
@@ -84,7 +105,7 @@ export default {
     <div
       class="flex flex-shrink justify-between items-center px-5 py-2 border-b border-gray-300"
     >
-      <h3>新增商品</h3>
+      <h3>商品</h3>
       <button
         type="button"
         class="mr-2 rounded py-2 px-3"
@@ -93,8 +114,17 @@ export default {
         <i class="bi bi-x text-xl group-hover:text-gray-900"></i>
       </button>
     </div>
+    <div class="p-5 bg-white">
+      <h3 class="text-2xl mb-6">{{ productItem.title }}</h3>
+      <RowNav
+        :list-state="listState"
+        :nav-array="['商品資訊', '優惠活動', '售出紀錄', '產品評價']"
+        @return-state="listState = $event"
+      />
+    </div>
     <form
       @submit.prevent="newProduct"
+      v-show="listState === 1"
       class="flex flex-col flex-shrink overflow-y-scroll"
     >
       <div class="grid grid-cols-6 gap-4 p-4 flex-shrink">
@@ -103,11 +133,12 @@ export default {
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"
             for="productImgCover"
           >
-            產品主圖
+            商品主圖
           </label>
           <ImgUploader
             @send-img-url="getUrl"
-            :img-name="`${productItem.title}產品主要圖片`"
+            img-name="主要圖片"
+            :exist-img-url="productItem.imageUrl"
           />
         </div>
         <div class="col-span-4 grid grid-cols-2 gap-4">
@@ -117,7 +148,7 @@ export default {
               input-id="productTitle"
               type="text"
             >
-              <template v-slot:default>產品標題</template>
+              <template v-slot:default>商品標題</template>
             </FormInput>
           </div>
           <div class="col-span-2 lg:col-span-1">
@@ -126,54 +157,49 @@ export default {
               input-id="productCategory"
               type="text"
             >
-              <template v-slot:default>產品分類</template>
+              <template v-slot:default>商品分類</template>
             </FormInput>
           </div>
           <div class="col-span-2 lg:col-span-1">
             <FormInput
-              v-model="productItem.unit"
-              input-id="productUnit"
-              type="text"
-            >
-              <template v-slot:default>產品單位</template>
-            </FormInput>
-          </div>
-          <div class="col-span-2 lg:col-span-1">
-            <FormInput
-              v-model="productItem.origin_price"
+              v-model.number="productItem.origin_price"
               input-id="productOriginPrice"
               input-type="number"
             >
-              <template v-slot:default>產品原價</template>
+              <template v-slot:default>商品原價</template>
             </FormInput>
+          </div>
+
+          <div class="col-span-2 lg:col-span-1">
+            <FormInputNumber
+              v-model.number="productItem.price"
+              input-id="productPrice"
+            >
+              <template v-slot:default>商品價格</template>
+            </FormInputNumber>
           </div>
           <div class="col-span-2 lg:col-span-1">
             <FormInputNumber
-              v-model="productItem.price"
-              input-id="productPrice"
+              v-model.number="productItem.reserve"
+              input-id="productReserve"
             >
-              <template v-slot:default>產品價格</template>
+              <template v-slot:default>商品庫存</template>
             </FormInputNumber>
           </div>
           <div class="col-span-2">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"
-              for="productDescription"
-            >
-              產品描述
-            </label>
-            <textarea
-              class="appearance-none bg-transparent border border-gray-300 w-full text-gray-700 py-2 px-2 leading-tight focus:outline-none"
-              id="productDescription"
-              rows="5"
+            <FormInputTextArea
               v-model="productItem.description"
-            ></textarea>
+              input-id="productDescription"
+              text-area-row="5"
+            >
+              <template v-slot:default>商品描述</template>
+            </FormInputTextArea>
           </div>
           <div class="col-span-2">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"
             >
-              產品附圖
+              商品附圖
             </label>
             <div class="grid grid-cols-3 gap-4">
               <div
@@ -183,7 +209,8 @@ export default {
               >
                 <ImgUploader
                   @send-img-url="getUrl"
-                  :img-name="`${productItem.title}產品附圖-${index}`"
+                  :img-name="`圖片${index}`"
+                  :exist-img-url="img"
                 />
                 <button
                   type="button"
@@ -208,7 +235,7 @@ export default {
               </div>
               <div
                 v-if="
-                  !productItem.imagesUrl.length ||
+                  productItem.imagesUrl.length ||
                   productItem.imagesUrl[productItem.imagesUrl.length - 1] !== ''
                 "
               >
@@ -221,6 +248,62 @@ export default {
                 </button>
               </div>
             </div>
+          </div>
+          <div class="col-span-2 lg:col-span-1">
+            <FormInput
+              v-model="productItem.unit"
+              input-id="productUnit"
+              type="text"
+            >
+              <template v-slot:default>商品單位</template>
+            </FormInput>
+          </div>
+          <div class="col-span-2 lg:col-span-1">
+            <FormInput
+              v-model="productItem.Material"
+              input-id="productMaterial"
+              type="text"
+            >
+              <template v-slot:default>商品材質</template>
+            </FormInput>
+          </div>
+          <div class="col-span-2 flex gap-x-4">
+            <div class="flex-1">
+              <FormInput
+                v-model="productItem.size.sizeLength"
+                input-id="productlength"
+                type="text"
+              >
+                <template v-slot:default>商品長度</template>
+              </FormInput>
+            </div>
+            <div class="flex-1">
+              <FormInput
+                v-model="productItem.size.sizeWidth"
+                input-id="productWidth"
+                type="text"
+              >
+                <template v-slot:default>商品寬度</template>
+              </FormInput>
+            </div>
+            <div class="flex-1">
+              <FormInput
+                v-model="productItem.size.sizeHeight"
+                input-id="productHeight"
+                type="text"
+              >
+                <template v-slot:default>商品高度</template>
+              </FormInput>
+            </div>
+          </div>
+          <div class="col-span-2">
+            <FormInputTextArea
+              v-model="productItem.content"
+              input-id="productContent"
+              text-area-row="5"
+            >
+              <template v-slot:default>商品特色</template>
+            </FormInputTextArea>
           </div>
         </div>
       </div>
@@ -236,10 +319,11 @@ export default {
           type="submit"
           class="flex-1 bg-purple-200 text-purple-600 rounded py-2 px-3 hover:border-gray-300"
         >
-          {{ state === 'isNew' ? '新增產品' : '更新產品' }}
+          {{ state === 'isNew' ? '新增商品' : '更新商品' }}
         </button>
       </div>
     </form>
+    <div v-show="listState === 1" class="flex-shrink overflow-y-scroll"></div>
   </div>
 </template>
 <style lang="scss"></style>

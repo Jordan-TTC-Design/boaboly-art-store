@@ -1,6 +1,7 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
   --primary: #1d1d1d;
+  --primary-light: #ffee00;
   --gray-line: #e2e2e2;
   --white: #ffffff;
   --white-soft: #f8f8f8;
@@ -76,4 +77,22 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+/* 設定所有bi icon往上移動一點 */
+.bi{
+  position: relative;
+  top: -1px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

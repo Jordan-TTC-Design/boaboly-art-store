@@ -1,18 +1,30 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
       name: 'FrontLayout',
       component: () => import('../views/FrontLayout.vue'),
-      // children: [
-      //   {
-      //     path: '',
-      //     component: () => import('../views/front/Home.vue'),
-      //   },
-      // ],
+      children: [
+        {
+          path: '',
+          component: () => import('../views/front/Home.vue'),
+        },
+        {
+          path: 'products/:id',
+          component: () => import('../views/front/ProductPage.vue'),
+        },
+        {
+          path: 'checkout',
+          component: () => import('../views/front/OrderPage.vue'),
+        },
+        {
+          path: 'admin-login',
+          component: () => import('../views/admin/AdminLogin.vue'),
+        },
+      ],
     },
     {
       path: '/admin',
@@ -24,10 +36,6 @@ const router = createRouter({
           component: () => import('../views/admin/AdminProducts.vue'),
         },
       ],
-    },
-    {
-      path: '/admin-login',
-      component: () => import('../views/admin/AdminLogin.vue'),
     },
   ],
 });

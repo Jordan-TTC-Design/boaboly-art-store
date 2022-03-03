@@ -1,4 +1,4 @@
-.siderBox{
+.siderBox {
   width: 100%;
   height: 95%;
   position: fixed;
@@ -6,43 +6,77 @@
   bottom: 0;
   background-color: var(--white);
   transition: all 0.3s;
-  transform:translateY(100%);
+  transform: translateY(100%);
 }
-.siderBox.active{
-  transform:translateY(0)
-  }
-.siderBg{
+.siderBox.active {
+  transform: translateY(0);
+}
+.siderBg {
   background-color: var(--bgBlackTrans);
   height: 5%;
-  width: 100% ;
+  width: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  transform:translateY(-100%);
+  transform: translateY(-100%);
   transition: all 0.3s;
 }
-.siderBg.active{
-  transform:translateY(0)
-  }
-.adminList__item{
+.siderBox--x {
+  width: 50%;
+  height: 100%;
+  position: fixed;
+  right: 0;
+  bottom: 0;
   background-color: var(--white);
   transition: all 0.3s;
-  border-bottom: 1px solid var(--gray-line); 
+  transform: translateX(100%);
+}
+.siderBox--x.active {
+  transform: translateX(0);
+}
+.siderBg--x{
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--bgBlackTrans);
+  transform: translateX(-100%);
+  transition: all 0.3s;
+}
+.siderBg--x.active {
+  transform: translateX(0);
+}
+.siderBg.active {
+  transform: translateX(0);
+}
+.adminList__item {
+  background-color: var(--white);
+  transition: all 0.3s;
+  border-bottom: 1px solid var(--gray-line);
   cursor: pointer;
 }
-.adminList__item:hover{
+.adminList__item:hover {
   background-color: var(--bgGrayTrans);
 }
-.popModal{
+.popModal {
   background-color: var(--white);
   width: 80%;
   position: fixed;
   top: 50%;
-  transform:translateY(-50%);
+  transform: translateY(-50%);
 }
-.z-popModal{
+.z-popModal {
   z-index: 999;
 }
-.z-sider{
+.z-sider {
   z-index: 900;
+}
+.storeLogo {
+  background-color: #ffee00;
+}
+.productTag {
+  padding: 0.25rem 0.5rem;
+  background-color: #f7f7f7;
+  display: inline-block;
 }

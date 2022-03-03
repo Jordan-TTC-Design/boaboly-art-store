@@ -32,3 +32,35 @@
 .switch.active .switch__txt {
   color: var(--primary);
 }
+.cart__number{
+  display: inline-block;
+  padding: 1px 0.25rem;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  position: absolute;
+  top: -0.25rem;
+  right: -0.25rem;
+  font-size: 0.75rem;
+}
+.numberSwitcher{
+  min-width: 5rem;
+  background-color: var(--white);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  transition: all 0.3s;
+}
+.numberSwitcher__btn{
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--gray-line);
+}
+.numberSwitcher__btn:hover{
+  background-color: var(--gray-line);
+}
+.numberSwitcher__numBox{
+  flex: 1;
+  text-align: center;
+  border-top: 1px solid var(--gray-line);
+  border-bottom: 1px solid var(--gray-line);
+}

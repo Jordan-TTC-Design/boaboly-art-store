@@ -1,12 +1,11 @@
 <script>
-import { ref, watch } from 'vue';
-import _ from 'lodash';
+import { ref, computed, watch } from 'vue';
 import { apiMethod } from '@/methods/api.js';
 import emitter from '@/methods/emitter';
 import ImgCropperPopModal from '@/components/helpers/ImgCropperPopModal.vue';
 
 export default {
-  props: ['imgName'],
+  props: ['imgName', 'existImgUrl'],
   emits: ['sendImgUrl'],
   components: {
     ImgCropperPopModal,
@@ -15,30 +14,22 @@ export default {
     const imgCoverUploader = ref(null);
     const imgsData = ref({
       useUrl: false,
-      url: '',
+      url: props.existImgUrl || '',
       finish: false,
     });
-    let imgData = { src: '' };
-    watch(
-      () => imgsData.value.url,
-      _.debounce((url) => {
-        if (imgsData.value.useUrl) {
-          console.log(url);
-          sendImgUrl(url);
-        }
-      }, 2000)
-    );
+    const sentUrl = computed(() => props.existImgUrl);
+    watch(sentUrl, (newValue, oldValue) => {
+      console.log('watch search', newValue, oldValue);
+      imgsData.value.url = newValue;
+    });
     function sendImgUrl(url) {
       emit('sendImgUrl', url, props.imgName);
     }
     function getImg(image) {
       imgsData.value.url = image.src;
-      imgData.src = image.src;
-      console.log(image);
-      console.log(imgData);
+      console.log(imgsData.value.url);
     }
     function dataURLtoFile(dataurl, filename) {
-      console.log(dataurl);
       let arr = dataurl.split(','),
         mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]),
@@ -50,14 +41,12 @@ export default {
       return new File([u8arr], filename, { type: mime });
     }
     function uploadmgToDB() {
-      const file = dataURLtoFile(imgData.src, 'file-to-upload.jpeg');
+      const file = dataURLtoFile(imgsData.value.url, 'file-to-upload.jpeg');
       apiMethod.adminImageUpload(file).then((url) => {
-        console.log(url);
         sendImgUrl(url);
       });
     }
     function toogleCropper() {
-      console.dir(imgCoverUploader);
       const [file] = imgCoverUploader.value.files;
       emitter.emit(`open-pop-modal-${props.imgName}`, file);
     }

@@ -4,15 +4,13 @@ import { apiMethod } from '@/methods/api.js';
 import { productCategory } from '@/methods/data.js';
 import AdminProductEdit from '@/components/admin/AdminProductEdit.vue';
 import AdminProductSlider from '@/components/admin/AdminProductSlider.vue';
-import RowNav from '@/components/helpers/RowNav.vue';
-import AdminProductListItemSquare from '@/components/admin/AdminProductListItemSquare.vue';
+import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
 
 export default {
   components: {
     AdminProductEdit,
     AdminProductSlider,
-    RowNav,
-    AdminProductListItemSquare,
+    ProductListItemSquare,
   },
   setup() {
     const products = ref([]);
@@ -93,27 +91,6 @@ export default {
 </script>
 <template>
   <div class="relative px-4 bg-white">
-    <div class="sticky top-0 bg-white z-40 px-5 pt-6 pb-4">
-      <div class="grid grid-cols-3 mb-8">
-        <div class="col-span-1">
-          <h3 class="text-3xl font-medium">商品列表</h3>
-        </div>
-        <div class="col-span-2 flex justify-end">
-          <button
-            type="button"
-            class="border border-gray-200 rounded py-2 px-3 hover:border-gray-300"
-            @click="openProductDetail('isNew')"
-          >
-            新增產品
-          </button>
-        </div>
-      </div>
-      <RowNav
-        :list-state="listState"
-        :nav-array="['全部商品', '刊登中', '已下架']"
-        @return-state="listState = $event"
-      />
-    </div>
     <div class="grid grid-cols-5 p-5 gap-4">
       <div class="col-span-1 min-h-screen">
         <ul class="mb-6">
@@ -149,7 +126,7 @@ export default {
         <h5 class="mb-4">商品</h5>
         <div class="grid grid-cols-3 gap-4">
           <template v-for="(product, index) in productList" :key="product.id">
-            <AdminProductListItemSquare
+            <ProductListItemSquare
               :product="product"
               :list-index="index"
               @change-product-state="changeProductState"

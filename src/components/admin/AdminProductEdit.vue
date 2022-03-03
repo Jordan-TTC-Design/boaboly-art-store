@@ -37,11 +37,10 @@ export default {
         },
         reserve: 1,
       };
-      console.log(props.selectItem);
-      if (props.selectItem.id !== '') {
-        return newProductItem;
-      } else {
+      if (props.selectItem.id) {
         return props.selectItem;
+      } else {
+        return newProductItem;
       }
     });
     const state = computed(() => props.modalState);
@@ -120,7 +119,11 @@ export default {
           >
             商品主圖
           </label>
-          <ImgUploader @send-img-url="getUrl" img-name="主要圖片" />
+          <ImgUploader
+            @send-img-url="getUrl"
+            img-name="主要圖片"
+            :exist-img-url="productItem.imageUrl"
+          />
         </div>
         <div class="col-span-4 grid grid-cols-2 gap-4">
           <div class="col-span-2 lg:col-span-1">
@@ -191,6 +194,7 @@ export default {
                 <ImgUploader
                   @send-img-url="getUrl"
                   :img-name="`${productItem.title}商品附圖-${index}`"
+                  :exist-img-url="img"
                 />
                 <button
                   type="button"
