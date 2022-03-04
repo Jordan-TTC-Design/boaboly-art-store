@@ -1,90 +1,28 @@
 <script>
-import { ref, computed } from 'vue';
-import { apiMethod } from '@/methods/api.js';
-import { productCategory } from '@/methods/data.js';
-import AdminProductEdit from '@/components/admin/AdminProductEdit.vue';
-import AdminProductSlider from '@/components/admin/AdminProductSlider.vue';
+import { ref } from 'vue';
+import { frontApiMethod } from '@/methods/api.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
+import emitter from '@/methods/emitter';
 
 export default {
   components: {
-    AdminProductEdit,
-    AdminProductSlider,
     ProductListItemSquare,
   },
   setup() {
-    const products = ref([]);
-    let listState = ref(1);
-    let showed = ref(true);
-    const productList = computed(() => {
-      let array = [];
-      if (listState.value === 2) {
-        array = products.value.filter((product) => product.is_enabled);
-      } else if (listState.value === 3) {
-        array = products.value.filter((product) => !product.is_enabled);
-      } else {
-        array = products.value;
-      }
-      return array;
-    });
-    let selectItem = ref({});
-    let modalState = ref(null);
-    let modalOpen = ref(false);
-    function clearItem() {
-      modalOpen.value = false;
-      modalState.value = null;
-      selectItem.value = {};
-    }
-    function openProductDetail(state, item) {
-      console.log(state, item);
-      if (state === 'isNew') {
-        selectItem.value = {};
-      } else if (state === 'edit') {
-        selectItem.value = JSON.parse(JSON.stringify(item));
-        console.log(selectItem.value);
-      }
-      modalOpen.value = true;
-      modalState.value = state;
-    }
-    async function deleteProduct(itemId) {
-      await apiMethod.adminDeleteProduct(itemId);
-      getProduct();
-      selectItem.value = {
-        imagesUrl: [],
-      };
-    }
-    function changeProductState(productData) {
-      productData.is_enabled = !productData.is_enabled;
-      updateProduct(productData.id, productData);
-    }
-    async function updateProduct(itemId, productData) {
-      await apiMethod.adminUpdateProduct(itemId, productData);
-      getProduct();
-    }
+    const productList = ref([]);
     function getProduct() {
-      apiMethod.adminGetProductsAll().then((res) => {
+      frontApiMethod.getProducts().then((res) => {
         if (res) {
-          products.value = Object.values(res);
-          console.log(products.value);
+          productList.value = JSON.parse(JSON.stringify(res));
+          console.log(productList.value);
         }
       });
     }
-    apiMethod.checkLogin().then(() => {
-      getProduct();
-    });
+    getProduct();
     return {
       productList,
-      listState,
-      modalState,
-      modalOpen,
-      selectItem,
-      showed,
-      productCategory,
-      openProductDetail,
-      deleteProduct,
-      changeProductState,
-      clearItem,
       getProduct,
+      emitter,
     };
   },
 };
@@ -92,36 +30,6 @@ export default {
 <template>
   <div class="relative px-4 bg-white">
     <div class="grid grid-cols-5 p-5 gap-4">
-      <div class="col-span-1 min-h-screen">
-        <ul class="mb-6">
-          <li class="text-sm text-gray-400 mb-2">商品狀態</li>
-          <li class="group py-2 px-5 cursor-pointer hover:text-yellow-600">
-            <span
-              class="w-3 h-px bg-gray-300 block absolute top-1/2 left-0 group-hover:bg-yellow-400"
-            ></span
-            >一般商品
-          </li>
-          <li class="group py-2 px-5 cursor-pointer hover:text-yellow-600">
-            <span
-              class="w-3 h-px bg-gray-300 block absolute top-1/2 left-0 group-hover:bg-yellow-400"
-            ></span
-            >活動商品
-          </li>
-        </ul>
-        <ul class="mb-6">
-          <li class="text-sm text-gray-400 mb-2">商品類別</li>
-          <template v-for="category in productCategory" :key="category">
-            <li
-              class="group py-2 px-5 cursor-pointer relative hover:text-yellow-600"
-            >
-              <span
-                class="w-3 h-px bg-gray-300 block absolute top-1/2 left-0 group-hover:bg-yellow-400"
-              ></span
-              >{{ category }}
-            </li>
-          </template>
-        </ul>
-      </div>
       <div class="col-start-2 col-span-4">
         <h5 class="mb-4">商品</h5>
         <div class="grid grid-cols-3 gap-4">
@@ -129,35 +37,17 @@ export default {
             <ProductListItemSquare
               :product="product"
               :list-index="index"
-              @change-product-state="changeProductState"
-              @open-product-detail="openProductDetail"
-              @delete-product="deleteProduct"
+              @add-cart="
+                emitter.emit('add-cart', {
+                  id: product.id,
+                  num: 1,
+                })
+              "
             />
           </template>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="siderBg z-sider"
-    :class="{ active: modalOpen }"
-    @click="modalOpen = false"
-  ></div>
-  <div class="siderBox z-sider">
-    <AdminProductEdit
-      :select-item="selectItem"
-      :modal-state="modalState"
-      @get-product="getProduct"
-      @clear-item="clearItem"
-    />
-  </div>
-  <div class="siderBox z-sider" :class="{ active: modalOpen }">
-    <AdminProductSlider
-      :select-item="selectItem"
-      :modal-state="modalState"
-      @get-product="getProduct"
-      @clear-item="clearItem"
-    />
   </div>
 </template>
 <style lang="scss"></style>

@@ -11,15 +11,13 @@ export default {
     const cartAmount = computed(() => {
       let num = 0;
       cartList.value.forEach((item) => {
-        console.log(item);
         num += item.qty;
       });
       return num;
     });
     function addCart(productId, buyNum) {
       console.log(productId, buyNum);
-      frontApiMethod.addCart(productId, buyNum).then((res) => {
-        console.log(res.data);
+      frontApiMethod.addCart(productId, buyNum).then(() => {
         getCart();
       });
     }
@@ -90,30 +88,34 @@ export default {
     @click="modalOpen = false"
   ></div>
   <div class="siderBox--x z-sider" :class="{ active: modalOpen }">
-    <div class="p-8 relative h-full flex flex-col">
-      <div class="flex justify-between mb-4">
-        <button
-          type="button"
-          class="px-3 py-2 flex items-center"
-          @click="modalOpen = false"
+    <div class="relative h-full flex flex-col">
+      <div class="p-8">
+        <div class="flex justify-between mb-4">
+          <button
+            type="button"
+            class="px-3 py-2 flex items-center"
+            @click="modalOpen = false"
+          >
+            <i class="bi bi-chevron-double-left mr-1"></i>
+            <p>返回繼續購物</p>
+          </button>
+          <button
+            type="button"
+            class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
+            @click="deleteCartAll"
+          >
+            <p>刪除全部</p>
+          </button>
+        </div>
+        <h2
+          class="inline-block py-3 pl-8 pr-32 bg-black text-3xl text-white font-bold mb-8 self-start"
         >
-          <i class="bi bi-chevron-double-left mr-1"></i>
-          <p>返回繼續購物</p>
-        </button>
-        <button
-          type="button"
-          class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-          @click="deleteCartAll"
-        >
-          <p>刪除全部</p>
-        </button>
+          購物車
+        </h2>
       </div>
-      <h2
-        class="inline-block py-3 pl-8 pr-32 bg-black text-3xl text-white font-bold mb-8 self-start"
+      <ul
+        class="cartList grid grid-cols-1 gap-y-4 flex-grow-1 overflow-y-auto px-8"
       >
-        購物車
-      </h2>
-      <ul class="cartList grid grid-cols-1 gap-y-4 flex-grow-1">
         <li class="grid grid-cols-6 gap-2 border-b border-gray-300">
           <div class="col-span-3">
             <p class="text-sm text-gray-400 mb-2">品項</p>

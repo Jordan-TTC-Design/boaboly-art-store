@@ -27,6 +27,18 @@ const token = document.cookie.replace(
 // 把Authorization加到HEADER
 axios.defaults.headers.common['Authorization'] = token;
 const frontApiMethod = {
+  getProducts() {
+    return axios
+      .get(`${frontApiPath.getProduct}s`)
+      .then((res) => {
+        console.log('成功取得多筆商品資料');
+        console.log(res);
+        return res.data.products;
+      })
+      .catch((err) => {
+        console.dir(err.response);
+      });
+  },
   getProduct(productId) {
     return axios
       .get(`${frontApiPath.getProduct}/${productId}`)
