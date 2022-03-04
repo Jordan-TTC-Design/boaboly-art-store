@@ -1,15 +1,20 @@
 <script>
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
-// import emitter from '@/methods/emitter';
-import FormInput from '@/components/form/FormInput.vue';
+import emitter from '@/methods/emitter';
+import VeeFormInput from '@/components/form/VeeFormInput.vue';
 import FormInputTextArea from '@/components/form/FormInputTextArea.vue';
+import { Form } from 'vee-validate';
+
 export default {
   components: {
-    FormInput,
+    VeeFormInput,
     FormInputTextArea,
+    Form,
   },
   setup() {
+    const router = useRouter();
     let cartTotal = ref(0);
     let checkStage = ref(1);
     let shipping = computed(() => {
@@ -34,18 +39,14 @@ export default {
     });
     function getCart() {
       frontApiMethod.getCart().then((res) => {
-        console.log(res);
         cartList.value = JSON.parse(JSON.stringify(res.carts));
-        console.log(cartList.value);
         cartTotal.value = res.total;
-        finalTotal.value = res.final_total;
       });
     }
     function sendOrder() {
-      console.log('發送');
-      console.log(orderFormData.value);
-      frontApiMethod.postOrder(orderFormData.value).then((res) => {
-        console.log(res);
+      frontApiMethod.postOrder(orderFormData.value).then(() => {
+        emitter.emit('get-cart');
+        router.push({ name: 'Home' });
       });
     }
     getCart();
@@ -153,35 +154,39 @@ export default {
       <Form
         class="grid grid-cols-12 gap-x-6"
         v-if="checkStage === 2"
+        v-slot="{ errors }"
         @submit="sendOrder"
       >
         <div class="col-span-7">
           <div class="mb-3">
-            <FormInput
+            <VeeFormInput
               v-model="orderFormData.user.name"
               input-id="userName"
-              type="text"
-            >
-              <template v-slot:default>收件人姓名</template>
-            </FormInput>
+              input-type="text"
+              :errors="errors"
+              label-name="姓名"
+              text-holder="請輸入姓名"
+            />
           </div>
           <div class="mb-3">
-            <FormInput
+            <VeeFormInput
               v-model="orderFormData.user.tel"
               input-id="userTel"
-              type="tel"
-            >
-              <template v-slot:default>聯絡電話</template>
-            </FormInput>
+              input-type="text"
+              :errors="errors"
+              label-name="聯絡電話"
+              text-holder="請輸入聯絡電話"
+            />
           </div>
           <div class="mb-3">
-            <FormInput
+            <VeeFormInput
               v-model="orderFormData.user.email"
               input-id="userEmail"
-              type="email"
-            >
-              <template v-slot:default>聯絡信箱</template>
-            </FormInput>
+              input-type="email"
+              :errors="errors"
+              label-name="Email"
+              text-holder="請輸入Email"
+            />
           </div>
           <div class="mb-3">
             <p
@@ -213,19 +218,21 @@ export default {
             </div>
           </div>
           <div class="mb-3">
-            <FormInput
+            <VeeFormInput
               v-model="orderFormData.user.address"
               input-id="userAddress"
-              type="text"
-            >
-              <template v-slot:default>地址</template>
-            </FormInput>
+              input-type="text"
+              :errors="errors"
+              label-name="地址"
+              text-holder="請輸入地址"
+            />
           </div>
           <div class="mb-3">
             <FormInputTextArea
               v-model="orderFormData.messages"
               input-id="messages"
               text-area-row="5"
+              text-holder="如您有任何需求，請在此留言。"
             >
               <template v-slot:default>訂單備註</template>
             </FormInputTextArea>

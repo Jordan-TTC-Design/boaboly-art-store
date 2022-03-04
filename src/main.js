@@ -2,9 +2,14 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import VueLoading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
-import { Field, Form, ErrorMessage, defineRule, configure } from 'vee-validate';
-import { required, email, min, max} from '@vee-validate/rules';
+
+import { defineRule, configure } from 'vee-validate';
+// 匯入 vee-validate 相關規則
+import { required, email, min } from '@vee-validate/rules';
+// 匯入多國語系的功能
 import { localize, setLocale } from '@vee-validate/i18n';
+// 匯入繁體中文語系檔案
+
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
 import App from './App.vue';
 import router from './router';
@@ -13,14 +18,15 @@ import VueAxios from 'vue-axios';
 import '@/assets/index.css';
 import 'cropperjs/dist/cropper.min.css';
 
-defineRule('email', email);
+// 定義驗證規則
 defineRule('required', required);
+defineRule('email', email);
 defineRule('min', min);
-defineRule('max', max);
 configure({
-  generateMessage: localize({ zh_TW: zhTW }),
-  validateOnInput: true,
+  generateMessage: localize({ zh_TW: zhTW }), // 載入繁體中文語系
+  validateOnInput: true, // 當輸入任何內容直接進行驗證
 });
+// 設定預設語系
 setLocale('zh_TW');
 
 const app = createApp(App);
@@ -28,7 +34,5 @@ app.use(VueLoading);
 app.use(createPinia());
 app.use(router);
 app.use(VueAxios, axios);
-app.component('Form', Form);
-app.component('Field', Field);
-app.component('ErrorMessage', ErrorMessage);
+
 app.mount('#app');

@@ -175,6 +175,7 @@ export default {
               v-model="productItem.description"
               input-id="productDescription"
               text-area-row="5"
+              text-holder="請輸入商品描述"
             >
               <template v-slot:default>商品描述</template>
             </FormInputTextArea>
@@ -285,6 +286,7 @@ export default {
               v-model="productItem.content"
               input-id="productContent"
               text-area-row="5"
+              text-holder="請輸入商品特色"
             >
               <template v-slot:default>商品特色</template>
             </FormInputTextArea>

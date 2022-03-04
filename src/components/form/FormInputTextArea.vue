@@ -1,7 +1,7 @@
 <script>
 import { ref } from 'vue';
 export default {
-  props: ['modelValue', 'input-id', 'input-type', 'textAreaRow'],
+  props: ['modelValue', 'input-id', 'input-type', 'textAreaRow', 'text-holder'],
   setup(props, { slots }) {
     const data = ref(slots);
     return { data };
@@ -21,6 +21,7 @@ export default {
       :id="inputId"
       :rows="textAreaRow"
       :value="modelValue"
+      :placeholder="textHolder"
       @input="$emit('update:modelValue', $event.target.value)"
     ></textarea>
   </div>

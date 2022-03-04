@@ -56,6 +56,7 @@ export default {
     }
     getCart();
     onMounted(() => {
+      emitter.on('get-cart', getCart);
       emitter.on('add-cart', (data) => {
         addCart(data.id, data.num);
       });
