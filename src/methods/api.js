@@ -7,6 +7,7 @@ const api = {
 const frontApiPath = {
   getProduct: `${api.url}/api/${api.path}/product`,
   cart: `${api.url}/api/${api.path}/cart`,
+  order: `${api.url}/api/${api.path}/order`,
 };
 const adminApiPath = {
   signin: `${api.url}/admin/signin`,
@@ -112,6 +113,20 @@ const frontApiMethod = {
       .delete(`${frontApiPath.cart}s`)
       .then((res) => {
         console.log('修改成功');
+        console.log(res);
+        return res.data;
+      })
+      .catch((err) => {
+        console.dir(err.response);
+      });
+  },
+  postOrder(formData) {
+    const data = formData;
+    console.log({ data });
+    return axios
+      .post(frontApiPath.order, { data })
+      .then((res) => {
+        console.log('送出成功');
         console.log(res);
         return res.data;
       })
