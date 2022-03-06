@@ -17,6 +17,7 @@ export default {
     const router = useRouter();
     let cartTotal = ref(0);
     let checkStage = ref(1);
+    const cartList = ref([]);
     let shipping = computed(() => {
       let num = 60;
       if (cartTotal.value >= 1000) {
@@ -25,7 +26,6 @@ export default {
       return num;
     });
     let finalTotal = computed(() => cartTotal.value + shipping.value);
-    const cartList = ref([]);
     const orderFormData = ref({
       user: {
         name: '',
@@ -66,7 +66,10 @@ export default {
   <div class="bg-gray-100 relative py-16 min-h-screen">
     <div class="bg-primaryLight w-full h-96 absolute top-0"></div>
     <div class="container mx-auto bg-white shadow-sm p-16">
-      <router-link to="/" class="px-3 py-2 flex items-center mb-6">
+      <router-link
+        :to="{ name: 'Home' }"
+        class="px-3 py-2 flex items-center mb-6"
+      >
         <i class="bi bi-chevron-double-left mr-1"></i>
         <p>返回繼續購物</p>
       </router-link>
@@ -288,7 +291,14 @@ export default {
                 <p class="text-xl font-bold">NT$ {{ finalTotal }}</p>
               </div>
               <button
+                :disabled="
+                  Object.keys(errors).length === 0 && cartList.length === 0
+                "
                 type="submit"
+                :class="{
+                  'bg-opacity-50 hover:bg-opacity-50':
+                    Object.keys(errors).length === 0 && cartList.length === 0,
+                }"
                 class="bg-black rounded py-2 px-3 hover:bg-gray-800 text-white"
               >
                 確定付款

@@ -1,10 +1,13 @@
 <script>
-import { ref, computed, onMounted } from 'vue';
+import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
+import { useRoute } from 'vue-router';
+
 import { frontApiMethod } from '@/methods/api.js';
 import emitter from '@/methods/emitter';
 
 export default {
   setup() {
+    const route = useRoute();
     let modalOpen = ref(false);
     let cartTotal = ref(0);
     const cartList = ref([]);
@@ -16,12 +19,13 @@ export default {
       return num;
     });
     function addCart(productId, buyNum) {
-      console.log(productId, buyNum);
+      emitter.emit('open-loading');
       frontApiMethod.addCart(productId, buyNum).then(() => {
         getCart();
       });
     }
     function updateCart(cartItemNum, cartItemId) {
+      emitter.emit('open-loading');
       frontApiMethod.editCart(cartItemNum, cartItemId).then((res) => {
         console.log(res.data);
         getCart();
@@ -42,24 +46,37 @@ export default {
         cartList.value = JSON.parse(JSON.stringify(res.carts));
         console.log(cartList.value);
         cartTotal.value = res.total;
+        emitter.emit('close-loading');
       });
     }
     function deleteCart(cartItemId) {
+      emitter.emit('open-loading');
       frontApiMethod.deleteCart(cartItemId).then(() => {
         getCart();
       });
     }
     function deleteCartAll() {
+      emitter.emit('open-loading');
       frontApiMethod.deleteCartAll().then(() => {
         getCart();
       });
     }
+    const nowPath = computed(() => route.path);
+    watch(nowPath, (newValue, oldValue) => {
+      console.log(newValue, oldValue);
+      if (newValue !== oldValue) {
+        modalOpen.value = false;
+      }
+    });
     getCart();
     onMounted(() => {
       emitter.on('get-cart', getCart);
       emitter.on('add-cart', (data) => {
         addCart(data.id, data.num);
       });
+    });
+    onUnmounted(() => {
+      modalOpen.value = false;
     });
     return {
       cartAmount,
@@ -102,6 +119,7 @@ export default {
           </button>
           <button
             type="button"
+            :disabled="cartList.length === 0"
             class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
             @click="deleteCartAll"
           >

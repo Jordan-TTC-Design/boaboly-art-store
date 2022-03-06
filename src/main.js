@@ -1,8 +1,6 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import VueLoading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
-
+import CKEditor from '@ckeditor/ckeditor5-vue';
 import { defineRule, configure } from 'vee-validate';
 // 匯入 vee-validate 相關規則
 import { required, email, min } from '@vee-validate/rules';
@@ -30,7 +28,7 @@ configure({
 setLocale('zh_TW');
 
 const app = createApp(App);
-app.use(VueLoading);
+app.use(CKEditor);
 app.use(createPinia());
 app.use(router);
 app.use(VueAxios, axios);

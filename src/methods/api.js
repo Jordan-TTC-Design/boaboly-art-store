@@ -147,7 +147,7 @@ const apiMethod = {
           expired
         )};`;
         console.log('success');
-        window.location = '/admin';
+        window.location = '/#/admin';
       })
       .catch((err) => {
         console.log(err);
@@ -241,7 +241,7 @@ const apiMethod = {
   },
   turnBackLogin(status) {
     if (status === 401) {
-      window.location = '/admin-login';
+      window.location = '/#/admin-login';
     }
   },
 };

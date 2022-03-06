@@ -1,9 +1,11 @@
 <script>
 import { RouterView } from 'vue-router';
 import Cart from '@/components/front/Cart.vue';
+import Loading from '@/components/helpers/Loading.vue';
 export default {
   components: {
     Cart,
+    Loading,
   },
   setup() {
     return {
@@ -38,6 +40,7 @@ export default {
   <div class="mx-auto">
     <RouterView />
   </div>
+  <Loading />
 </template>
 
 <style lang="scss"></style>

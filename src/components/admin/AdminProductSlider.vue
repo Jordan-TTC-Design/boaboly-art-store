@@ -7,6 +7,7 @@ import FormInputNumber from '@/components/form/FormInputNumber.vue';
 import FormInputTextArea from '@/components/form/FormInputTextArea.vue';
 import emitter from '@/methods/emitter';
 import RowNav from '@/components/helpers/RowNav.vue';
+import FromArtic from '@/components/form/FromArtic.vue';
 
 export default {
   components: {
@@ -15,6 +16,7 @@ export default {
     FormInputNumber,
     FormInputTextArea,
     RowNav,
+    FromArtic,
   },
   props: ['selectItem', 'modal-state'],
   emits: ['get-product', 'clear-item'],
@@ -195,6 +197,12 @@ export default {
             >
               <template v-slot:default>商品描述</template>
             </FormInputTextArea>
+            <FromArtic
+              v-model="productItem.description"
+              input-id="productDescription"
+              input-name="商品描述"
+            >
+            </FromArtic>
           </div>
           <div class="col-span-2">
             <label
