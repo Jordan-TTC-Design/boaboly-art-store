@@ -44,7 +44,6 @@ export default {
     function getCart() {
       frontApiMethod.getCart().then((res) => {
         cartList.value = JSON.parse(JSON.stringify(res.carts));
-        console.log(cartList.value);
         cartTotal.value = res.total;
         emitter.emit('close-loading');
       });

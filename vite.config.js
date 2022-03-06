@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from 'url';
-
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 export default defineConfig({
@@ -12,5 +11,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
   },
+  // base: '/boaboly-art-store/',
   base: process.env.NODE_ENV === 'production' ? '/boaboly-art-store/' : './',
 });
