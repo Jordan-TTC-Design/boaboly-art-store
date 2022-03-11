@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = {
-  url: 'https://vue3-course-api.hexschool.io/v2',
-  path: 'boaboly-shop',
+  url: import.meta.env.VITE_APP_URL,
+  path: import.meta.env.VITE_APP_PATH,
 };
 const frontApiPath = {
   getProduct: `${api.url}/api/${api.path}/product`,
@@ -150,7 +150,7 @@ const apiMethod = {
         window.location = '/#/admin';
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.data);
       });
   },
   checkLogin() {
