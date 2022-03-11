@@ -1,10 +1,12 @@
 <script>
 import { RouterView } from 'vue-router';
 import Cart from '@/components/front/Cart.vue';
+import HamMenu from '@/components/helpers/HamMenu.vue';
 import Loading from '@/components/helpers/Loading.vue';
 export default {
   components: {
     Cart,
+    HamMenu,
     Loading,
   },
   setup() {
@@ -19,21 +21,16 @@ export default {
   <header
     class="flex justify-between items-center border-b border-gray-300 bg-white sticky top-0 z-40"
   >
-    <h1 class="text-2xl font-bold ml-6">Boaboly</h1>
-    <div class="storeLogo">
+    <router-link to="/" class="text-2xl font-bold ml-6">Boaboly</router-link>
+    <router-link to="/" class="storeLogo">
       <img src="@/assets/images/boabolyLogo.svg" alt="Logo" />
-    </div>
+    </router-link>
     <ul class="bg-black py-4 px-6 flex">
       <li class="mr-4">
         <Cart />
       </li>
       <li>
-        <button
-          type="button"
-          class="rounded py-2 px-3 hover:border-gray-300 hover:bg-white/50"
-        >
-          <i class="bi bi-list text-xl text-white"></i>
-        </button>
+        <HamMenu />
       </li>
     </ul>
   </header>
