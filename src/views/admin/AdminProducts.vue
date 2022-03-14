@@ -71,9 +71,7 @@ export default {
         }
       });
     }
-    apiMethod.checkLogin().then(() => {
-      getProduct();
-    });
+    getProduct();
     return {
       productList,
       listState,

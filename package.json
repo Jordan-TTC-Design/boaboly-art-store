@@ -19,6 +19,7 @@
     "pinia": "^2.0.11",
     "postcss-import": "^14.0.2",
     "sass": "^1.49.7",
+    "swiper": "^8.0.7",
     "vee-validate": "^4.5.8",
     "vue": "^3.2.29",
     "vue-axios": "^3.4.1",

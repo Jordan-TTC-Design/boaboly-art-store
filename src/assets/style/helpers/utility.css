@@ -1,6 +1,9 @@
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
 }
-.bg-primaryLight{
-  background-color: var(--primary-light);;
+.bg-primaryLight {
+  background-color: var(--primary-light);
+}
+.border-primaryLight {
+  border: 1px solid var(--primary-light);
 }
