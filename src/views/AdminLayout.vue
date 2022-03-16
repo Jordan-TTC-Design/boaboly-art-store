@@ -7,7 +7,7 @@ export default {
     AdminMainNav,
   },
   setup() {
-    apiMethod.checkLogin()
+    apiMethod.checkLogin();
     return {
       RouterView,
     };

@@ -5,7 +5,7 @@ import ImgUploader from '@/components/admin/ImgUploader.vue';
 import FormInput from '@/components/form/FormInput.vue';
 import FormInputNumber from '@/components/form/FormInputNumber.vue';
 import FormInputTextArea from '@/components/form/FormInputTextArea.vue';
-import emitter from '@/methods/emitter';
+import FromArtic from '@/components/form/FromArtic.vue';
 
 export default {
   components: {
@@ -13,12 +13,12 @@ export default {
     FormInput,
     FormInputNumber,
     FormInputTextArea,
+    FromArtic,
   },
-  props: ['selectItem', 'modal-state'],
-  emits: ['get-product', 'clear-item'],
+  emits: ['get-product'],
   setup(props, { emit }) {
     const productItem = computed(() => {
-      const newProductItem = {
+      return {
         title: '',
         category: '',
         origin_price: 0,
@@ -29,21 +29,26 @@ export default {
         is_enabled: 1,
         imageUrl: '',
         imagesUrl: [''],
-        material: '',
+        material: [''],
         size: {
           sizeLength: '',
           sizeWidth: '',
           sizeHeight: '',
         },
+        promoted: {
+          star: false,
+          event: {
+            title: '',
+            price: 0,
+            is_enabled: 0,
+          },
+        },
+        tags: [''],
         reserve: 1,
+        num: 1,
+        made: '',
       };
-      if (props.selectItem.id) {
-        return props.selectItem;
-      } else {
-        return newProductItem;
-      }
     });
-    const state = computed(() => props.modalState);
     const imgCoverUploader = ref(null);
     const imgsData = ref([{ useUrl: true, url: '' }]);
     function upload() {
@@ -56,36 +61,20 @@ export default {
       if (name === '主要圖片') {
         productItem.value.imageUrl = url;
       } else {
-        productItem.value.imagesUrl[name] = url;
+        const newName = name.slice(2);
+        productItem.value.imagesUrl[newName] = url;
       }
       console.log(productItem.value);
     }
     function newProduct() {
-      console.log(productItem.value);
-      console.log(state.value);
-      if (state.value === 'isNew') {
-        apiMethod.adminPostProduct(productItem.value).then(() => {
-          emit('get-product');
-          emit('clear-item');
-        });
-      } else if (state.value === 'edit') {
-        apiMethod
-          .adminUpdateProduct(productItem.value.id, productItem.value)
-          .then(() => {
-            emit('get-product');
-            emit('clear-item');
-          });
-      }
-    }
-    function openPopModal() {
-      emitter.emit('open-pop-modal');
+      apiMethod.adminPostProduct(productItem.value).then(() => {
+        emit('get-product');
+      });
     }
     return {
       imgsData,
       productItem,
-      state,
       imgCoverUploader,
-      openPopModal,
       upload,
       getUrl,
       newProduct,
@@ -153,7 +142,6 @@ export default {
               <template v-slot:default>商品原價</template>
             </FormInput>
           </div>
-
           <div class="col-span-2 lg:col-span-1">
             <FormInputNumber
               v-model.number="productItem.price"
@@ -179,6 +167,12 @@ export default {
             >
               <template v-slot:default>商品描述</template>
             </FormInputTextArea>
+            <FromArtic
+              v-model="productItem.description"
+              input-id="productDescription"
+              input-name="商品描述"
+            >
+            </FromArtic>
           </div>
           <div class="col-span-2">
             <label
@@ -194,7 +188,7 @@ export default {
               >
                 <ImgUploader
                   @send-img-url="getUrl"
-                  :img-name="`${productItem.title}商品附圖-${index}`"
+                  :img-name="`圖片${index}`"
                   :exist-img-url="img"
                 />
                 <button
@@ -220,7 +214,7 @@ export default {
               </div>
               <div
                 v-if="
-                  !productItem.imagesUrl.length ||
+                  productItem.imagesUrl.length ||
                   productItem.imagesUrl[productItem.imagesUrl.length - 1] !== ''
                 "
               >
@@ -305,7 +299,7 @@ export default {
           type="submit"
           class="flex-1 bg-purple-200 text-purple-600 rounded py-2 px-3 hover:border-gray-300"
         >
-          {{ state === 'isNew' ? '新增商品' : '更新商品' }}
+          新增商品
         </button>
       </div>
     </form>

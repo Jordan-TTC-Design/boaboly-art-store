@@ -126,6 +126,12 @@ export default {
             <span
               class="w-3 h-px bg-gray-300 block absolute top-1/2 left-0 group-hover:bg-yellow-400"
             ></span
+            >首頁商品
+          </li>
+          <li class="group py-2 px-5 cursor-pointer hover:text-yellow-600">
+            <span
+              class="w-3 h-px bg-gray-300 block absolute top-1/2 left-0 group-hover:bg-yellow-400"
+            ></span
             >活動商品
           </li>
         </ul>
@@ -164,15 +170,16 @@ export default {
     :class="{ active: modalOpen }"
     @click="modalOpen = false"
   ></div>
-  <div class="siderBox z-sider">
-    <AdminProductEdit
-      :select-item="selectItem"
-      :modal-state="modalState"
-      @get-product="getProduct"
-      @clear-item="clearItem"
-    />
+  <div
+    class="siderBox z-sider"
+    :class="{ active: modalOpen === true && modalState === 'isNew' }"
+  >
+    <AdminProductEdit @get-product="getProduct" />
   </div>
-  <div class="siderBox z-sider" :class="{ active: modalOpen }">
+  <div
+    class="siderBox z-sider"
+    :class="{ active: modalOpen === true && modalState === 'edit' }"
+  >
     <AdminProductSlider
       :select-item="selectItem"
       :modal-state="modalState"
