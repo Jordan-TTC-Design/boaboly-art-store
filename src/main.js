@@ -1,6 +1,5 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import CKEditor from '@ckeditor/ckeditor5-vue';
 import { defineRule, configure } from 'vee-validate';
 // 匯入 vee-validate 相關規則
 import { required, email, min } from '@vee-validate/rules';
@@ -15,6 +14,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import '@/assets/index.css';
 import 'cropperjs/dist/cropper.min.css';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 // 定義驗證規則
 defineRule('required', required);

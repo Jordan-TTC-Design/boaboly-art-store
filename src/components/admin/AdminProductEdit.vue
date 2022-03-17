@@ -1,5 +1,5 @@
 <script>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { apiMethod } from '@/methods/api.js';
 import ImgUploader from '@/components/admin/ImgUploader.vue';
 import FormInput from '@/components/form/FormInput.vue';
@@ -17,37 +17,35 @@ export default {
   },
   emits: ['get-product'],
   setup(props, { emit }) {
-    const productItem = computed(() => {
-      return {
-        title: '',
-        category: '',
-        origin_price: 0,
-        price: 0,
-        unit: '',
-        description: '',
-        content: '',
-        is_enabled: 1,
-        imageUrl: '',
-        imagesUrl: [''],
-        material: [''],
-        size: {
-          sizeLength: '',
-          sizeWidth: '',
-          sizeHeight: '',
+    const productItem = ref({
+      title: '',
+      category: '',
+      origin_price: 0,
+      price: 0,
+      unit: '',
+      description: '12322',
+      content: '',
+      is_enabled: 1,
+      imageUrl: '',
+      imagesUrl: [''],
+      material: [''],
+      size: {
+        sizeLength: '',
+        sizeWidth: '',
+        sizeHeight: '',
+      },
+      promoted: {
+        star: false,
+        event: {
+          title: '',
+          price: 0,
+          is_enabled: 0,
         },
-        promoted: {
-          star: false,
-          event: {
-            title: '',
-            price: 0,
-            is_enabled: 0,
-          },
-        },
-        tags: [''],
-        reserve: 1,
-        num: 1,
-        made: '',
-      };
+      },
+      tags: [''],
+      reserve: 1,
+      num: 1,
+      made: '',
     });
     const imgCoverUploader = ref(null);
     const imgsData = ref([{ useUrl: true, url: '' }]);
@@ -71,6 +69,9 @@ export default {
         emit('get-product');
       });
     }
+    function checkout(value) {
+      console.log(value);
+    }
     return {
       imgsData,
       productItem,
@@ -78,6 +79,7 @@ export default {
       upload,
       getUrl,
       newProduct,
+      checkout,
     };
   },
 };
@@ -159,18 +161,11 @@ export default {
             </FormInputNumber>
           </div>
           <div class="col-span-2">
-            <FormInputTextArea
-              v-model="productItem.description"
-              input-id="productDescription"
-              text-area-row="5"
-              text-holder="請輸入商品描述"
-            >
-              <template v-slot:default>商品描述</template>
-            </FormInputTextArea>
             <FromArtic
-              v-model="productItem.description"
               input-id="productDescription"
               input-name="商品描述"
+              text-holder="請輸入商品描述"
+              v-model:child-data="productItem.description"
             >
             </FromArtic>
           </div>

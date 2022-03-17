@@ -1,51 +1,68 @@
 <script>
-import { ref, watch } from 'vue';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import MyUploadAdapter from '@/methods/myUploadAdapter';
+function MyCustomUploadAdapterPlugin(editor) {
+  editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+    return new MyUploadAdapter(loader);
+  };
+}
 export default {
-  props: ['modelValue', 'input-id', 'input-name'],
-  setup() {
-    // 編輯器套件
-    const editor = ref(ClassicEditor);
-    const editorConfig = ref({
-      toolbar: ['heading', '|', 'bold', 'italic', 'link'],
-      language: 'zh',
-      placeholder: '請輸入...',
-      heading: {
-        // 設定 Heading 內的樣式，可新增多個
-        options: [
-          {
-            model: 'paragraph',
-            title: 'Paragraph',
-            class: 'ck-heading_paragraph',
-          },
-          {
-            model: 'heading1',
-            view: 'h2',
-            title: 'Heading 1',
-            class: 'ck-heading_heading1',
-          },
-          {
-            model: 'heading2',
-            view: 'h3',
-            title: 'Heading 2',
-            class: 'ck-heading_heading2',
-          },
-        ],
+  props: ['child-data', 'input-id', 'input-name', 'text-holder'],
+  data() {
+    return {
+      textData: '',
+      editor: ClassicEditor,
+      editorData: '<p>Content of the editor.</p>',
+      editorConfig: {
+        toolbar: ['heading', '|', 'bold', 'italic', 'link'],
+        extraPlugins: [MyCustomUploadAdapterPlugin],
+        language: 'zh',
+        placeholder: `${this.textHolder}`,
+        heading: {
+          options: [
+            {
+              model: 'paragraph',
+              title: 'Paragraph',
+              class: 'ck-heading_paragraph',
+            },
+            {
+              model: 'heading1',
+              view: 'h2',
+              title: 'Heading 1',
+              class: 'ck-heading_heading1',
+            },
+            {
+              model: 'heading2',
+              view: 'h3',
+              title: 'Heading 2',
+              class: 'ck-heading_heading2',
+            },
+          ],
+        },
       },
-    });
-    const textData = ref('');
-    watch(textData, (newValue, oldValue) => {
-      console.log(newValue, oldValue);
-    });
-    function check() {
-      console.log(textData.value);
-    }
-    return { textData, editor, editorConfig, check };
+    };
+  },
+  watch: {
+    childData(val) {
+      this.textData = val;
+    },
+    textData(val) {
+      console.log(val);
+      this.$emit('update:childData', this.textData);
+    },
+  },
+  methods: {
+    checkout(value) {
+      console.log(value);
+    },
+  },
+  created() {
+    console.log(this.textData);
   },
 };
 </script>
 <template>
-  <div class="w-full mb-6 md:mb-0">
+  <div class="w-full mb-6 md:mb-0 form__infoEditBox">
     <label
       class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"
       :for="inputId"
@@ -53,16 +70,27 @@ export default {
       {{ inputName }}
     </label>
     <ckeditor
+      class="articalInputArea"
+      :editor="editor"
+      :config="editorConfig"
       :id="inputId"
       :name="inputName"
-      :editor="editor"
-      tag-name="textarea"
       v-model="textData"
-      :config="editorConfig"
     ></ckeditor>
-    <button type="button" @click="check">dddd</button>
+    <!-- <textarea
+      type="textarea"
+      v-model="textData"
+      @input="checkout($event.target.value)"
+    /> -->
   </div>
 </template>
 <style lang="scss">
-// :v-model="$emit('update:modelValue', $event.target.value)"
+.form__infoEditBox {
+  .ck-editor__editable_inline {
+    min-height: 480px;
+  }
+  .ck-content h2 {
+    font-size: 24px;
+  }
+}
 </style>

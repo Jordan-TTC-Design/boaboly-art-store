@@ -161,7 +161,7 @@ const apiMethod = {
         return res.data.success;
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response);
         this.turnBackLogin(err.response.status);
       });
   },
