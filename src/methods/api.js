@@ -18,6 +18,8 @@ const adminApiPath = {
   adminDeleteProduct: `${api.url}/api/${api.path}/admin/product`,
   adminUpdateProduct: `${api.url}/api/${api.path}/admin/product`,
   imgUpload: `${api.url}/api/${api.path}/admin/upload`,
+  adminOrders: `${api.url}/api/${api.path}/admin/orders`,
+  adminOrder: `${api.url}/api/${api.path}/admin/order`,
 };
 
 const token = document.cookie.replace(
@@ -237,6 +239,54 @@ const apiMethod = {
       })
       .catch((err) => {
         console.log(err);
+      });
+  },
+  adminGetOrders() {
+    return axios
+      .get(adminApiPath.adminOrders)
+      .then((res) => {
+        console.log('取得成功');
+        console.log(res);
+        return res.data.orders;
+      })
+      .catch((err) => {
+        console.dir(err.response.status);
+      });
+  },
+  adminPutOrder(orderId) {
+    return axios
+      .put(`${adminApiPath.adminOrder}/${orderId}`)
+      .then((res) => {
+        console.log('修改成功');
+        console.log(res);
+        return res.data.orders;
+      })
+      .catch((err) => {
+        console.dir(err.response.status);
+      });
+  },
+  adminDeleteOrdersAll() {
+    return axios
+      .delete(`${adminApiPath.adminOrders}/all`)
+      .then((res) => {
+        console.log('刪除成功');
+        console.log(res);
+        return res.data.orders;
+      })
+      .catch((err) => {
+        console.dir(err.response.status);
+      });
+  },
+  adminDeleteOrder(orderId) {
+    return axios
+      .delete(`${adminApiPath.adminOrder}/${orderId}`)
+      .then((res) => {
+        console.log('刪除成功');
+        console.log(res);
+        return res.data.orders;
+      })
+      .catch((err) => {
+        console.dir(err.response.status);
       });
   },
   turnBackLogin(status) {
