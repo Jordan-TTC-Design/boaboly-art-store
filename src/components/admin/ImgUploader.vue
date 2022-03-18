@@ -44,6 +44,7 @@ export default {
       const file = dataURLtoFile(imgsData.value.url, 'file-to-upload.jpeg');
       apiMethod.adminImageUpload(file).then((url) => {
         sendImgUrl(url);
+        imgsData.value.finish = true;
       });
     }
     function toogleCropper() {

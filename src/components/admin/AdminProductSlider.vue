@@ -48,7 +48,6 @@ export default {
         return newProductItem;
       }
     });
-    console.log(productItem.value.imagesUrl.length);
     let listState = ref(1);
     const state = computed(() => props.modalState);
     const imgCoverUploader = ref(null);

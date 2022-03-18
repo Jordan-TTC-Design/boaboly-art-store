@@ -128,6 +128,7 @@ export default {
         showed ? 'scale-100' : 'scale-0',
         'transition-all duration-300',
       ]"
+      class="imgCropperPopModal"
     >
       <div class="border-b-2 p-3 flex justify-between items-center">
         <div class="font-bold text-gray-700">
@@ -196,12 +197,17 @@ export default {
   </div>
 </template>
 <style lang="scss">
+.imgCropperPopModal {
+  transform: translateY(-5%);
+}
 .cropperImageBox {
   display: block;
   width: 100%;
+  height: 100%;
+  max-height: 60vh;
   background: color #f7f7f7;
   .cropperImage {
-    max-width: 100%;
+    max-height: 100%;
   }
 }
 .cropper-container {

@@ -174,7 +174,7 @@ export default {
     class="siderBox z-sider"
     :class="{ active: modalOpen === true && modalState === 'isNew' }"
   >
-    <AdminProductEdit @get-product="getProduct" />
+    <AdminProductEdit @get-product="getProduct" @clear-item="clearItem" />
   </div>
   <div
     class="siderBox z-sider"
