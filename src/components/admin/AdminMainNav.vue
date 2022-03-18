@@ -11,13 +11,13 @@ export default {
 </script>
 <template>
   <div
-    class="flex flex-col items-center w-40 min-h-screen text-yellow-500 bg-gray-900 shadow-sm"
+    class="flex flex-col items-center w-40 min-h-screen text-yellow-500 bg-black shadow-sm"
   >
     <a class="flex items-center w-full px-3 py-6" href="#">
       <span class="ml-2 text-md font-bold">Boaboly Shop</span>
     </a>
     <div class="w-full px-2">
-      <div class="flex flex-col items-center w-full border-t border-yellow-500">
+      <div class="flex flex-col items-center w-full border-t border-white">
         <a :class="btnStyle" class="group" href="#">
           <i class="bi bi-bar-chart-fill text-xl group-hover:text-gray-900"></i>
           <span
@@ -49,7 +49,7 @@ export default {
       </div>
     </div>
     <a
-      class="flex items-center justify-center w-full h-16 mt-auto text-gray-900 bg-yellow-500 hover:bg-opacity-75"
+      class="flex items-center justify-center w-full h-16 mt-auto text-gray-900 bg-primaryLight hover:bg-opacity-75"
       href="#"
     >
       <i class="bi bi-person-badge-fill text-2xl"></i>

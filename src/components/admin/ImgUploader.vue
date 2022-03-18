@@ -12,14 +12,15 @@ export default {
   },
   setup(props, { emit }) {
     const imgCoverUploader = ref(null);
-    const imgsData = ref({
-      useUrl: false,
-      url: props.existImgUrl || '',
-      finish: false,
-    });
     const sentUrl = computed(() => props.existImgUrl);
-    watch(sentUrl, (newValue, oldValue) => {
-      console.log('watch search', newValue, oldValue);
+    const imgsData = computed(() => {
+      return {
+        useUrl: false,
+        url: sentUrl.value || '',
+        finish: sentUrl.value !== '' ? true : false,
+      };
+    });
+    watch(sentUrl, (newValue) => {
       imgsData.value.url = newValue;
     });
     function sendImgUrl(url) {
@@ -27,7 +28,6 @@ export default {
     }
     function getImg(image) {
       imgsData.value.url = image.src;
-      console.log(imgsData.value.url);
     }
     function dataURLtoFile(dataurl, filename) {
       let arr = dataurl.split(','),

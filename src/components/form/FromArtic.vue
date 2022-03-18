@@ -47,17 +47,8 @@ export default {
       this.textData = val;
     },
     textData(val) {
-      console.log(val);
-      this.$emit('update:childData', this.textData);
+      this.$emit('update:childData', val);
     },
-  },
-  methods: {
-    checkout(value) {
-      console.log(value);
-    },
-  },
-  created() {
-    console.log(this.textData);
   },
 };
 </script>
@@ -77,11 +68,6 @@ export default {
       :name="inputName"
       v-model="textData"
     ></ckeditor>
-    <!-- <textarea
-      type="textarea"
-      v-model="textData"
-      @input="checkout($event.target.value)"
-    /> -->
   </div>
 </template>
 <style lang="scss">

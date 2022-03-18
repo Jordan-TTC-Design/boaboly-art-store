@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { apiMethod } from '@/methods/api.js';
 import {
   productCategory,
@@ -22,37 +22,12 @@ export default {
     FromArtic,
     FormInputSelect,
   },
+  props: ['selectItem', 'modal-state'],
   emits: ['get-product', 'clear-item'],
   setup(props, { emit }) {
-    const productItem = ref({
-      title: '',
-      category: '',
-      origin_price: 1,
-      price: 1,
-      unit: '',
-      description: '',
-      content: '',
-      is_enabled: 1,
-      imageUrl: '',
-      imagesUrl: [''],
-      material: '',
-      size: {
-        sizeLength: '',
-        sizeWidth: '',
-        sizeHeight: '',
-      },
-      promoted: {
-        star: 0,
-        event: {
-          title: '',
-          price: 0,
-          is_enabled: 0,
-        },
-      },
-      tags: [''],
-      reserve: 1,
-      store: 1,
-      made: '',
+    const productItem = computed(() => {
+      console.log(props.selectItem);
+      return props.selectItem;
     });
     const imgCoverUploader = ref(null);
     const imgsData = ref([{ useUrl: true, url: '' }]);
@@ -92,7 +67,7 @@ export default {
 <template>
   <div class="flex flex-col relative h-full">
     <div
-      class="flex flex-shrink justify-between items-center px-5 py-2 border-b border-gray-300"
+      class="flex flex-shrink justify-between items-center pl-6 py-2 border-b border-gray-300"
     >
       <h3>新增商品</h3>
       <button
@@ -107,7 +82,7 @@ export default {
       @submit.prevent="newProduct"
       class="flex flex-col flex-shrink overflow-y-scroll"
     >
-      <div class="grid grid-cols-6 gap-x-8 p-4 flex-shrink">
+      <div class="grid grid-cols-6 gap-x-8 p-6 flex-shrink">
         <div class="col-span-2">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"

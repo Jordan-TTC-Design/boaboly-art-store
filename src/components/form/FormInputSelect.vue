@@ -3,9 +3,7 @@ import { computed } from 'vue';
 export default {
   props: ['modelValue', 'input-id', 'select-data'],
   setup(props) {
-    console.log(props);
     const data = computed(() => props.modelValue);
-
     return { data };
   },
 };

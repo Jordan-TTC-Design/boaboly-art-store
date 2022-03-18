@@ -1,11 +1,6 @@
 <script>
-import { ref } from 'vue';
 export default {
   props: ['modelValue', 'input-id', 'input-type'],
-  setup(props, { slots }) {
-    const data = ref(slots);
-    return { data };
-  },
 };
 </script>
 <template>
