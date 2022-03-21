@@ -156,6 +156,12 @@ const apiMethod = {
       });
   },
   checkLogin() {
+    const token = document.cookie.replace(
+      // eslint-disable-next-line no-useless-escape
+      /(?:(?:^|.*;\s*)ttcDesignToken\s*\=\s*([^;]*).*$)|^.*$/,
+      '$1'
+    );
+    axios.defaults.headers.common['Authorization'] = token;
     return axios
       .post(adminApiPath.checkLogin)
       .then((res) => {

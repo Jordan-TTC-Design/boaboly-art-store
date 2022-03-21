@@ -88,7 +88,7 @@ export default {
 };
 </script>
 <template>
-  <div class="relative px-6 bg-white">
+  <div class="relative bg-white">
     <div
       class="sticky top-0 bg-white z-40 px-5 pt-6 border-b border-gray-300 mb-6"
     >

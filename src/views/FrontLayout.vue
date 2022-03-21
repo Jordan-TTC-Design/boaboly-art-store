@@ -1,4 +1,5 @@
 <script>
+import { ref } from 'vue';
 import { RouterView } from 'vue-router';
 import Cart from '@/components/front/Cart.vue';
 import HamMenu from '@/components/helpers/HamMenu.vue';
@@ -10,7 +11,14 @@ export default {
     Loading,
   },
   setup() {
+    let modalOpen = ref(false);
+    function fixWindow(status) {
+      console.log(status);
+      modalOpen.value = status;
+    }
     return {
+      modalOpen,
+      fixWindow,
       RouterView,
     };
   },
@@ -18,7 +26,10 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen justify-between">
+  <div
+    class="flex flex-col min-h-screen justify-between"
+    :class="{ 'no-scroll': modalOpen }"
+  >
     <header
       class="flex justify-between items-center border-b border-gray-300 bg-white sticky top-0 z-40"
     >
@@ -28,7 +39,7 @@ export default {
       </router-link>
       <ul class="bg-black py-4 px-6 flex">
         <li class="mr-4">
-          <Cart />
+          <Cart @fix-window="fixWindow" />
         </li>
         <li>
           <HamMenu />
@@ -118,5 +129,9 @@ export default {
       width: 100%;
     }
   }
+}
+.no-scroll {
+  position: fixed;
+  width: 100%;
 }
 </style>
