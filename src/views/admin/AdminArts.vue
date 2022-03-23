@@ -29,32 +29,32 @@ export default {
     });
     let selectItem = ref(JSON.parse(JSON.stringify(defaultArticleData)));
     let modalState = ref(null);
-    let modalOpen = ref(false);
     function clearItem() {
-      modalOpen.value = false;
       modalState.value = null;
       selectItem.value = JSON.parse(JSON.stringify(defaultArticleData));
     }
     function openArticleDetail(state, item) {
+      console.log(state, item);
       if (state === 'isNew') {
         selectItem.value = JSON.parse(JSON.stringify(defaultArticleData));
       } else if (state === 'edit') {
         selectItem.value = JSON.parse(JSON.stringify(item));
       }
-      modalOpen.value = true;
       modalState.value = state;
     }
-    async function deleteArticle(itemId) {
-      await apiMethod.adminDeleteProduct(itemId);
-      getArticles();
-      clearItem();
-    }
     function changeArticleState(articleData) {
-      articleData.isPublic = !articleData.isPublic;
-      updateArticle(articleData.id, articleData);
+      apiMethod.adminGetArticle(articleData.id).then((res) => {
+        articleData = JSON.parse(JSON.stringify(res));
+        articleData.isPublic = !articleData.isPublic;
+        updateArticle(articleData.id, articleData);
+      });
     }
     async function updateArticle(articleId, articleData) {
       await apiMethod.adminUpdateArticle(articleId, articleData);
+      getArticles();
+    }
+    async function deleteArticle(articleId) {
+      await apiMethod.adminDeleteArticle(articleId);
       getArticles();
     }
     function getArticles() {
@@ -71,7 +71,6 @@ export default {
       articleList,
       listState,
       modalState,
-      modalOpen,
       selectItem,
       showed,
       articleCategory,
@@ -97,7 +96,7 @@ export default {
           <button
             type="button"
             class="border border-gray-200 rounded py-2 px-3 hover:border-gray-300"
-            @click="openArticleDetail('isNew')"
+            @click="openArticleDetail('isNew', selectItem)"
           >
             新增文章
           </button>
@@ -139,18 +138,11 @@ export default {
       </div>
     </div>
   </div>
-  <div
-    class="siderBg z-sider"
-    :class="{ active: modalOpen }"
-    @click="modalOpen = false"
-  ></div>
-  <div class="siderBox z-sider" :class="{ active: modalOpen === true }">
-    <AdminArtSlider
-      :select-item="selectItem"
-      :modal-state="modalState"
-      @get-article="getArticles"
-      @clear-item="clearItem"
-    />
-  </div>
+  <AdminArtSlider
+    :select-item="selectItem"
+    :modal-state="modalState"
+    @get-article="getArticles"
+    @clear-item="clearItem"
+  />
 </template>
 <style lang="scss"></style>

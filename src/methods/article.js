@@ -1,7 +1,7 @@
 const articleCategory = ['心情貼文', '創作插畫', '新商品插畫', '節日插畫'];
 const defaultArticleData = {
   title: '',
-  created_at: null,
+  creat_at: null,
   category: 0,
   description: '',
   image: '',

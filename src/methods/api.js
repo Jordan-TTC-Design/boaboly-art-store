@@ -310,6 +310,17 @@ const apiMethod = {
         console.log(err.response);
       });
   },
+  adminGetArticle(articleId) {
+    return axios
+      .get(`${adminApiPath.adminArticle}/${articleId}`)
+      .then((res) => {
+        console.log('取得成功');
+        return res.data.article;
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  },
   adminPostArticle(ArticleData) {
     console.log(ArticleData);
     const article = {
@@ -339,6 +350,18 @@ const apiMethod = {
       })
       .catch((err) => {
         console.log(err.response);
+      });
+  },
+  adminDeleteArticle(articleId) {
+    return axios
+      .delete(`${adminApiPath.adminArticle}/${articleId}`)
+      .then((res) => {
+        console.log('刪除成功');
+        console.log(res.data);
+        return res.data;
+      })
+      .catch((err) => {
+        console.dir(err.response.status);
       });
   },
   turnBackLogin(status) {

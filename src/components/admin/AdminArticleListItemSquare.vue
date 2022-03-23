@@ -51,12 +51,12 @@ export default {
       </div>
     </div>
     <p class="group-hover:text-yellow-600 mb-1">{{ article.title }}</p>
-    <p>
-      <span class="text-sm" v-for="tag in article.tags" :key="tag"
-        >#{{ tag }}</span
-      >
-    </p>
-    <div class="flex justify-between mb-2"></div>
+    <div class="flex flex-wrap">
+      <p class="text-sm mr-1" v-for="tag in article.tags" :key="tag">
+        #{{ tag }}
+      </p>
+    </div>
+    <p>{{ article.create_at }}</p>
   </div>
 </template>
 <style lang="scss"></style>

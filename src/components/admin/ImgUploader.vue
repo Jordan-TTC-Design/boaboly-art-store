@@ -13,15 +13,18 @@ export default {
   setup(props, { emit }) {
     const imgCoverUploader = ref(null);
     const sentUrl = computed(() => props.existImgUrl);
-    const imgsData = computed(() => {
-      return {
-        useUrl: false,
-        url: sentUrl.value || '',
-        finish: sentUrl.value !== '' ? true : false,
-      };
+    const imgsData = ref({
+      useUrl: false,
+      url: '',
+      finish: false,
     });
     watch(sentUrl, (newValue) => {
       imgsData.value.url = newValue;
+      if (newValue !== '') {
+        imgsData.value.finish = true;
+      } else {
+        imgsData.value.finish = false;
+      }
     });
     function sendImgUrl(url) {
       emit('sendImgUrl', url, props.imgName);
@@ -54,6 +57,11 @@ export default {
     function imgsDataDefault() {
       imgsData.value.url = '';
       imgsData.value.finish = false;
+      imgsData.value.useUrl = false;
+    }
+    function saveToForm() {
+      imgsData.value.finish = true;
+      sendImgUrl(imgsData.value.url);
     }
     return {
       imgsData,
@@ -63,6 +71,7 @@ export default {
       uploadmgToDB,
       getImg,
       imgsDataDefault,
+      saveToForm,
     };
   },
 };
@@ -125,7 +134,7 @@ export default {
       v-show="imgsData.useUrl && !imgsData.finish"
       class="py-2 px-3 hover:border-gray-30 flex-1 border-r border-gray-300"
       type="button"
-      @click="imgsData.finish = true"
+      @click="saveToForm"
     >
       保存
     </button>
