@@ -43,15 +43,15 @@
   font-size: 0.75rem;
 }
 .numberSwitcher{
-  min-width: 5rem;
   background-color: var(--white);
-  cursor: pointer;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   transition: all 0.3s;
+  width: 100%;
 }
 .numberSwitcher__btn{
+  cursor: pointer;
   padding: 0.25rem 0.5rem;
   border: 1px solid var(--gray-line);
 }
@@ -59,7 +59,8 @@
   background-color: var(--gray-line);
 }
 .numberSwitcher__numBox{
-  flex: 1;
+  flex-shrink: 1;
+  min-width: 2rem;
   text-align: center;
   border-top: 1px solid var(--gray-line);
   border-bottom: 1px solid var(--gray-line);

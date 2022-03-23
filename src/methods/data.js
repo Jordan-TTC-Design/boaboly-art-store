@@ -31,12 +31,5 @@ const defaultProductData = {
   store: 1,
   made: '',
 };
-const orderCategory = ['訂單未付款', '商品備貨中', '商品已出貨'];
 
-export {
-  defaultProductData,
-  productCategory,
-  materialCategory,
-  unitCategory,
-  orderCategory,
-};
+export { defaultProductData, productCategory, materialCategory, unitCategory };

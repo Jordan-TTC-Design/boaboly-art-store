@@ -46,7 +46,7 @@ export default {
         </li>
       </ul>
     </header>
-    <div class="mx-auto">
+    <div class="w-full mx-auto">
       <RouterView />
     </div>
     <footer
