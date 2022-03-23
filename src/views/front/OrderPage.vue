@@ -40,8 +40,9 @@ export default {
       });
     }
     function sendOrder() {
-      orderFormData.value.shipping.price = shipping.value;
-      orderFormData.value.finalTotal = finalTotal.value;
+      orderFormData.value.user.shipping.price = shipping.value;
+      orderFormData.value.user.finalPrice = finalTotal.value;
+      console.log(orderFormData.value);
       frontApiMethod.postOrder(orderFormData.value).then(() => {
         emitter.emit('get-cart');
         router.push({ name: 'Home' });
@@ -148,12 +149,12 @@ export default {
                 class="appearance-none bg-transparent border border-gray-300 text-gray-700 py-1.5 px-2 leading-tight focus:outline-none flex-grow"
                 type="text"
                 id="discountTicket"
-                v-model="orderFormData.discount.ticket"
+                v-model="orderFormData.user.discount.ticket"
               />
             </div>
             <p class="mb-3">
               <span class="text-sm text-gray-400 mr-4">折扣金額</span>NT$
-              {{ orderFormData.discount.price }}
+              {{ orderFormData.user.discount.price }}
             </p>
             <div
               class="border-t border-gray-300 bg-white pt-6 mt-6 flex justify-between items-center"
@@ -224,10 +225,11 @@ export default {
                 <button
                   type="button"
                   :class="{
-                    'bg-black text-white': orderFormData.shipping.way === index,
+                    'bg-black text-white':
+                      orderFormData.user.shipping.way === index,
                   }"
                   class="border border-gray-300 py-1 px-2 hover:border-gray-300 bg-white"
-                  @click="orderFormData.shipping.way = index"
+                  @click="orderFormData.user.shipping.way = index"
                 >
                   <p>{{ shipping }}</p>
                 </button>
@@ -270,10 +272,10 @@ export default {
                 <button
                   type="button"
                   :class="{
-                    'bg-black text-white': orderFormData.pay.way === index,
+                    'bg-black text-white': orderFormData.user.pay.way === index,
                   }"
                   class="border border-gray-300 py-1 px-2 hover:border-gray-300 bg-white"
-                  @click="orderFormData.pay.way = index"
+                  @click="orderFormData.user.pay.way = index"
                 >
                   <p>{{ pay }}</p>
                 </button>

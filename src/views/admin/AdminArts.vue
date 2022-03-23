@@ -2,15 +2,13 @@
 import { ref, computed } from 'vue';
 import { apiMethod } from '@/methods/api.js';
 import { defaultProductData, productCategory } from '@/methods/data.js';
-import AdminProductEdit from '@/components/admin/AdminProductEdit.vue';
-import AdminProductSlider from '@/components/admin/AdminProductSlider.vue';
+import AdminArtSlider from '@/components/admin/AdminArtSlider.vue';
 import RowNav from '@/components/helpers/RowNav.vue';
 import AdminProductListItemSquare from '@/components/admin/AdminProductListItemSquare.vue';
 
 export default {
   components: {
-    AdminProductEdit,
-    AdminProductSlider,
+    AdminArtSlider,
     RowNav,
     AdminProductListItemSquare,
   },
@@ -148,22 +146,8 @@ export default {
     :class="{ active: modalOpen }"
     @click="modalOpen = false"
   ></div>
-  <div
-    class="siderBox z-sider"
-    :class="{ active: modalOpen === true && modalState === 'isNew' }"
-  >
-    <AdminProductEdit
-      :select-item="selectItem"
-      :modal-state="modalState"
-      @get-product="getProduct"
-      @clear-item="clearItem"
-    />
-  </div>
-  <div
-    class="siderBox z-sider"
-    :class="{ active: modalOpen === true && modalState === 'edit' }"
-  >
-    <AdminProductSlider
+  <div class="siderBox z-sider" :class="{ active: modalOpen === true }">
+    <AdminArtSlider
       :select-item="selectItem"
       :modal-state="modalState"
       @get-product="getProduct"

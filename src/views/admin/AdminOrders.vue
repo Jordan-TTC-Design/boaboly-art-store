@@ -30,7 +30,7 @@ export default {
     let selectItem = ref({});
     let modalState = ref(null);
     let modalOpen = ref(false);
-    function getProduct() {
+    function getOrders() {
       apiMethod.adminGetOrders().then((res) => {
         if (res) {
           orders.value = Object.values(res);
@@ -42,7 +42,7 @@ export default {
       selectItem.value = JSON.parse(JSON.stringify(orderItem));
       console.log(selectItem.value);
     }
-    getProduct();
+    getOrders();
     return {
       orderList,
       listState,
@@ -52,7 +52,7 @@ export default {
       showed,
       productCategory,
       defaultProductData,
-      getProduct,
+      getOrders,
       selectOrder,
     };
   },
@@ -79,6 +79,6 @@ export default {
       <AdminOrderListItem :order="order" @click="selectOrder(order)" />
     </template>
   </div>
-  <AdminOrderSlider :select-order="selectItem" />
+  <AdminOrderSlider :select-order="selectItem" @get-orders="getOrders" />
 </template>
 <style lang="scss" scoped></style>

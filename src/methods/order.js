@@ -4,25 +4,25 @@ const defaultOrderData = {
     email: '',
     tel: '',
     address: '',
+    shipping: {
+      way: 0,
+      price: 60,
+      time: null,
+      status: 0,
+    },
+    pay: {
+      way: 0,
+      time: null,
+      status: 0,
+    },
+    discount: {
+      ticket: '',
+      price: 0,
+    },
+    finalPrice: 0,
+    orderStatus: 0,
   },
   messages: '',
-  shipping: {
-    way: 0,
-    price: 60,
-    time: null,
-    status: 0,
-  },
-  pay: {
-    way: 0,
-    time: null,
-    status: 0,
-  },
-  discount: {
-    ticket: '',
-    price: 0,
-  },
-  finalTotal: 0,
-  orderStatus: 0,
 };
 const shippingWay = ['宅配', '超商取貨'];
 const payWay = ['信用卡', '銀行轉帳', '貨到付款'];

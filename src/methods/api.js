@@ -259,9 +259,11 @@ const apiMethod = {
         console.dir(err.response.status);
       });
   },
-  adminPutOrder(orderId) {
+  adminPutOrder(orderId, formData) {
+    const data = formData;
+    console.log({ data });
     return axios
-      .put(`${adminApiPath.adminOrder}/${orderId}`)
+      .put(`${adminApiPath.adminOrder}/${orderId}`, { data })
       .then((res) => {
         console.log('修改成功');
         console.log(res);
@@ -296,7 +298,7 @@ const apiMethod = {
       });
   },
   turnBackLogin(status) {
-    if (status === 401) {
+    if (status === 401 || status === 403) {
       window.location = '/#/admin-login';
     }
   },
