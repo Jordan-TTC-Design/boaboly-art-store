@@ -20,6 +20,7 @@ const adminApiPath = {
   imgUpload: `${api.url}/api/${api.path}/admin/upload`,
   adminOrders: `${api.url}/api/${api.path}/admin/orders`,
   adminOrder: `${api.url}/api/${api.path}/admin/order`,
+  adminArticle: `${api.url}/api/${api.path}/admin/article`,
 };
 
 const token = document.cookie.replace(
@@ -295,6 +296,49 @@ const apiMethod = {
       })
       .catch((err) => {
         console.dir(err.response.status);
+      });
+  },
+  adminGetArticles() {
+    return axios
+      .get(`${adminApiPath.adminArticle}s`)
+      .then((res) => {
+        console.log('取得成功');
+        console.log(res.data.articles);
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  },
+  adminPostArticle(ArticleData) {
+    console.log(ArticleData);
+    const article = {
+      data: {
+        ...ArticleData,
+      },
+    };
+    return axios
+      .post(adminApiPath.adminArticle, article)
+      .then((res) => {
+        console.log('新增成功');
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  },
+  adminUpdateArticle(articleId, articleData) {
+    const data = articleData;
+    console.log({ data });
+    return axios
+      .put(`${adminApiPath.adminArticle}/${articleId}`, { data })
+      .then((res) => {
+        console.log('修改成功');
+        console.log(res);
+        // return res.data.Articls;
+      })
+      .catch((err) => {
+        console.log(err.response);
       });
   },
   turnBackLogin(status) {

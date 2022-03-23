@@ -10,7 +10,7 @@ const defaultProductData = {
   description: '',
   content: '',
   is_enabled: 1,
-  imageUrl: '',
+  image: '',
   imagesUrl: [''],
   material: '',
   size: {

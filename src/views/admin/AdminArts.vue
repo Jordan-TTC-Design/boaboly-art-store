@@ -1,86 +1,85 @@
 <script>
 import { ref, computed } from 'vue';
 import { apiMethod } from '@/methods/api.js';
-import { defaultProductData, productCategory } from '@/methods/data.js';
+import { defaultArticleData, articleCategory } from '@/methods/article.js';
 import AdminArtSlider from '@/components/admin/AdminArtSlider.vue';
 import RowNav from '@/components/helpers/RowNav.vue';
-import AdminProductListItemSquare from '@/components/admin/AdminProductListItemSquare.vue';
+import AdminArticleListItemSquare from '@/components/admin/AdminArticleListItemSquare.vue';
 
 export default {
   components: {
     AdminArtSlider,
     RowNav,
-    AdminProductListItemSquare,
+    AdminArticleListItemSquare,
   },
   setup() {
-    const products = ref([]);
+    const articles = ref([]);
     let listState = ref(1);
     let showed = ref(true);
-    const productList = computed(() => {
+    const articleList = computed(() => {
       let array = [];
       if (listState.value === 2) {
-        array = products.value.filter((product) => product.is_enabled);
+        array = articles.value.filter((product) => product.isPublic);
       } else if (listState.value === 3) {
-        array = products.value.filter((product) => !product.is_enabled);
+        array = articles.value.filter((product) => !product.isPublic);
       } else {
-        array = products.value;
+        array = articles.value;
       }
       return array;
     });
-    let selectItem = ref(JSON.parse(JSON.stringify(defaultProductData)));
+    let selectItem = ref(JSON.parse(JSON.stringify(defaultArticleData)));
     let modalState = ref(null);
     let modalOpen = ref(false);
     function clearItem() {
       modalOpen.value = false;
       modalState.value = null;
-      selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
+      selectItem.value = JSON.parse(JSON.stringify(defaultArticleData));
     }
-    function openProductDetail(state, item) {
-      console.log(state, item);
+    function openArticleDetail(state, item) {
       if (state === 'isNew') {
-        console.log(defaultProductData);
-        selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
+        selectItem.value = JSON.parse(JSON.stringify(defaultArticleData));
       } else if (state === 'edit') {
         selectItem.value = JSON.parse(JSON.stringify(item));
       }
       modalOpen.value = true;
       modalState.value = state;
     }
-    async function deleteProduct(itemId) {
+    async function deleteArticle(itemId) {
       await apiMethod.adminDeleteProduct(itemId);
-      getProduct();
-      selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
+      getArticles();
+      clearItem();
     }
-    function changeProductState(productData) {
-      productData.is_enabled = !productData.is_enabled;
-      updateProduct(productData.id, productData);
+    function changeArticleState(articleData) {
+      articleData.isPublic = !articleData.isPublic;
+      updateArticle(articleData.id, articleData);
     }
-    async function updateProduct(itemId, productData) {
-      await apiMethod.adminUpdateProduct(itemId, productData);
-      getProduct();
+    async function updateArticle(articleId, articleData) {
+      await apiMethod.adminUpdateArticle(articleId, articleData);
+      getArticles();
     }
-    function getProduct() {
-      apiMethod.adminGetProductsAll().then((res) => {
+    function getArticles() {
+      console.log('123');
+      apiMethod.adminGetArticles().then((res) => {
         if (res) {
-          products.value = Object.values(res);
+          console.log(res);
+          articles.value = Object.values(res.articles);
         }
       });
     }
-    getProduct();
+    getArticles();
     return {
-      productList,
+      articleList,
       listState,
       modalState,
       modalOpen,
       selectItem,
       showed,
-      productCategory,
-      defaultProductData,
-      openProductDetail,
-      deleteProduct,
-      changeProductState,
+      articleCategory,
+      openArticleDetail,
+      deleteArticle,
+      changeArticleState,
       clearItem,
-      getProduct,
+      getArticles,
     };
   },
 };
@@ -98,7 +97,7 @@ export default {
           <button
             type="button"
             class="border border-gray-200 rounded py-2 px-3 hover:border-gray-300"
-            @click="openProductDetail('isNew')"
+            @click="openArticleDetail('isNew')"
           >
             新增文章
           </button>
@@ -114,7 +113,7 @@ export default {
       <div class="col-span-1 min-h-screen">
         <ul class="mb-6">
           <li class="text-sm text-gray-400 mb-2">文章類別</li>
-          <template v-for="category in productCategory" :key="category">
+          <template v-for="category in articleCategory" :key="category">
             <li
               class="group py-2 px-5 cursor-pointer relative hover:text-yellow-600"
             >
@@ -128,13 +127,12 @@ export default {
       </div>
       <div class="col-start-2 col-span-4">
         <div class="grid grid-cols-3 gap-4">
-          <template v-for="(product, index) in productList" :key="product.id">
-            <AdminProductListItemSquare
-              :product="product"
-              :list-index="index"
-              @change-product-state="changeProductState"
-              @open-product-detail="openProductDetail"
-              @delete-product="deleteProduct"
+          <template v-for="article in articleList" :key="article.id">
+            <AdminArticleListItemSquare
+              :article="article"
+              @change-article-state="changeArticleState"
+              @open-article-detail="openArticleDetail"
+              @delete-article="deleteArticle"
             />
           </template>
         </div>
@@ -150,7 +148,7 @@ export default {
     <AdminArtSlider
       :select-item="selectItem"
       :modal-state="modalState"
-      @get-product="getProduct"
+      @get-article="getArticles"
       @clear-item="clearItem"
     />
   </div>
