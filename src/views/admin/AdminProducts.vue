@@ -115,7 +115,7 @@ export default {
     <div class="grid grid-cols-5 p-5 gap-4">
       <div class="col-span-1 min-h-screen">
         <ul class="mb-6">
-          <li class="text-sm text-gray-400 mb-2">商品狀態</li>
+          <li class="text-sm text-gray-400 mb-2">商品等級</li>
           <li class="group py-2 px-5 cursor-pointer hover:text-yellow-600">
             <span
               class="w-3 h-px bg-gray-300 block absolute top-1/2 left-0 group-hover:bg-yellow-400"
