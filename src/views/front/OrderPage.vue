@@ -2,6 +2,12 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
+import {
+  defaultOrderData,
+  orderStatus,
+  shippingWay,
+  payWay,
+} from '@/methods/order.js';
 import emitter from '@/methods/emitter';
 import VeeFormInput from '@/components/form/VeeFormInput.vue';
 import FormInputTextArea from '@/components/form/FormInputTextArea.vue';
@@ -26,17 +32,7 @@ export default {
       return num;
     });
     let finalTotal = computed(() => cartTotal.value + shipping.value);
-    const orderFormData = ref({
-      user: {
-        name: '',
-        email: '',
-        tel: '',
-        address: '',
-      },
-      messages: '',
-      shippingWay: 1,
-      payWay: 1,
-    });
+    const orderFormData = ref(JSON.parse(JSON.stringify(defaultOrderData)));
     function getCart() {
       frontApiMethod.getCart().then((res) => {
         cartList.value = JSON.parse(JSON.stringify(res.carts));
@@ -44,6 +40,9 @@ export default {
       });
     }
     function sendOrder() {
+      orderFormData.value.user.shipping.price = shipping.value;
+      orderFormData.value.user.finalPrice = finalTotal.value;
+      console.log(orderFormData.value);
       frontApiMethod.postOrder(orderFormData.value).then(() => {
         emitter.emit('get-cart');
         router.push({ name: 'Home' });
@@ -58,6 +57,9 @@ export default {
       checkStage,
       orderFormData,
       sendOrder,
+      orderStatus,
+      shippingWay,
+      payWay,
     };
   },
 };
@@ -127,7 +129,7 @@ export default {
               <span class="text-sm text-gray-400 mr-4">商品總計</span>NT$
               {{ cartTotal }}
             </p>
-            <div class="flex justify-between mb-12">
+            <div class="flex justify-between">
               <p class="mb-3">
                 <span class="text-sm text-gray-400 mr-4">運費</span>
                 {{ cartTotal >= 1000 ? '免運' : `NT$ ${shipping}` }}
@@ -136,8 +138,26 @@ export default {
                 尚未達到免運門檻
               </p>
             </div>
+            <div class="mb-3 flex items-center">
+              <label
+                class="block uppercase tracking-wide text-sm text-gray-400 mr-4"
+                for="discountTicket"
+              >
+                折扣碼
+              </label>
+              <input
+                class="appearance-none bg-transparent border border-gray-300 text-gray-700 py-1.5 px-2 leading-tight focus:outline-none flex-grow"
+                type="text"
+                id="discountTicket"
+                v-model="orderFormData.user.discount.ticket"
+              />
+            </div>
+            <p class="mb-3">
+              <span class="text-sm text-gray-400 mr-4">折扣金額</span>NT$
+              {{ orderFormData.user.discount.price }}
+            </p>
             <div
-              class="border-t border-gray-300 bg-white pt-5 flex justify-between items-center"
+              class="border-t border-gray-300 bg-white pt-6 mt-6 flex justify-between items-center"
             >
               <div>
                 <p class="text-sm text-gray-400 mb-1">總金額</p>
@@ -198,26 +218,22 @@ export default {
               運送方式
             </p>
             <div class="flex gap-4">
-              <button
-                type="button"
-                :class="{
-                  'bg-black text-white': orderFormData.shippingWay === 1,
-                }"
-                class="border border-gray-300 py-1 px-2 hover:border-gray-300 bg-white"
-                @click="orderFormData.shippingWay = 1"
+              <template
+                v-for="(shipping, index) in shippingWay"
+                :key="shipping"
               >
-                <p>宅配</p>
-              </button>
-              <button
-                type="button"
-                :class="{
-                  'bg-black text-white': orderFormData.shippingWay === 2,
-                }"
-                class="border border-gray-300 py-1 px-2 hover:border-gray-300 bg-white"
-                @click="orderFormData.shippingWay = 2"
-              >
-                <p>超商取貨</p>
-              </button>
+                <button
+                  type="button"
+                  :class="{
+                    'bg-black text-white':
+                      orderFormData.user.shipping.way === index,
+                  }"
+                  class="border border-gray-300 py-1 px-2 hover:border-gray-300 bg-white"
+                  @click="orderFormData.user.shipping.way = index"
+                >
+                  <p>{{ shipping }}</p>
+                </button>
+              </template>
             </div>
           </div>
           <div class="mb-3">
@@ -252,36 +268,18 @@ export default {
               付款方式
             </p>
             <div class="flex mb-12 gap-4">
-              <button
-                type="button"
-                :class="{
-                  'bg-black text-white': orderFormData.payWay === 1,
-                }"
-                class="border border-gray-300 py-1 px-2 hover:border-gray-300 bg-white"
-                @click="orderFormData.payWay = 1"
-              >
-                <p>信用卡</p>
-              </button>
-              <button
-                type="button"
-                :class="{
-                  'bg-black text-white': orderFormData.payWay === 2,
-                }"
-                class="border border-gray-300 py-1 px-2 hover:border-gray-300 bg-white"
-                @click="orderFormData.payWay = 2"
-              >
-                <p>銀行轉帳</p>
-              </button>
-              <button
-                type="button"
-                :class="{
-                  'bg-black text-white': orderFormData.payWay === 3,
-                }"
-                class="border border-gray-300 py-1 px-2 hover:border-gray-300 bg-white"
-                @click="orderFormData.payWay = 3"
-              >
-                <p>貨到付款</p>
-              </button>
+              <template v-for="(pay, index) in payWay" :key="pay">
+                <button
+                  type="button"
+                  :class="{
+                    'bg-black text-white': orderFormData.user.pay.way === index,
+                  }"
+                  class="border border-gray-300 py-1 px-2 hover:border-gray-300 bg-white"
+                  @click="orderFormData.user.pay.way = index"
+                >
+                  <p>{{ pay }}</p>
+                </button>
+              </template>
             </div>
             <div
               class="border-t border-gray-300 bg-white pt-5 flex justify-between items-center"

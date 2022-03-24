@@ -1,7 +1,7 @@
 <script>
 import { ref, computed } from 'vue';
 import { apiMethod } from '@/methods/api.js';
-import { productCategory } from '@/methods/data.js';
+import { defaultProductData, productCategory } from '@/methods/data.js';
 import AdminProductEdit from '@/components/admin/AdminProductEdit.vue';
 import AdminProductSlider from '@/components/admin/AdminProductSlider.vue';
 import RowNav from '@/components/helpers/RowNav.vue';
@@ -29,21 +29,21 @@ export default {
       }
       return array;
     });
-    let selectItem = ref({});
+    let selectItem = ref(JSON.parse(JSON.stringify(defaultProductData)));
     let modalState = ref(null);
     let modalOpen = ref(false);
     function clearItem() {
       modalOpen.value = false;
       modalState.value = null;
-      selectItem.value = {};
+      selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
     }
     function openProductDetail(state, item) {
       console.log(state, item);
       if (state === 'isNew') {
-        selectItem.value = {};
+        console.log(defaultProductData);
+        selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
       } else if (state === 'edit') {
         selectItem.value = JSON.parse(JSON.stringify(item));
-        console.log(selectItem.value);
       }
       modalOpen.value = true;
       modalState.value = state;
@@ -51,9 +51,7 @@ export default {
     async function deleteProduct(itemId) {
       await apiMethod.adminDeleteProduct(itemId);
       getProduct();
-      selectItem.value = {
-        imagesUrl: [],
-      };
+      selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
     }
     function changeProductState(productData) {
       productData.is_enabled = !productData.is_enabled;
@@ -67,13 +65,10 @@ export default {
       apiMethod.adminGetProductsAll().then((res) => {
         if (res) {
           products.value = Object.values(res);
-          console.log(products.value);
         }
       });
     }
-    apiMethod.checkLogin().then(() => {
-      getProduct();
-    });
+    getProduct();
     return {
       productList,
       listState,
@@ -82,6 +77,7 @@ export default {
       selectItem,
       showed,
       productCategory,
+      defaultProductData,
       openProductDetail,
       deleteProduct,
       changeProductState,
@@ -92,8 +88,10 @@ export default {
 };
 </script>
 <template>
-  <div class="relative px-4 bg-white">
-    <div class="sticky top-0 bg-white z-40 px-5 pt-6 pb-4">
+  <div class="relative bg-white">
+    <div
+      class="sticky top-0 bg-white z-40 px-5 pt-6 border-b border-gray-300 mb-6"
+    >
       <div class="grid grid-cols-3 mb-8">
         <div class="col-span-1">
           <h3 class="text-3xl font-medium">商品列表</h3>
@@ -117,12 +115,18 @@ export default {
     <div class="grid grid-cols-5 p-5 gap-4">
       <div class="col-span-1 min-h-screen">
         <ul class="mb-6">
-          <li class="text-sm text-gray-400 mb-2">商品狀態</li>
+          <li class="text-sm text-gray-400 mb-2">商品等級</li>
           <li class="group py-2 px-5 cursor-pointer hover:text-yellow-600">
             <span
               class="w-3 h-px bg-gray-300 block absolute top-1/2 left-0 group-hover:bg-yellow-400"
             ></span
             >一般商品
+          </li>
+          <li class="group py-2 px-5 cursor-pointer hover:text-yellow-600">
+            <span
+              class="w-3 h-px bg-gray-300 block absolute top-1/2 left-0 group-hover:bg-yellow-400"
+            ></span
+            >首頁商品
           </li>
           <li class="group py-2 px-5 cursor-pointer hover:text-yellow-600">
             <span
@@ -146,7 +150,6 @@ export default {
         </ul>
       </div>
       <div class="col-start-2 col-span-4">
-        <h5 class="mb-4">商品</h5>
         <div class="grid grid-cols-3 gap-4">
           <template v-for="(product, index) in productList" :key="product.id">
             <AdminProductListItemSquare
@@ -166,7 +169,10 @@ export default {
     :class="{ active: modalOpen }"
     @click="modalOpen = false"
   ></div>
-  <div class="siderBox z-sider">
+  <div
+    class="siderBox z-sider"
+    :class="{ active: modalOpen === true && modalState === 'isNew' }"
+  >
     <AdminProductEdit
       :select-item="selectItem"
       :modal-state="modalState"
@@ -174,7 +180,10 @@ export default {
       @clear-item="clearItem"
     />
   </div>
-  <div class="siderBox z-sider" :class="{ active: modalOpen }">
+  <div
+    class="siderBox z-sider"
+    :class="{ active: modalOpen === true && modalState === 'edit' }"
+  >
     <AdminProductSlider
       :select-item="selectItem"
       :modal-state="modalState"

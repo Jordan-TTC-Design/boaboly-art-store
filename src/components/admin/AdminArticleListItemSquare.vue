@@ -1,7 +1,7 @@
 <script>
 export default {
-  props: ['product', 'listIndex'],
-  emits: ['changeProductState', 'openProductDetail', 'deleteProduct'],
+  props: ['article'],
+  emits: ['changeArticleState', 'openArticleDetail', 'deleteArticle'],
 };
 </script>
 <template>
@@ -10,12 +10,12 @@ export default {
       <p
         class="cursor-pointer bg-primaryLight px-2 py-0.5 rounded-tl hover:bg-black hover:text-white absolute left-0 top-0 z-10"
       >
-        {{ product.category }}
+        {{ article.category }}
       </p>
       <img
         class="w-100 bg-gray-300 rounded"
-        :src="product.imageUrl"
-        :alt="`${product.title}產品圖片`"
+        :src="article.imagesUrl[0]"
+        :alt="`${article.title}文章圖片`"
       />
       <div
         class="hidden group-hover:flex group-hover:bg-black/30 space-x-3 flex-1 justify-center items-center absolute top-0 left-0 w-full h-full rounded"
@@ -24,39 +24,39 @@ export default {
           type="button"
           class="border border-gray-200 rounded py-2 px-3 hover:border-gray-300 bg-white"
           data-action="remove"
-          data-id="product.id"
-          @click="$emit('openProductDetail', 'edit', product)"
+          :data-id="article.id"
+          @click="$emit('openArticleDetail', 'edit', article)"
         >
-          <p>查看商品</p>
+          <p>查看貼文</p>
         </button>
         <button
           type="button"
           class="border border-gray-200 rounded py-2 px-3 hover:border-gray-300 bg-white"
           data-action="remove"
-          data-id="product.id"
-          @click="$emit('changeProductState', product)"
+          :data-id="article.id"
+          @click="$emit('changeArticleState', article)"
         >
-          <p>{{ product.is_enabled ? '下架商品' : '上架商品' }}</p>
+          <p>{{ article.isPublic ? '下架貼文' : '上架貼文' }}</p>
         </button>
-        <!-- <button
-          v-if="!product.is_enabled"
+        <button
+          v-if="!article.isPublic"
           type="button"
           class="border border-gray-200 rounded py-2 px-3 hover:border-gray-300 bg-white"
           data-action="remove"
-          data-id="product.id"
-          @click="$emit('deleteProduct', product.id)"
+          :data-id="article.id"
+          @click="$emit('deleteArticle', article.id)"
         >
           <i class="bi bi-trash2-fill text-xl"></i>
-        </button> -->
+        </button>
       </div>
     </div>
-    <p class="group-hover:text-yellow-600 mb-1">{{ product.title }}</p>
-    <div class="flex justify-between mb-2">
-      <p class="group-hover:text-yellow-600 text-sm">NT$ {{ product.price }}</p>
-      <p class="group-hover:text-yellow-600 text-sm">
-        尚有 {{ product.store }} 件庫存
+    <p class="group-hover:text-yellow-600 mb-1">{{ article.title }}</p>
+    <div class="flex flex-wrap">
+      <p class="text-sm mr-1" v-for="tag in article.tags" :key="tag">
+        #{{ tag }}
       </p>
     </div>
+    <p>{{ article.create_at }}</p>
   </div>
 </template>
 <style lang="scss"></style>

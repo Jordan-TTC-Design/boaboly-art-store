@@ -1,12 +1,12 @@
 <script>
 import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
-
 import { frontApiMethod } from '@/methods/api.js';
 import emitter from '@/methods/emitter';
 
 export default {
-  setup() {
+  emits: ['fix-window'],
+  setup(props, { emit }) {
     const route = useRoute();
     let modalOpen = ref(false);
     let cartTotal = ref(0);
@@ -65,6 +65,13 @@ export default {
       console.log(newValue, oldValue);
       if (newValue !== oldValue) {
         modalOpen.value = false;
+      }
+    });
+    watch(modalOpen, (newValue) => {
+      if (newValue === true) {
+        emit('fix-window', true);
+      } else {
+        emit('fix-window', false);
       }
     });
     getCart();

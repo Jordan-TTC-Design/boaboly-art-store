@@ -6,6 +6,7 @@ const api = {
 };
 const frontApiPath = {
   getProduct: `${api.url}/api/${api.path}/product`,
+  getArticle: `${api.url}/api/${api.path}/article`,
   cart: `${api.url}/api/${api.path}/cart`,
   order: `${api.url}/api/${api.path}/order`,
 };
@@ -18,6 +19,9 @@ const adminApiPath = {
   adminDeleteProduct: `${api.url}/api/${api.path}/admin/product`,
   adminUpdateProduct: `${api.url}/api/${api.path}/admin/product`,
   imgUpload: `${api.url}/api/${api.path}/admin/upload`,
+  adminOrders: `${api.url}/api/${api.path}/admin/orders`,
+  adminOrder: `${api.url}/api/${api.path}/admin/order`,
+  adminArticle: `${api.url}/api/${api.path}/admin/article`,
 };
 
 const token = document.cookie.replace(
@@ -47,6 +51,30 @@ const frontApiMethod = {
         console.log('成功取得商品資料');
         console.log(res);
         return res.data.product;
+      })
+      .catch((err) => {
+        console.dir(err.response);
+      });
+  },
+  getArts() {
+    return axios
+      .get(`${frontApiPath.getArticle}s`)
+      .then((res) => {
+        console.log('成功取得多筆創作資料');
+        console.log(res);
+        return res.data;
+      })
+      .catch((err) => {
+        console.dir(err.response);
+      });
+  },
+  getArt(articleId) {
+    return axios
+      .get(`${frontApiPath.getArticle}/${articleId}`)
+      .then((res) => {
+        console.log('成功取得創作資料');
+        console.log(res);
+        return res.data.article;
       })
       .catch((err) => {
         console.dir(err.response);
@@ -154,6 +182,12 @@ const apiMethod = {
       });
   },
   checkLogin() {
+    const token = document.cookie.replace(
+      // eslint-disable-next-line no-useless-escape
+      /(?:(?:^|.*;\s*)ttcDesignToken\s*\=\s*([^;]*).*$)|^.*$/,
+      '$1'
+    );
+    axios.defaults.headers.common['Authorization'] = token;
     return axios
       .post(adminApiPath.checkLogin)
       .then((res) => {
@@ -161,7 +195,7 @@ const apiMethod = {
         return res.data.success;
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response);
         this.turnBackLogin(err.response.status);
       });
   },
@@ -239,8 +273,124 @@ const apiMethod = {
         console.log(err);
       });
   },
+  adminGetOrders() {
+    return axios
+      .get(adminApiPath.adminOrders)
+      .then((res) => {
+        console.log('取得成功');
+        console.log(res);
+        return res.data.orders;
+      })
+      .catch((err) => {
+        console.dir(err.response.status);
+      });
+  },
+  adminPutOrder(orderId, formData) {
+    const data = formData;
+    console.log({ data });
+    return axios
+      .put(`${adminApiPath.adminOrder}/${orderId}`, { data })
+      .then((res) => {
+        console.log('修改成功');
+        console.log(res);
+        return res.data.orders;
+      })
+      .catch((err) => {
+        console.dir(err.response.status);
+      });
+  },
+  adminDeleteOrdersAll() {
+    return axios
+      .delete(`${adminApiPath.adminOrders}/all`)
+      .then((res) => {
+        console.log('刪除成功');
+        console.log(res);
+        return res.data.orders;
+      })
+      .catch((err) => {
+        console.dir(err.response.status);
+      });
+  },
+  adminDeleteOrder(orderId) {
+    return axios
+      .delete(`${adminApiPath.adminOrder}/${orderId}`)
+      .then((res) => {
+        console.log('刪除成功');
+        console.log(res);
+        return res.data.orders;
+      })
+      .catch((err) => {
+        console.dir(err.response.status);
+      });
+  },
+  adminGetArticles() {
+    return axios
+      .get(`${adminApiPath.adminArticle}s`)
+      .then((res) => {
+        console.log('取得成功');
+        console.log(res.data.articles);
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  },
+  adminGetArticle(articleId) {
+    return axios
+      .get(`${adminApiPath.adminArticle}/${articleId}`)
+      .then((res) => {
+        console.log('取得成功');
+        return res.data.article;
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  },
+  adminPostArticle(ArticleData) {
+    console.log(ArticleData);
+    const article = {
+      data: {
+        ...ArticleData,
+      },
+    };
+    return axios
+      .post(adminApiPath.adminArticle, article)
+      .then((res) => {
+        console.log('新增成功');
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  },
+  adminUpdateArticle(articleId, articleData) {
+    const data = articleData;
+    console.log({ data });
+    return axios
+      .put(`${adminApiPath.adminArticle}/${articleId}`, { data })
+      .then((res) => {
+        console.log('修改成功');
+        console.log(res);
+        // return res.data.Articls;
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  },
+  adminDeleteArticle(articleId) {
+    return axios
+      .delete(`${adminApiPath.adminArticle}/${articleId}`)
+      .then((res) => {
+        console.log('刪除成功');
+        console.log(res.data);
+        return res.data;
+      })
+      .catch((err) => {
+        console.dir(err.response.status);
+      });
+  },
   turnBackLogin(status) {
-    if (status === 401) {
+    if (status === 401 || status === 403) {
       window.location = '/#/admin-login';
     }
   },
