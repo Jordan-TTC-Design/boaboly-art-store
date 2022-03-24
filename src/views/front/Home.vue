@@ -3,12 +3,14 @@ import { ref } from 'vue';
 import { frontApiMethod } from '@/methods/api.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
 import HomeSlider from '@/components/front/HomeSlider.vue';
+import ArtSlider from '@/components/front/ArtSlider.vue';
 import emitter from '@/methods/emitter';
 
 export default {
   components: {
     ProductListItemSquare,
     HomeSlider,
+    ArtSlider,
   },
   setup() {
     const productList = ref([]);
@@ -43,6 +45,7 @@ export default {
       </div>
     </div>
   </div>
+  <ArtSlider />
   <HomeSlider />
   <div class="relative px-4 bg-white py-24">
     <h4 class="text-xl text-black font-bold uppercase text-center mb-1">
