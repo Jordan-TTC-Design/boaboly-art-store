@@ -6,6 +6,7 @@ const api = {
 };
 const frontApiPath = {
   getProduct: `${api.url}/api/${api.path}/product`,
+  getArticle: `${api.url}/api/${api.path}/article`,
   cart: `${api.url}/api/${api.path}/cart`,
   order: `${api.url}/api/${api.path}/order`,
 };
@@ -50,6 +51,30 @@ const frontApiMethod = {
         console.log('成功取得商品資料');
         console.log(res);
         return res.data.product;
+      })
+      .catch((err) => {
+        console.dir(err.response);
+      });
+  },
+  getArts() {
+    return axios
+      .get(`${frontApiPath.getArticle}s`)
+      .then((res) => {
+        console.log('成功取得多筆創作資料');
+        console.log(res);
+        return res.data;
+      })
+      .catch((err) => {
+        console.dir(err.response);
+      });
+  },
+  getArt(articleId) {
+    return axios
+      .get(`${frontApiPath.getArticle}/${articleId}`)
+      .then((res) => {
+        console.log('成功取得創作資料');
+        console.log(res);
+        return res.data.article;
       })
       .catch((err) => {
         console.dir(err.response);
