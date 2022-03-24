@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { frontApiMethod } from '@/methods/api.js';
 import { productCategory, materialCategory } from '@/methods/data.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
@@ -14,6 +14,35 @@ export default {
     let filterKeyword = ref('');
     let filterProductCategory = ref('');
     let filterMaterialCategory = ref('');
+    const productfilterList = computed(() => {
+      let array = [];
+      array = productList.value;
+      array = filterWord(filterKeyword.value, array);
+      array = filterCategory(filterProductCategory.value, array);
+      array = filterMaterial(filterMaterialCategory.value, array);
+      return array;
+    });
+    function filterWord(filterData, dataList) {
+      let array = dataList;
+      if (filterData !== '') {
+        array = dataList.filter((item) => item.title.includes(filterData));
+      }
+      return array;
+    }
+    function filterCategory(filterData, dataList) {
+      let array = dataList;
+      if (filterData !== '') {
+        array = dataList.filter((item) => item.category === filterData);
+      }
+      return array;
+    }
+    function filterMaterial(filterData, dataList) {
+      let array = dataList;
+      if (filterData !== '') {
+        array = dataList.filter((item) => item.material === filterData);
+      }
+      return array;
+    }
     function getProduct() {
       emitter.emit('open-loading');
       frontApiMethod.getProducts().then((res) => {
@@ -29,7 +58,7 @@ export default {
       filterKeyword,
       filterProductCategory,
       filterMaterialCategory,
-      productList,
+      productfilterList,
       productCategory,
       materialCategory,
       getProduct,
@@ -88,7 +117,7 @@ export default {
       </div>
     </div>
     <div class="col-span-12 grid grid-cols-3 gap-4">
-      <template v-for="(product, index) in productList" :key="product.id">
+      <template v-for="(product, index) in productfilterList" :key="product.id">
         <ProductListItemSquare
           :product="product"
           :list-index="index"

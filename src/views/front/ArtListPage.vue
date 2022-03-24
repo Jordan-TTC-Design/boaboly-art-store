@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { frontApiMethod } from '@/methods/api.js';
 import { articleCategory } from '@/methods/article.js';
 import ArtListItemSquare from '@/components/front/ArtListItemSquare.vue';
@@ -13,6 +13,27 @@ export default {
     const artList = ref([]);
     let filterKeyword = ref('');
     let filterArticleCategory = ref('');
+    const artfilterList = computed(() => {
+      let array = [];
+      array = artList.value;
+      array = filterWord(filterKeyword.value, array);
+      array = filterCategory(filterArticleCategory.value, array);
+      return array;
+    });
+    function filterWord(filterData, dataList) {
+      let array = dataList;
+      if (filterData !== '') {
+        array = dataList.filter((item) => item.title.includes(filterData));
+      }
+      return array;
+    }
+    function filterCategory(filterData, dataList) {
+      let array = dataList;
+      if (filterData !== '') {
+        array = dataList.filter((item) => item.category === filterData);
+      }
+      return array;
+    }
     const pagination = ref({});
     function getArt() {
       emitter.emit('open-loading');
@@ -31,7 +52,7 @@ export default {
       filterKeyword,
       filterArticleCategory,
       articleCategory,
-      artList,
+      artfilterList,
       emitter,
     };
   },
@@ -73,7 +94,7 @@ export default {
       </div>
     </div>
     <div class="col-start-2 col-span-10 grid grid-cols-2 gap-x-8">
-      <template v-for="(art, index) in artList" :key="art.id">
+      <template v-for="(art, index) in artfilterList" :key="art.id">
         <ArtListItemSquare :art-item="art" :list-index="index" />
       </template>
     </div>

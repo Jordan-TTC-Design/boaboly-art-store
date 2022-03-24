@@ -8,7 +8,7 @@ export default {
 };
 </script>
 <template>
-  <div class="artItem group p-4 bg-white border-b border-gray-300 py-12">
+  <div class="artItem group bg-white border-b border-gray-300 py-12">
     <div class="flex items-end mb-8 gap-4">
       <router-link
         class="relative block p-4 group-hover:bg-gray-100"
