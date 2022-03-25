@@ -100,7 +100,6 @@ const frontApiMethod = {
       .post(frontApiPath.cart, { data })
       .then((res) => {
         console.log('已加入購物車');
-        console.log(res);
         return res.data;
       })
       .catch((err) => {
