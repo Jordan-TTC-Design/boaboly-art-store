@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import emitter from '@/methods/emitter';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
-import { Autoplay } from 'swiper';
+import { Autoplay, FreeMode } from 'swiper';
 export default {
   components: {
     Swiper,
@@ -25,7 +25,7 @@ export default {
       },
       slidesPerView: swiperNum.value,
     });
-    const modules = ref([Autoplay]);
+    const modules = ref([Autoplay, FreeMode]);
     return {
       swiperNum,
       swiperDetail,
@@ -51,9 +51,11 @@ export default {
           :slides-per-view="3"
           :space-between="50"
           :loop="true"
+          :free-mode="true"
           :modules="modules"
+          :speed="6000"
           :autoplay="{
-            delay: 2500,
+            delay: 1,
             disableOnInteraction: false,
           }"
         >

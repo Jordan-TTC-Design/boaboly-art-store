@@ -42,10 +42,10 @@ export default {
     function sendOrder() {
       orderFormData.value.user.shipping.price = shipping.value;
       orderFormData.value.user.finalPrice = finalTotal.value;
-      console.log(orderFormData.value);
       frontApiMethod.postOrder(orderFormData.value).then(() => {
         emitter.emit('get-cart');
         router.push({ name: 'Home' });
+        emitter.emit('open-pop-reminder', '購買成功 !');
       });
     }
     getCart();

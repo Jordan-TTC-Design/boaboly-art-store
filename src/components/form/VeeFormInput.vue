@@ -35,7 +35,10 @@ export default {
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
     ></Field>
-    <error-message :name="labelName" class="invalid-feedback"></error-message>
+    <error-message
+      :name="labelName"
+      class="invalid-feedback text-red-700"
+    ></error-message>
   </div>
 </template>
 <style lang="scss"></style>

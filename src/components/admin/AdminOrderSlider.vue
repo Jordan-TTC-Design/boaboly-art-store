@@ -26,14 +26,12 @@ export default {
       console.log(itemId);
     }
     function deleteOrder(itemId) {
-      console.log(itemId);
       apiMethod.adminDeleteOrder(itemId).then(() => {
         modalOpen.value = false;
         emit('get-orders');
       });
     }
     function adminPutOrder(itemId) {
-      console.log(selectItem.value);
       apiMethod.adminPutOrder(itemId, selectItem.value).then(() => {
         modalOpen.value = false;
         emit('get-orders');

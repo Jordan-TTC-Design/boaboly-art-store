@@ -4,20 +4,25 @@ import { RouterView } from 'vue-router';
 import Cart from '@/components/front/Cart.vue';
 import HamMenu from '@/components/helpers/HamMenu.vue';
 import Loading from '@/components/helpers/Loading.vue';
+import PopReminder from '@/components/helpers/PopReminder.vue';
 export default {
   components: {
     Cart,
     HamMenu,
     Loading,
+    PopReminder,
   },
   setup() {
     let modalOpen = ref(false);
     function fixWindow(status) {
-      console.log(status);
       modalOpen.value = status;
+    }
+    function pageUP() {
+      document.documentElement.scrollTop = 0;
     }
     return {
       modalOpen,
+      pageUP,
       fixWindow,
       RouterView,
     };
@@ -31,12 +36,12 @@ export default {
     :class="{ 'no-scroll': modalOpen }"
   >
     <header
-      class="flex justify-between items-center border-b border-gray-300 bg-white sticky top-0 z-40"
+      class="flex justify-between items-center bg-white sticky top-0 z-40 opacity-95"
     >
       <router-link to="/" class="text-2xl font-bold ml-6">Boaboly</router-link>
-      <router-link to="/" class="storeLogo">
+      <!-- <router-link to="/" class="storeLogo">
         <img src="@/assets/images/boabolyLogo.svg" alt="Logo" />
-      </router-link>
+      </router-link> -->
       <ul class="bg-black py-4 px-6 flex">
         <li class="mr-4">
           <Cart @fix-window="fixWindow" />
@@ -46,6 +51,7 @@ export default {
         </li>
       </ul>
     </header>
+    <button @click="pageUP" class="pageUpBtn z-30">BACK TO TOP</button>
     <div class="w-full mx-auto">
       <RouterView />
     </div>
@@ -102,6 +108,7 @@ export default {
     </footer>
   </div>
   <Loading />
+  <PopReminder />
 </template>
 
 <style lang="scss" scoped>
@@ -133,5 +140,17 @@ export default {
 .no-scroll {
   position: fixed;
   width: 100%;
+}
+.pageUpBtn {
+  position: fixed;
+  top: 50%;
+  right: -1rem;
+  transform: rotate(90deg);
+  padding: 0.5rem 1rem;
+  color: #646464;
+  transition: all 0.3s;
+  &:hover {
+    color: black;
+  }
 }
 </style>

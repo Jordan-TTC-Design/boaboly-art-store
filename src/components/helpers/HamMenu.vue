@@ -8,7 +8,6 @@ export default {
     let modalOpen = ref(false);
     const nowPath = computed(() => route.path);
     watch(nowPath, (newValue, oldValue) => {
-      console.log(newValue, oldValue);
       if (newValue !== oldValue) {
         modalOpen.value = false;
       }
