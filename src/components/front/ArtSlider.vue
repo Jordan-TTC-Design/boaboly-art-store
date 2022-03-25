@@ -14,7 +14,7 @@ export default {
     const modules = ref([Autoplay, FreeMode]);
     const artList = ref([]);
     const pagination = ref({});
-    function getArt() {
+    function getArts() {
       emitter.emit('open-loading');
       frontApiMethod.getArts().then((res) => {
         if (res.success) {
@@ -24,7 +24,7 @@ export default {
         }
       });
     }
-    getArt();
+    getArts();
     return {
       artList,
       modules,
@@ -34,7 +34,7 @@ export default {
 };
 </script>
 <template>
-  <div class="pb-64 mt-24 relative slider">
+  <div class="pb-64 mt-24 relative">
     <h4 class="text-center font-bold text-lg text-black mb-4">NEW WORKS</h4>
     <h3 class="text-center font-bold text-4xl text-black mb-16">
       最新圖文創作
@@ -48,7 +48,6 @@ export default {
         :loop="true"
         :autoplay="{
           delay: 1,
-          reverseDirection: true,
           disableOnInteraction: false,
         }"
         class=""
@@ -56,7 +55,7 @@ export default {
         <swiper-slide
           v-for="artItem in artList"
           :key="artItem.id"
-          class="px-8 group slider__item"
+          class="px-8 group"
         >
           <router-link
             :to="`/arts/${artItem.id}`"

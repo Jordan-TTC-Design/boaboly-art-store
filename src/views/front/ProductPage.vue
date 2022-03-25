@@ -1,21 +1,29 @@
 <script>
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, watch, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
 import emitter from '@/methods/emitter';
+import ProductSlider from '@/components/front/ProductSlider.vue';
 
 export default {
+  components: { ProductSlider },
   setup() {
-    const productId = useRoute().params.id;
+    const router = useRouter();
+    const route = useRoute();
+    const productId = computed(() => route.params.id);
     const buyNum = ref(1);
     const productImgArray = ref([]);
     const product = ref({});
     const mainImg = ref(null);
-    frontApiMethod.getProduct(productId).then((res) => {
-      product.value = res;
-      mainImg.value = res.imageUrl;
-      productImgArray.value = [res.imageUrl, ...res.imagesUrl];
-    });
+    function getProduct(itemId) {
+      emitter.emit('open-loading');
+      frontApiMethod.getProduct(itemId).then((res) => {
+        product.value = res;
+        mainImg.value = res.imageUrl;
+        productImgArray.value = [res.imageUrl, ...res.imagesUrl];
+        emitter.emit('close-loading');
+      });
+    }
     function addCart() {
       emitter.emit('add-cart', {
         id: product.value.id,
@@ -23,12 +31,21 @@ export default {
       });
       buyNum.value = 1;
     }
+    function reloadProduct(itemId) {
+      console.log(itemId);
+      router.push(`/products/${itemId}`);
+    }
+    watch(productId, () => {
+      getProduct(productId.value);
+    });
+    getProduct(productId.value);
     return {
       product,
       productImgArray,
       buyNum,
       mainImg,
       addCart,
+      reloadProduct,
     };
   },
 };
@@ -36,29 +53,34 @@ export default {
 <template>
   <div class="bg-gray-100 relative py-16 min-h-screen">
     <div class="bg-primaryLight w-full h-96 absolute top-0"></div>
-    <div class="container mx-auto bg-white shadow-sm p-16">
-      <div class="grid grid-cols-10 gap-4">
-        <div class="col-span-4">
-          <img :src="mainImg" alt="產品主圖" />
-        </div>
-        <div class="col-span-1">
-          <div class="bg-gray-100 p-2 h-full">
-            <template
-              v-for="(productImg, index) in productImgArray"
-              :key="productImg"
-            >
-              <img
-                class="mb-2 cursor-pointer"
-                :src="productImg"
-                :alt="`產品附圖${index}`"
-                @click="mainImg = productImg"
-              />
-            </template>
+    <div class="container mx-auto bg-white shadow-sm p-24">
+      <div
+        class="grid grid-cols-2 gap-8 relative pb-12 border-b border-gray-300"
+      >
+        <div class="grid grid-cols-5 gap-2">
+          <div class="col-span-4"><img :src="mainImg" alt="產品主圖" /></div>
+          <div class="col-span-1">
+            <div class="bg-gray-100 p-2 h-full">
+              <template
+                v-for="(productImg, index) in productImgArray"
+                :key="productImg"
+              >
+                <img
+                  v-if="productImg !== ''"
+                  class="mb-2 cursor-pointer"
+                  :src="productImg"
+                  :alt="`產品附圖${index}`"
+                  @click="mainImg = productImg"
+                />
+              </template>
+            </div>
           </div>
         </div>
-        <div class="col-span-5 flex flex-col justify-between">
+        <div class="flex flex-col justify-between">
           <div>
-            <p class="productTag bg-primaryLight mb-4">商品標</p>
+            <p class="productTag bg-primaryLight mb-4">
+              {{ product.category }}
+            </p>
             <h2 class="text-3xl font-bold mb-3">{{ product.title }}</h2>
             <h4 class="text-2xl mb-1">NT$ {{ product.price }}</h4>
             <p
@@ -71,11 +93,15 @@ export default {
           </div>
           <div>
             <div class="flex items-center mb-4">
-              <p class="text-sm text-gray-400 mr-3">剩餘庫存</p>
-              <p class="">10 件</p>
+              <p class="text-sm text-gray-400 mr-3 whitespace-nowrap">
+                剩餘庫存
+              </p>
+              <p>{{ `${product.store} ${product.unit}` }}</p>
             </div>
             <div class="flex items-center mb-6">
-              <p class="text-sm text-gray-400 mr-3">購買數量</p>
+              <p class="text-sm text-gray-400 mr-3 whitespace-nowrap">
+                購買數量
+              </p>
               <div class="numberSwitcher">
                 <button
                   type="button"
@@ -85,7 +111,7 @@ export default {
                   <i class="bi bi-dash text-xl"></i>
                 </button>
                 <input
-                  class="numberSwitcher__numBox focus:outline-none"
+                  class="numberSwitcher__numBox focus:outline-none flex-grow"
                   type="number"
                   :value="buyNum"
                 />
@@ -121,7 +147,111 @@ export default {
           </div>
         </div>
       </div>
+      <div
+        class="grid grid-cols-12 gap-8 relative mb-24 py-24 border-b border-gray-300"
+      >
+        <div class="col-span-8">
+          <h3 class="text-2xl text-black font-bold mb-8">商品介紹</h3>
+          <div v-html="product.content"></div>
+        </div>
+        <div class="col-span-4">
+          <h3 class="text-2xl text-black font-bold mb-8">商品其他資訊</h3>
+          <ul class="grid gap-y-4">
+            <li class="flex gap-3">
+              <p class="mt-0.5 text-sm text-gray-400 whitespace-nowrap">材質</p>
+              <p>{{ product.material }}</p>
+            </li>
+            <li class="flex gap-3">
+              <p class="mt-0.5 text-sm text-gray-400 whitespace-nowrap">描述</p>
+              <p>{{ product.description }}</p>
+            </li>
+            <li class="flex gap-3">
+              <p class="mt-0.5 text-sm text-gray-400 whitespace-nowrap">尺寸</p>
+              <div class="flex gap-4" v-if="product.size">
+                <p>長：{{ product.size.sizeLength }}</p>
+                <p>寬：{{ product.size.sizeWidth }}</p>
+                <p>高：{{ product.size.sizeHeight }}</p>
+              </div>
+            </li>
+            <li class="flex gap-3">
+              <p class="mt-0.5 text-sm text-gray-400 whitespace-nowrap">標籤</p>
+              <div class="flex flex-wrap">
+                <p v-for="tag in product.tags" :key="tag"># {{ tag }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="mb-24">
+        <h3 class="text-center font-bold text-3xl text-black mb-12">
+          其他商品
+        </h3>
+        <ProductSlider @send-product-id="reloadProduct" />
+      </div>
+      <div class="px-12 flex justify-end gap-x-8 goBackListBtn">
+        <router-link to="/products" class="text-3xl font-bold"
+          >BACK TO PRODUCTS</router-link
+        >
+        <router-link to="/products" class="arrow"></router-link>
+      </div>
     </div>
   </div>
 </template>
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.arrow {
+  position: relative;
+  width: 200px;
+  height: 36px;
+  cursor: pointer;
+  transition: 0.5s;
+  overflow: hidden;
+}
+.arrow:after {
+  position: absolute;
+  display: block;
+  content: '';
+  color: black;
+  width: calc(100% - 18px);
+  height: 20px;
+  top: -1.5px;
+  left: 0px;
+  border-bottom: solid 1px;
+  transform: translatex(4px);
+}
+.arrow:before {
+  position: absolute;
+  display: block;
+  content: '';
+  color: black;
+  width: 12px;
+  height: 12px;
+  border-top: solid 1px;
+  border-left: solid 1px;
+  top: 50%;
+  right: 2px;
+  transform-origin: 0% 0%;
+  transform: rotatez(135deg);
+}
+.arrow:before {
+  animation: aniArrow01 2s cubic-bezier(0, 0.6, 1, 0.4) infinite 2s;
+}
+.arrow:after {
+  animation: aniArrow02 2s cubic-bezier(0, 0.6, 1, 0.4) infinite 2s;
+}
+@keyframes aniArrow01 {
+  0% {
+    transform: rotatez(135deg) translateY(118px) translateX(118px);
+  }
+  100% {
+    transform: rotatez(135deg) translateY(-86px) translateX(-86px);
+  }
+}
+@keyframes aniArrow02 {
+  0% {
+    transform: translateX(-160px);
+  }
+  100% {
+    transform: translateX(120px);
+  }
+}
+</style>
