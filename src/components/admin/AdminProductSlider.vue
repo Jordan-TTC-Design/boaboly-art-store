@@ -47,14 +47,12 @@ export default {
       apiMethod.adminImageUpload(file);
     }
     function getUrl(url, name) {
-      console.log(url, name);
       if (name === '主要圖片') {
         productItem.value.imageUrl = url;
       } else {
         const newName = name.slice(2);
         productItem.value.imagesUrl[newName] = url;
       }
-      console.log(productItem.value);
     }
     function newProduct() {
       if (state.value === 'isNew') {

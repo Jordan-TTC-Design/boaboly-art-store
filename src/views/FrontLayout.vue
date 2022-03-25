@@ -4,16 +4,17 @@ import { RouterView } from 'vue-router';
 import Cart from '@/components/front/Cart.vue';
 import HamMenu from '@/components/helpers/HamMenu.vue';
 import Loading from '@/components/helpers/Loading.vue';
+import PopReminder from '@/components/helpers/PopReminder.vue';
 export default {
   components: {
     Cart,
     HamMenu,
     Loading,
+    PopReminder,
   },
   setup() {
     let modalOpen = ref(false);
     function fixWindow(status) {
-      console.log(status);
       modalOpen.value = status;
     }
     function pageUP() {
@@ -107,6 +108,7 @@ export default {
     </footer>
   </div>
   <Loading />
+  <PopReminder />
 </template>
 
 <style lang="scss" scoped>

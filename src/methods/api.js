@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 const api = {
   url: import.meta.env.VITE_APP_URL,
   path: import.meta.env.VITE_APP_PATH,

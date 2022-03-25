@@ -11,7 +11,6 @@ export default {
   setup() {
     let isLoading = ref(false);
     function openLoadingSetTime() {
-      console.log('hi');
       isLoading.value = true;
       setTimeout(() => {
         isLoading.value = false;

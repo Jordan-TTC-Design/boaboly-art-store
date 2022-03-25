@@ -20,7 +20,6 @@ export default {
     }
     function openModal(data) {
       showed.value = true;
-      console.log(data);
       emitOpenImageCropper(data);
     }
     function putImage(data) {
@@ -32,7 +31,6 @@ export default {
           const dataURL = reader.result;
           imgData = cropperImage.value;
           imgData.src = dataURL;
-          console.log(imgData);
           cropper = new Cropper(imgData, {
             aspectRatio: 1 / 1,
             viewMode: 0,

@@ -22,21 +22,19 @@ export default {
       emitter.emit('open-loading');
       frontApiMethod.addCart(productId, buyNum).then(() => {
         getCart();
+        emitter.emit('open-pop-reminder', '成功加入購物車 !');
       });
     }
     function updateCart(cartItemNum, cartItemId) {
       emitter.emit('open-loading');
-      frontApiMethod.editCart(cartItemNum, cartItemId).then((res) => {
-        console.log(res.data);
+      frontApiMethod.editCart(cartItemNum, cartItemId).then(() => {
         getCart();
       });
     }
     function editAmout(num, index) {
       if (num > 0) {
-        console.log(num);
         cartList.value[index].qty += 1;
       } else {
-        console.log(num);
         cartList.value[index].qty -= 1;
       }
       updateCart(cartList.value[index].qty, cartList.value[index].id);
@@ -44,7 +42,6 @@ export default {
     function getCart() {
       frontApiMethod.getCart().then((res) => {
         cartList.value = JSON.parse(JSON.stringify(res.carts));
-        console.log(cartList.value);
         cartTotal.value = res.total;
         emitter.emit('close-loading');
       });
@@ -63,7 +60,6 @@ export default {
     }
     const nowPath = computed(() => route.path);
     watch(nowPath, (newValue, oldValue) => {
-      console.log(newValue, oldValue);
       if (newValue !== oldValue) {
         modalOpen.value = false;
       }
@@ -209,10 +205,11 @@ export default {
           <p class="text-xl font-bold">NT$ {{ cartTotal }}</p>
         </div>
         <router-link
-          to="/checkout"
+          :to="cartList.length === 0 ? '' : '/checkout'"
+          :class="{ 'opacity-50': cartList.length === 0 }"
           class="bg-black rounded py-2 px-3 hover:bg-gray-800 text-white"
         >
-          前往結帳
+          前往結賬
         </router-link>
       </div>
     </div>

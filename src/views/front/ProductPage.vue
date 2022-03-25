@@ -32,7 +32,6 @@ export default {
       buyNum.value = 1;
     }
     function reloadProduct(itemId) {
-      console.log(itemId);
       router.push(`/products/${itemId}`);
     }
     watch(productId, () => {

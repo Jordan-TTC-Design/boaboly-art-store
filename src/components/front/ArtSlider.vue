@@ -48,6 +48,7 @@ export default {
         :loop="true"
         :autoplay="{
           delay: 1,
+          reverseDirection: true,
           disableOnInteraction: false,
         }"
         class=""

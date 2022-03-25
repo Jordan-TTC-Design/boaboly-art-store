@@ -26,7 +26,6 @@ export default {
   emits: ['get-product', 'clear-item'],
   setup(props, { emit }) {
     const productItem = computed(() => {
-      console.log(props.selectItem);
       return props.selectItem;
     });
     const imgCoverUploader = ref(null);

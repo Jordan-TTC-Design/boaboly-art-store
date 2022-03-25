@@ -38,9 +38,7 @@ export default {
       selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
     }
     function openProductDetail(state, item) {
-      console.log(state, item);
       if (state === 'isNew') {
-        console.log(defaultProductData);
         selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
       } else if (state === 'edit') {
         selectItem.value = JSON.parse(JSON.stringify(item));

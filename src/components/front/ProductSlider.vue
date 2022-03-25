@@ -17,7 +17,6 @@ export default {
     function getProducts() {
       emitter.emit('open-loading');
       frontApiMethod.getProducts().then((res) => {
-        console.log(res);
         productList.value = JSON.parse(JSON.stringify(res));
         emitter.emit('close-loading');
       });

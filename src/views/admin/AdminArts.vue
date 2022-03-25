@@ -34,7 +34,6 @@ export default {
       selectItem.value = JSON.parse(JSON.stringify(defaultArticleData));
     }
     function openArticleDetail(state, item) {
-      console.log(state, item);
       if (state === 'isNew') {
         selectItem.value = JSON.parse(JSON.stringify(defaultArticleData));
       } else if (state === 'edit') {
@@ -58,10 +57,8 @@ export default {
       getArticles();
     }
     function getArticles() {
-      console.log('123');
       apiMethod.adminGetArticles().then((res) => {
         if (res) {
-          console.log(res);
           articles.value = Object.values(res.articles);
         }
       });

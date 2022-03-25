@@ -6,12 +6,9 @@ class MyUploadAdapter {
   }
   // Starts the upload process.
   upload() {
-    console.log('this', this);
     const formData = new FormData(); // 產生表單格式
-    console.log(formData);
     return new Promise((resolve) => {
       this.loader.file.then((loadFile) => {
-        console.log(loadFile);
         formData.append('file-to-upload', loadFile);
         return axios
           .post(
@@ -26,7 +23,7 @@ class MyUploadAdapter {
             }
           )
           .then((res) => {
-            console.log(res.data.imageUrl);
+            // console.log(res.data.imageUrl);
             // return res.data.imageUrl;
             resolve({
               default: res.data.imageUrl,

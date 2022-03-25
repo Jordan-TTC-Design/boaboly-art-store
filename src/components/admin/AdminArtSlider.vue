@@ -37,13 +37,11 @@ export default {
     function getArticle(articleId) {
       apiMethod.adminGetArticle(articleId).then((res) => {
         articleItem.value = res;
-        console.log(res);
         modalOpen.value = true;
       });
     }
     function newArticle() {
       articleItem.value.create_at = new Date().getTime();
-      console.log(articleItem.value);
       if (props.modalState === 'isNew') {
         apiMethod.adminPostArticle(articleItem.value).then(() => {
           closeModal();
@@ -63,7 +61,6 @@ export default {
       articleItem.value = JSON.parse(JSON.stringify(defaultArticleData));
     }
     watch(selectItemId, (newVal) => {
-      console.log(newVal);
       if (newVal !== '' && modalState.value === 'edit') {
         getArticle(newVal);
       }

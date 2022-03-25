@@ -34,13 +34,11 @@ export default {
       apiMethod.adminGetOrders().then((res) => {
         if (res) {
           orders.value = Object.values(res);
-          console.log(orders.value);
         }
       });
     }
     function selectOrder(orderItem) {
       selectItem.value = JSON.parse(JSON.stringify(orderItem));
-      console.log(selectItem.value);
     }
     getOrders();
     return {

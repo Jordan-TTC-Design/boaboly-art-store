@@ -41,8 +41,6 @@ export default {
         if (res.success) {
           artList.value = JSON.parse(JSON.stringify(res.articles));
           pagination.value = JSON.parse(JSON.stringify(res.pagination));
-          console.log(artList.value);
-          console.log(pagination.value);
           emitter.emit('close-loading');
         }
       });
