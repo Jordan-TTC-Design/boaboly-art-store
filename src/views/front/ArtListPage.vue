@@ -11,6 +11,7 @@ export default {
   },
   setup() {
     const artList = ref([]);
+    const pagination = ref({});
     let filterKeyword = ref('');
     let filterArticleCategory = ref('');
     const artfilterList = computed(() => {
@@ -34,8 +35,7 @@ export default {
       }
       return array;
     }
-    const pagination = ref({});
-    function getArt() {
+    function getArts() {
       emitter.emit('open-loading');
       frontApiMethod.getArts().then((res) => {
         if (res.success) {
@@ -47,7 +47,7 @@ export default {
         }
       });
     }
-    getArt();
+    getArts();
     return {
       filterKeyword,
       filterArticleCategory,

@@ -35,7 +35,7 @@ export default {
     :class="{ 'no-scroll': modalOpen }"
   >
     <header
-      class="flex justify-between items-center border-b border-gray-300 bg-white sticky top-0 z-40"
+      class="flex justify-between items-center bg-white sticky top-0 z-40 opacity-95"
     >
       <router-link to="/" class="text-2xl font-bold ml-6">Boaboly</router-link>
       <!-- <router-link to="/" class="storeLogo">

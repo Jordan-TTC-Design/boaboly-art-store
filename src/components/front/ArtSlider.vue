@@ -4,14 +4,14 @@ import { frontApiMethod } from '@/methods/api.js';
 import emitter from '@/methods/emitter';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
-import { Autoplay } from 'swiper';
+import { Autoplay, FreeMode } from 'swiper';
 export default {
   components: {
     Swiper,
     SwiperSlide,
   },
   setup() {
-    const modules = ref([Autoplay]);
+    const modules = ref([Autoplay, FreeMode]);
     const artList = ref([]);
     const pagination = ref({});
     function getArt() {
@@ -20,8 +20,6 @@ export default {
         if (res.success) {
           artList.value = JSON.parse(JSON.stringify(res.articles));
           pagination.value = JSON.parse(JSON.stringify(res.pagination));
-          console.log(artList.value);
-          console.log(pagination.value);
           emitter.emit('close-loading');
         }
       });
@@ -44,12 +42,13 @@ export default {
     <div class="swiperBox">
       <swiper
         :slides-per-view="4"
-        :loop="true"
         :modules="modules"
-        :speed="2000"
+        :speed="4000"
         :free-mode="true"
+        :loop="true"
         :autoplay="{
           delay: 1,
+          reverseDirection: true,
           disableOnInteraction: false,
         }"
         class=""
@@ -80,27 +79,13 @@ export default {
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
-.slider {
-  transform: translate3d(0, 0, 0);
-  overflow: hidden;
-}
-
-.slider__item {
-  transform: translate3d(0, 0, 0);
-}
-.swiperBox {
-  position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    top: -12%;
-    bottom: -12%;
-    left: 8%;
-    right: 8%;
-    background-color: #f7f7f7;
-  }
+<style lang="scss">
+// 搭配上freemode
+.swiper-free-mode > .swiper-wrapper {
+  -webkit-transition-timing-function: linear;
+  -o-transition-timing-function: linear;
+  transition-timing-function: linear;
+  margin: 0 auto;
 }
 .viewMoreBtn {
   font-size: 1.5rem;
