@@ -79,7 +79,7 @@ export default {
     </div>
   </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 // 搭配上freemode
 .swiper-free-mode > .swiper-wrapper {
   -webkit-transition-timing-function: linear;

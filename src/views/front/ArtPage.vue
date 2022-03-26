@@ -76,7 +76,7 @@ export default {
         </div>
       </div>
       <h4 class="mb-12 text-center text-3xl font-bold text-black">其他創作</h4>
-      <ul class="grid gap-4 mb-24">
+      <ul class="grid grid-cols-1 gap-4 mb-24">
         <template v-for="(art, index) in artList" :key="art.id">
           <li
             v-if="index < 3"
@@ -140,7 +140,6 @@ export default {
     background-color: black;
     transition: all 0.3s;
   }
-
   .viewMoreBtn {
     transition: all 0.3s;
     position: relative;

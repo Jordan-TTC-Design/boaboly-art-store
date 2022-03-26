@@ -59,7 +59,7 @@ export default {
         <div class="grid grid-cols-5 gap-2">
           <div class="col-span-4"><img :src="mainImg" alt="產品主圖" /></div>
           <div class="col-span-1">
-            <div class="bg-gray-100 p-2 h-full">
+            <div class="bg-gray-100 p-2 h-full overflow-y-scroll">
               <template
                 v-for="(productImg, index) in productImgArray"
                 :key="productImg"
