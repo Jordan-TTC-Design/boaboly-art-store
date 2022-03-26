@@ -99,7 +99,7 @@ export default {
   </div>
   <ArtSlider />
   <HomeSlider />
-  <div class="relative px-4 bg-white py-24">
+  <div class="relative px-4 bg-white py-24 border-b border-gray-300">
     <h4 class="text-xl text-black font-bold uppercase text-center mb-1">
       popular Products
     </h4>
@@ -142,6 +142,34 @@ export default {
           </template>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="px-48 py-24 grid grid-col-1 gap-y-12">
+    <div class="flex justify-end items-center gap-x-8 goBackListBtn">
+      <a
+        target="_brank"
+        href="https://shopee.tw/boaboly.art"
+        class="text-3xl font-bold py-8"
+        ><i class="bi bi-shop mr-2"></i>GO TO SHOPEE STORE</a
+      >
+      <a
+        target="_brank"
+        href="https://shopee.tw/boaboly.art"
+        class="goToArrow"
+      ></a>
+    </div>
+    <div class="flex justify-end items-center gap-x-8 goBackListBtn">
+      <a
+        target="_brank"
+        href="https://www.pinkoi.com/store/boaboly"
+        class="text-3xl font-bold py-8"
+        ><i class="bi bi-shop mr-2"></i>GO TO PINKOI STORE</a
+      >
+      <a
+        target="_brank"
+        href="https://www.pinkoi.com/store/boaboly"
+        class="goToArrow"
+      ></a>
     </div>
   </div>
 </template>
@@ -379,6 +407,62 @@ export default {
       -ms-transform: rotate(360deg);
       -o-transform: rotate(360deg);
     }
+  }
+}
+.goToArrow {
+  position: relative;
+  width: 200px;
+  height: 36px;
+  cursor: pointer;
+  transition: 0.5s;
+  overflow: hidden;
+}
+.goToArrow:after {
+  position: absolute;
+  display: block;
+  content: '';
+  color: black;
+  width: calc(100% - 18px);
+  height: 20px;
+  top: -1.5px;
+  left: 0px;
+  border-bottom: solid 1px;
+  transform: translatex(4px);
+}
+.goToArrow:before {
+  position: absolute;
+  display: block;
+  content: '';
+  color: black;
+  width: 12px;
+  height: 12px;
+  border-top: solid 1px;
+  border-left: solid 1px;
+  top: 50%;
+  right: 2px;
+  transform-origin: 0% 0%;
+  transform: rotatez(135deg);
+}
+.goToArrow:before {
+  animation: aniArrow01 2s cubic-bezier(0, 0.6, 1, 0.4) infinite 2s;
+}
+.goToArrow:after {
+  animation: aniArrow02 2s cubic-bezier(0, 0.6, 1, 0.4) infinite 2s;
+}
+@keyframes aniArrow01 {
+  0% {
+    transform: rotatez(135deg) translateY(118px) translateX(118px);
+  }
+  100% {
+    transform: rotatez(135deg) translateY(-86px) translateX(-86px);
+  }
+}
+@keyframes aniArrow02 {
+  0% {
+    transform: translateX(-160px);
+  }
+  100% {
+    transform: translateX(120px);
   }
 }
 </style>
