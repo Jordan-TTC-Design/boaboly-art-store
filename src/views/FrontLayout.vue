@@ -17,12 +17,16 @@ export default {
     function fixWindow(status) {
       modalOpen.value = status;
     }
-    function pageUP() {
-      document.documentElement.scrollTop = 0;
+    function scrollToTop() {
+      window.scrollTo({
+        top: 100,
+        left: 100,
+        behavior: 'smooth',
+      });
     }
     return {
       modalOpen,
-      pageUP,
+      scrollToTop,
       fixWindow,
       RouterView,
     };
@@ -39,9 +43,6 @@ export default {
       class="flex justify-between items-center bg-white sticky top-0 z-40 opacity-95"
     >
       <router-link to="/" class="text-2xl font-bold ml-6">Boaboly</router-link>
-      <!-- <router-link to="/" class="storeLogo">
-        <img src="@/assets/images/boabolyLogo.svg" alt="Logo" />
-      </router-link> -->
       <ul class="bg-black py-4 px-6 flex">
         <li class="mr-4">
           <Cart @fix-window="fixWindow" />
@@ -51,7 +52,7 @@ export default {
         </li>
       </ul>
     </header>
-    <button @click="pageUP" class="pageUpBtn z-30">BACK TO TOP</button>
+    <button @click="scrollToTop" class="pageUpBtn z-30">BACK TO TOP</button>
     <div class="w-full mx-auto">
       <RouterView />
     </div>
@@ -145,12 +146,13 @@ export default {
   position: fixed;
   top: 50%;
   right: -1rem;
-  transform: rotate(90deg);
-  padding: 0.5rem 1rem;
-  color: #646464;
+  transform: translateY(0) rotate(90deg);
+  padding: 0.5rem 2rem;
+  color: black;
+  font-weight: 600;
   transition: all 0.3s;
   &:hover {
-    color: black;
+    transform: translateY(-1.5rem) rotate(90deg);
   }
 }
 </style>

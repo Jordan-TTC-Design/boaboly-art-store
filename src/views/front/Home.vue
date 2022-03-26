@@ -33,7 +33,57 @@ export default {
 };
 </script>
 <template>
-  <div class="homeMainSection grid grid-cols-3 py-36 relative">
+  <div class="homeMainSection grid grid-cols-3 pt-24 pb-36 relative">
+    <img
+      class="homeMainSection__flower flower-white-pink"
+      src="@/assets/images/flower-white-pink.svg"
+      alt="花瓣"
+    />
+    <img
+      class="homeMainSection__flower flower-white-pink-2"
+      src="@/assets/images/flower-white-pink.svg"
+      alt="花瓣"
+    />
+    <img
+      class="homeMainSection__flower flower-white-red"
+      src="@/assets/images/flower-white-red.svg"
+      alt="花瓣"
+    />
+    <img
+      class="homeMainSection__flower flower-white-red-2"
+      src="@/assets/images/flower-white-red.svg"
+      alt="花瓣"
+    />
+    <img
+      class="homeMainSection__flower flower-white-red-3"
+      src="@/assets/images/flower-white-red.svg"
+      alt="花瓣"
+    />
+    <img
+      class="homeMainSection__flower flower-blue"
+      src="@/assets/images/flower-blue.svg"
+      alt="花瓣"
+    />
+    <img
+      class="homeMainSection__flower flower-blue-2"
+      src="@/assets/images/flower-blue.svg"
+      alt="花瓣"
+    />
+    <img
+      class="homeMainSection__flower flower-yellow"
+      src="@/assets/images/flower-yellow.svg"
+      alt="花瓣"
+    />
+    <img
+      class="homeMainSection__flower flower-yellow-2"
+      src="@/assets/images/flower-yellow.svg"
+      alt="花瓣"
+    />
+    <img
+      class="homeMainSection__flower flower-yellow-3"
+      src="@/assets/images/flower-yellow.svg"
+      alt="花瓣"
+    />
     <div class="col-start-2 col-span-1">
       <div class="bg-primaryLight">
         <img
@@ -41,6 +91,7 @@ export default {
           src="@/assets/images/boabolyLogo.svg"
           alt="face"
         />
+        <div class="homeBannerCircle"></div>
       </div>
     </div>
     <div class="arrow arrow-1"></div>
@@ -50,10 +101,31 @@ export default {
   <HomeSlider />
   <div class="relative px-4 bg-white py-24">
     <h4 class="text-xl text-black font-bold uppercase text-center mb-1">
-      New Products
+      popular Products
     </h4>
-    <h3 class="text-2xl text-black font-medium text-center mb-8">最新商品</h3>
+    <h3 class="text-2xl text-black font-medium text-center mb-8">熱門商品</h3>
     <div class="grid grid-cols-5 p-5 gap-4">
+      <div
+        class="col-span-1 flex justify-center relative items-start pt-24 px-4"
+      >
+        <div class="homeBoabolyPen w-100 sticky top-32">
+          <p
+            class="homeBoabolyPen__txt text-center text-xl font-medium text-black mb-12"
+          >
+            希望你會喜歡
+          </p>
+          <img
+            class="w-100 mb-2"
+            src="@/assets/images/img-boaboly-pen.svg"
+            alt="Boaboly圖片"
+          />
+          <router-link
+            :to="{ name: 'ProductList' }"
+            class="homeBoabolyPen__btn block py-6 px-4 text-center bg-black text-white font-bold"
+            >VIEW MORE</router-link
+          >
+        </div>
+      </div>
       <div class="col-start-2 col-span-4">
         <div class="grid grid-cols-3 gap-4">
           <template v-for="(product, index) in productList" :key="product.id">
@@ -74,9 +146,145 @@ export default {
   </div>
 </template>
 <style lang="scss" scoped>
+.homeMainSection__flower {
+  position: absolute;
+  width: 4rem;
+  z-index: 1;
+
+  &.flower-white-pink {
+    top: 36%;
+    left: 24%;
+    animation: rotate-left 4s linear infinite;
+  }
+  &.flower-white-pink-2 {
+    top: 44%;
+    right: 12%;
+    animation: rotate-right 4s linear infinite;
+  }
+  &.flower-white-red {
+    top: 12%;
+    left: 10%;
+    animation: rotate-right 4s linear infinite;
+  }
+  &.flower-white-red-2 {
+    bottom: 18%;
+    right: 32%;
+    animation: rotate-right 4s linear infinite;
+  }
+  &.flower-white-red-3 {
+    top: 4%;
+    right: 20%;
+    z-index: 1;
+    animation: rotate-left 4s linear infinite;
+  }
+  &.flower-blue {
+    bottom: 12%;
+    left: 14%;
+    animation: rotate-right 4s linear infinite;
+  }
+  &.flower-blue-2 {
+    top: 10%;
+    right: 40%;
+    animation: rotate-right 4s linear infinite;
+  }
+  &.flower-yellow {
+    bottom: 40%;
+    left: 2%;
+    animation: rotate-left 4s linear infinite;
+  }
+  &.flower-yellow-2 {
+    top: 0%;
+    left: 30%;
+    animation: rotate-left 4s linear infinite;
+  }
+  &.flower-yellow-3 {
+    bottom: 12%;
+    right: 4%;
+    animation: rotate-left 4s linear infinite;
+  }
+}
+@keyframes rotate-right {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotate-left {
+  0% {
+    transform: rotate(360deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+.homeBoabolyPen {
+  &__txt {
+    position: relative;
+    -webkit-animation: pen-txt-bar 2s ease-in-out infinite;
+    animation: pen-txt-bar 2s ease-in-out infinite;
+    &::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      bottom: -1rem;
+      width: 3rem;
+      height: 0.25rem;
+      background-color: black;
+      transform: rotate(-115deg);
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      right: -2rem;
+      bottom: -1rem;
+      width: 3rem;
+      height: 0.25rem;
+      background-color: black;
+      transform: rotate(115deg);
+    }
+  }
+  &__btn {
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 1.5rem;
+      left: 2rem;
+      width: 0%;
+      height: 2px;
+      background-color: white;
+      transition: all 0.3s;
+    }
+    &:hover {
+      &::after {
+        width: calc(100% - 4rem);
+      }
+    }
+  }
+}
+@keyframes pen-txt-bar {
+  0% {
+    bottom: 0rem;
+  }
+  50% {
+    bottom: -1rem;
+  }
+  100% {
+    bottom: 0rem;
+  }
+}
+
 .arrow {
   position: absolute;
-  left: 50%;
+  left: calc(50% - 1rem);
   top: 90%;
   -webkit-transform-origin: 50% 50%;
   transform-origin: 50% 50%;
@@ -143,6 +351,34 @@ export default {
   }
   100% {
     opacity: 0;
+  }
+}
+.homeBannerCircle {
+  .loading span:first-of-type {
+    width: 50px;
+    height: 50px;
+    margin: 30px auto;
+    display: block;
+    background-color: #ddd;
+    border: 5px var(--color-black) solid;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    animation: black-circle 1s linear infinite reverse;
+    -webkit-animation: black-circle 1s linear infinite reverse;
+  }
+
+  @keyframes black-circle {
+    100% {
+      transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+    }
   }
 }
 </style>
