@@ -44,7 +44,6 @@ export default {
         reverseDirection: true,
         disableOnInteraction: false,
       }"
-      class=""
     >
       <swiper-slide
         v-for="artItem in artList"
@@ -71,7 +70,7 @@ export default {
     </swiper>
   </div>
 </template>
-<style lang="scss" scoped>
+<style lang="scss">
 // 搭配上freemode
 .swiper-free-mode > .swiper-wrapper {
   -webkit-transition-timing-function: linear;
