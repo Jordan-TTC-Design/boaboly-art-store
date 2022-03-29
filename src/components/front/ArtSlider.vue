@@ -13,13 +13,11 @@ export default {
   setup() {
     const modules = ref([Autoplay, FreeMode]);
     const artList = ref([]);
-    const pagination = ref({});
     function getArts() {
       emitter.emit('open-loading');
       frontApiMethod.getArts().then((res) => {
         if (res.success) {
           artList.value = JSON.parse(JSON.stringify(res.articles));
-          pagination.value = JSON.parse(JSON.stringify(res.pagination));
           emitter.emit('close-loading');
         }
       });
@@ -34,49 +32,43 @@ export default {
 };
 </script>
 <template>
-  <div class="pb-64 mt-24 relative">
-    <h4 class="text-center font-bold text-lg text-black mb-4">NEW WORKS</h4>
-    <h3 class="text-center font-bold text-4xl text-black mb-16">
-      最新圖文創作
-    </h3>
-    <div class="swiperBox">
-      <swiper
-        :slides-per-view="4"
-        :modules="modules"
-        :speed="4000"
-        :free-mode="true"
-        :loop="true"
-        :autoplay="{
-          delay: 1,
-          reverseDirection: true,
-          disableOnInteraction: false,
-        }"
-        class=""
+  <div class="swiperBox">
+    <swiper
+      :slides-per-view="4"
+      :modules="modules"
+      :speed="4000"
+      :free-mode="true"
+      :loop="true"
+      :autoplay="{
+        delay: 1,
+        reverseDirection: true,
+        disableOnInteraction: false,
+      }"
+      class=""
+    >
+      <swiper-slide
+        v-for="artItem in artList"
+        :key="artItem.id"
+        class="px-8 group"
       >
-        <swiper-slide
-          v-for="artItem in artList"
-          :key="artItem.id"
-          class="px-8 group"
+        <router-link
+          :to="`/arts/${artItem.id}`"
+          class="flex justify-center relative"
         >
-          <router-link
-            :to="`/arts/${artItem.id}`"
-            class="flex justify-center relative"
+          <img class="w-100" :src="artItem.imagesUrl[0]" alt="face" />
+          <div
+            class="absolute top-0 left-0 right-0 bottom-0 bg-black/50 flex justify-center items-center opacity-0 group-hover:opacity-100"
           >
-            <img class="w-100" :src="artItem.imagesUrl[0]" alt="face" />
-            <div
-              class="absolute top-0 left-0 right-0 bottom-0 bg-black/50 flex justify-center items-center opacity-0 group-hover:opacity-100"
-            >
-              <p class="text-white font-medium text-lg">{{ artItem.title }}</p>
-              <div class="viewMoreBtn">
-                <p class="text-white font-medium text-lg text-center mt-2">
-                  VIEW MORE
-                </p>
-              </div>
+            <p class="text-white font-medium text-lg">{{ artItem.title }}</p>
+            <div class="viewMoreBtn">
+              <p class="text-white font-medium text-lg text-center mt-2">
+                VIEW MORE
+              </p>
             </div>
-          </router-link>
-        </swiper-slide>
-      </swiper>
-    </div>
+          </div>
+        </router-link>
+      </swiper-slide>
+    </swiper>
   </div>
 </template>
 <style lang="scss" scoped>

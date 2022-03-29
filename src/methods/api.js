@@ -31,13 +31,25 @@ const token = document.cookie.replace(
 // 把Authorization加到HEADER
 axios.defaults.headers.common['Authorization'] = token;
 const frontApiMethod = {
+  getProductAll() {
+    return axios
+      .get(`${frontApiPath.getProduct}s/all`)
+      .then((res) => {
+        console.log('成功取得全部商品資料');
+        console.log(res);
+        return res.data.products;
+      })
+      .catch((err) => {
+        console.dir(err.response);
+      });
+  },
   getProducts() {
     return axios
       .get(`${frontApiPath.getProduct}s`)
       .then((res) => {
         console.log('成功取得多筆商品資料');
         console.log(res);
-        return res.data.products;
+        return res.data;
       })
       .catch((err) => {
         console.dir(err.response);
@@ -55,12 +67,12 @@ const frontApiMethod = {
         console.dir(err.response);
       });
   },
-  getArts() {
+  getArts(pageNum = 1) {
     return axios
-      .get(`${frontApiPath.getArticle}s`)
+      .get(`${frontApiPath.getArticle}s?page=${pageNum}`)
       .then((res) => {
         console.log('成功取得多筆創作資料');
-        console.log(res);
+        console.log(res.data);
         return res.data;
       })
       .catch((err) => {
@@ -321,9 +333,9 @@ const apiMethod = {
         console.dir(err.response.status);
       });
   },
-  adminGetArticles() {
+  adminGetArticles(pageNum = 1) {
     return axios
-      .get(`${adminApiPath.adminArticle}s`)
+      .get(`${adminApiPath.adminArticle}s?page=${pageNum}`)
       .then((res) => {
         console.log('取得成功');
         console.log(res.data.articles);

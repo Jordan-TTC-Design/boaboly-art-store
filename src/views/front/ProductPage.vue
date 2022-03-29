@@ -1,6 +1,6 @@
 <script>
 import { ref, watch, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
 import emitter from '@/methods/emitter';
 import ProductSlider from '@/components/front/ProductSlider.vue';
@@ -8,9 +8,9 @@ import ProductSlider from '@/components/front/ProductSlider.vue';
 export default {
   components: { ProductSlider },
   setup() {
-    const router = useRouter();
     const route = useRoute();
     const productId = computed(() => route.params.id);
+    const productList = ref([]);
     const buyNum = ref(1);
     const productImgArray = ref([]);
     const product = ref({});
@@ -22,6 +22,16 @@ export default {
         mainImg.value = res.imageUrl;
         productImgArray.value = [res.imageUrl, ...res.imagesUrl];
         emitter.emit('close-loading');
+        getProducts();
+      });
+    }
+    function getProducts() {
+      emitter.emit('open-loading');
+      frontApiMethod.getProductAll().then((res) => {
+        productList.value = JSON.parse(JSON.stringify(res)).filter(
+          (item) => item.id !== product.value.id && item.promoted.star > 0
+        );
+        emitter.emit('close-loading');
       });
     }
     function addCart() {
@@ -31,20 +41,17 @@ export default {
       });
       buyNum.value = 1;
     }
-    function reloadProduct(itemId) {
-      router.push(`/products/${itemId}`);
-    }
     watch(productId, () => {
       getProduct(productId.value);
     });
     getProduct(productId.value);
     return {
       product,
+      productList,
       productImgArray,
       buyNum,
       mainImg,
       addCart,
-      reloadProduct,
     };
   },
 };
@@ -54,19 +61,23 @@ export default {
     <div class="bg-primaryLight w-full h-96 absolute top-0"></div>
     <div class="container mx-auto bg-white shadow-sm p-24">
       <div
-        class="grid grid-cols-2 gap-8 relative pb-12 border-b border-gray-300"
+        class="grid grid-cols-12 gap-8 relative pb-12 border-b border-gray-300"
       >
-        <div class="grid grid-cols-5 gap-2">
-          <div class="col-span-4"><img :src="mainImg" alt="產品主圖" /></div>
-          <div class="col-span-1">
-            <div class="bg-gray-100 p-2 h-full overflow-y-scroll">
+        <div class="col-span-5 gap-4">
+          <div class="bg-gray-100 p-2 flex flex-col gap-2">
+            <img class="w-full" :src="mainImg" alt="產品主圖" />
+            <div
+              class="w-full bg-gray-100 overflow-x-auto flex gap-x-2"
+              v-if="productImgArray.length >= 2"
+            >
               <template
                 v-for="(productImg, index) in productImgArray"
                 :key="productImg"
               >
                 <img
                   v-if="productImg !== ''"
-                  class="mb-2 cursor-pointer"
+                  class="w-20 cursor-pointer hover:brightness-50"
+                  :class="{ 'brightness-50': mainImg === productImg }"
                   :src="productImg"
                   :alt="`產品附圖${index}`"
                   @click="mainImg = productImg"
@@ -75,8 +86,8 @@ export default {
             </div>
           </div>
         </div>
-        <div class="flex flex-col justify-between">
-          <div>
+        <div class="col-span-7 flex flex-col justify-between">
+          <div class="mb-12">
             <p class="productTag bg-primaryLight mb-4">
               {{ product.category }}
             </p>
@@ -183,9 +194,12 @@ export default {
       </div>
       <div class="mb-24">
         <h3 class="text-center font-bold text-3xl text-black mb-12">
-          其他商品
+          其他推薦商品
         </h3>
-        <ProductSlider @send-product-id="reloadProduct" />
+        <ProductSlider
+          :product-list="productList"
+          @send-product-id="reloadProduct"
+        />
       </div>
       <div class="px-12 flex justify-end gap-x-8 goBackListBtn">
         <router-link to="/products" class="text-3xl font-bold"

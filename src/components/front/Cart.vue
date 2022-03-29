@@ -62,6 +62,7 @@ export default {
     watch(nowPath, (newValue, oldValue) => {
       if (newValue !== oldValue) {
         modalOpen.value = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
     watch(modalOpen, (newValue) => {

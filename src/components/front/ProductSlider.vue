@@ -1,7 +1,5 @@
 <script>
-import { ref } from 'vue';
-import { frontApiMethod } from '@/methods/api.js';
-import emitter from '@/methods/emitter';
+import { ref, computed } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import { Autoplay } from 'swiper';
@@ -10,22 +8,14 @@ export default {
     Swiper,
     SwiperSlide,
   },
+  props: ['product-list'],
   emits: ['send-product-id'],
-  setup() {
+  setup(props) {
     const modules = ref([Autoplay]);
-    const productList = ref([]);
-    function getProducts() {
-      emitter.emit('open-loading');
-      frontApiMethod.getProducts().then((res) => {
-        productList.value = JSON.parse(JSON.stringify(res));
-        emitter.emit('close-loading');
-      });
-    }
-    getProducts();
+    const productList = computed(() => props.productList);
     return {
       productList,
       modules,
-      emitter,
     };
   },
 };
@@ -48,10 +38,7 @@ export default {
           :key="productItem.id"
           class="px-8 sliderItem group"
         >
-          <div
-            @click="$emit('send-product-id', productItem.id)"
-            class="relative cursor-pointer"
-          >
+          <router-link :to="productItem.id" class="relative cursor-pointer">
             <img
               class="w-100"
               :src="productItem.imageUrl"
@@ -72,14 +59,13 @@ export default {
                 NT$ {{ productItem.price }}
               </p>
             </div>
-          </div>
+          </router-link>
         </swiper-slide>
       </swiper>
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
-// 搭配上freemode
 .swiper-free-mode > .swiper-wrapper {
   -webkit-transition-timing-function: linear;
   -o-transition-timing-function: linear;

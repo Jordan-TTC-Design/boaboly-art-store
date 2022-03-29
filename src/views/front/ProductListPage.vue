@@ -1,19 +1,24 @@
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { frontApiMethod } from '@/methods/api.js';
 import { productCategory, materialCategory } from '@/methods/data.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
+import Pagination from '@/components/helpers/Pagination.vue';
+import SideNav from '@/components/helpers/SideNav.vue';
 import emitter from '@/methods/emitter';
 
 export default {
   components: {
     ProductListItemSquare,
+    SideNav,
+    Pagination,
   },
   setup() {
     const productList = ref([]);
     let filterKeyword = ref('');
     let filterProductCategory = ref('');
     let filterMaterialCategory = ref('');
+    const paginationData = ref({ totalPages: 1, nowPage: 1 });
     const productfilterList = computed(() => {
       let array = [];
       array = productList.value;
@@ -21,6 +26,29 @@ export default {
       array = filterCategory(filterProductCategory.value, array);
       array = filterMaterial(filterMaterialCategory.value, array);
       return array;
+    });
+    const nowPageProducts = computed(() => {
+      let array = [];
+      if (productfilterList.value.length <= 10) {
+        return productfilterList.value;
+      } else {
+        const pageFrist = paginationData.value.nowPage * 10 - 10;
+        productfilterList.value.forEach((item, index) => {
+          if (pageFrist <= index && index < paginationData.value.nowPage * 10) {
+            array.push(item);
+          }
+        });
+        return array;
+      }
+    });
+    watch(productfilterList, (newValue, oldValue) => {
+      if (newValue.length !== oldValue.length) {
+        paginationData.value.nowPage = 1;
+        paginationData.value.totalPages = Math.ceil(newValue.length / 10);
+      }
+    });
+    watch(paginationData.value, () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
     function filterWord(filterData, dataList) {
       let array = dataList;
@@ -43,31 +71,31 @@ export default {
       }
       return array;
     }
-    function getProduct() {
+    function getProducts() {
       emitter.emit('open-loading');
-      frontApiMethod.getProducts().then((res) => {
+      frontApiMethod.getProductAll().then((res) => {
         if (res) {
           productList.value = JSON.parse(JSON.stringify(res));
           emitter.emit('close-loading');
         }
       });
     }
-    getProduct();
+    getProducts();
     return {
       filterKeyword,
       filterProductCategory,
       filterMaterialCategory,
-      productfilterList,
+      nowPageProducts,
       productCategory,
       materialCategory,
-      getProduct,
       emitter,
+      paginationData,
     };
   },
 };
 </script>
 <template>
-  <div class="relative bg-white grid grid-cols-12 px-16 py-32">
+  <div class="relative bg-white grid grid-cols-12 lg:px-24 px-16 py-32 gap-x-8">
     <div class="col-start-2 col-span-10 pb-32">
       <h4 class="text-xl text-black uppercase mb-8">All Products</h4>
       <h3 class="text-8xl text-black font-medium mb-16">全部商品</h3>
@@ -85,7 +113,7 @@ export default {
           </button>
           <div class="underLine"></div>
         </div>
-        <div class="pageSelectBox flex-1">
+        <div class="pageSelectBox flex-1 md:hidden">
           <select
             class="cursor-pointer appearance-none bg-transparent border-b border-gray-300 w-full p-2 leading-tight focus:outline-none"
             id="filterCategory"
@@ -99,7 +127,7 @@ export default {
           </select>
           <div class="underLine"></div>
         </div>
-        <div class="pageSelectBox flex-1">
+        <div class="pageSelectBox flex-1 md:hidden">
           <select
             class="cursor-pointer appearance-none bg-transparent border-b border-gray-300 w-full p-2 leading-tight focus:outline-none"
             id="filterCategory"
@@ -115,8 +143,19 @@ export default {
         </div>
       </div>
     </div>
-    <div class="col-span-12 grid grid-cols-3 gap-4">
-      <template v-for="(product, index) in productfilterList" :key="product.id">
+    <div class="col-span-2 relative md:block hidden">
+      <div class="sticky top-32">
+        <SideNav
+          :nav-list="productCategory"
+          @change-side-nav="filterProductCategory = $event"
+          >商品類別</SideNav
+        >
+      </div>
+    </div>
+    <div
+      class="md:col-span-10 col-span-12 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 mb-8"
+    >
+      <template v-for="(product, index) in nowPageProducts" :key="product.id">
         <ProductListItemSquare
           :product="product"
           :list-index="index"
@@ -128,6 +167,15 @@ export default {
           "
         />
       </template>
+    </div>
+    <div
+      class="col-start-3 col-span-10 flex justify-center"
+      v-if="paginationData.totalPages > 1"
+    >
+      <Pagination
+        :pagination-data="paginationData"
+        @change-page-number="paginationData.nowPage = $event"
+      ></Pagination>
     </div>
   </div>
 </template>
@@ -195,4 +243,3 @@ export default {
   }
 }
 </style>
-data
