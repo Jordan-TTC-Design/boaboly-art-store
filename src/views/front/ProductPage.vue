@@ -41,8 +41,10 @@ export default {
       });
       buyNum.value = 1;
     }
-    watch(productId, () => {
-      getProduct(productId.value);
+    watch(productId, (newValue, oldValue) => {
+      if (newValue !== oldValue) {
+        getProduct(productId.value);
+      }
     });
     getProduct(productId.value);
     return {
@@ -196,10 +198,7 @@ export default {
         <h3 class="text-center font-bold text-3xl text-black mb-12">
           其他推薦商品
         </h3>
-        <ProductSlider
-          :product-list="productList"
-          @send-product-id="reloadProduct"
-        />
+        <ProductSlider :product-list="productList" />
       </div>
       <div class="px-12 flex justify-end gap-x-8 goBackListBtn">
         <router-link to="/products" class="text-3xl font-bold"

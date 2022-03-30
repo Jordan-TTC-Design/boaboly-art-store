@@ -29,12 +29,12 @@ export default {
     });
     const nowPageProducts = computed(() => {
       let array = [];
-      if (productfilterList.value.length <= 10) {
+      if (productfilterList.value.length <= 12) {
         return productfilterList.value;
       } else {
-        const pageFrist = paginationData.value.nowPage * 10 - 10;
+        const pageFrist = paginationData.value.nowPage * 12 - 12;
         productfilterList.value.forEach((item, index) => {
-          if (pageFrist <= index && index < paginationData.value.nowPage * 10) {
+          if (pageFrist <= index && index < paginationData.value.nowPage * 12) {
             array.push(item);
           }
         });
@@ -44,7 +44,7 @@ export default {
     watch(productfilterList, (newValue, oldValue) => {
       if (newValue.length !== oldValue.length) {
         paginationData.value.nowPage = 1;
-        paginationData.value.totalPages = Math.ceil(newValue.length / 10);
+        paginationData.value.totalPages = Math.ceil(newValue.length / 12);
       }
     });
     watch(paginationData.value, () => {
@@ -52,21 +52,24 @@ export default {
     });
     function filterWord(filterData, dataList) {
       let array = dataList;
-      if (filterData !== '') {
-        array = dataList.filter((item) => item.title.includes(filterData));
+      if (filterData !== '' && filterData !== undefined) {
+        array = dataList.filter(
+          (item) =>
+            item.title.includes(filterData) || item.tags.includes(filterData)
+        );
       }
       return array;
     }
     function filterCategory(filterData, dataList) {
       let array = dataList;
-      if (filterData !== '') {
+      if (filterData !== '' && filterData !== undefined) {
         array = dataList.filter((item) => item.category === filterData);
       }
       return array;
     }
     function filterMaterial(filterData, dataList) {
       let array = dataList;
-      if (filterData !== '') {
+      if (filterData !== '' && filterData !== undefined) {
         array = dataList.filter((item) => item.material === filterData);
       }
       return array;
@@ -108,8 +111,8 @@ export default {
             placeholder="搜尋關鍵字"
             v-model="filterKeyword"
           />
-          <button class="py-1.5 px-2 searchBtn">
-            <i class="bi bi-search"></i>
+          <button class="py-1.5 px-2 searchBtn group">
+            <i class="bi bi-x text-xl group-hover:text-red-600"></i>
           </button>
           <div class="underLine"></div>
         </div>

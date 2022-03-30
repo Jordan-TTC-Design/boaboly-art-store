@@ -9,7 +9,6 @@ export default {
     SwiperSlide,
   },
   props: ['product-list'],
-  emits: ['send-product-id'],
   setup(props) {
     const modules = ref([Autoplay]);
     const productList = computed(() => props.productList);

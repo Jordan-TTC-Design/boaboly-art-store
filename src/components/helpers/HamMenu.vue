@@ -1,22 +1,37 @@
 <script>
 import { ref, watch, computed, onUnmounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 export default {
   setup() {
     const route = useRoute();
+    const router = useRouter();
     let modalOpen = ref(false);
+    let searchKeyword = ref('');
     const nowPath = computed(() => route.path);
     watch(nowPath, (newValue, oldValue) => {
       if (newValue !== oldValue) {
         modalOpen.value = false;
       }
     });
+    function searchItem() {
+      const keyword = searchKeyword.value.replace(/\s+/g, '');
+      console.log(`/search?keyword=${keyword}`);
+      if (keyword.length > 0) {
+        router.push(`/search?keyword=${keyword}`);
+        searchKeyword.value = '';
+        modalOpen.value = false;
+      } else {
+        return;
+      }
+    }
     onUnmounted(() => {
       modalOpen.value = false;
     });
     return {
+      searchKeyword,
       modalOpen,
+      searchItem,
     };
   },
 };
@@ -79,8 +94,11 @@ export default {
             id="hamSearchBox__inputBox__input"
             type="text"
             class="appearance-none bg-white text-gray-700 py-2 px-2 leading-tight focus:outline-none"
+            v-model="searchKeyword"
           />
-          <button type="button" class="searchBtn">搜尋</button>
+          <button type="button" class="searchBtn" @click="searchItem">
+            搜尋
+          </button>
         </div>
       </li>
     </ul>
