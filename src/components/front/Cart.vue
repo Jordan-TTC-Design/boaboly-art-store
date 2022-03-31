@@ -32,12 +32,14 @@ export default {
       });
     }
     function editAmout(num, index) {
-      if (num > 0) {
-        cartList.value[index].qty += 1;
-      } else {
-        cartList.value[index].qty -= 1;
+      if (cartList.value[index].qty > 1) {
+        if (num > 0) {
+          cartList.value[index].qty += 1;
+        } else {
+          cartList.value[index].qty -= 1;
+        }
+        updateCart(cartList.value[index].qty, cartList.value[index].id);
       }
-      updateCart(cartList.value[index].qty, cartList.value[index].id);
     }
     function getCart() {
       frontApiMethod.getCart().then((res) => {
@@ -123,7 +125,7 @@ export default {
           </button>
           <button
             type="button"
-            :disabled="cartList.length === 0"
+            v-if="cartList.length > 0"
             class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
             @click="deleteCartAll"
           >
@@ -168,6 +170,10 @@ export default {
                 <button
                   type="button"
                   class="numberSwitcher__btn"
+                  :class="{
+                    'text-gray-300': item.qty <= 1,
+                    'cursor-default': item.qty <= 1,
+                  }"
                   @click="editAmout(-1, index)"
                 >
                   <i class="bi bi-dash text-xl"></i>

@@ -3,7 +3,8 @@ import { ref, watch, computed, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 export default {
-  setup() {
+  emits: ['fix-window'],
+  setup(props, { emit }) {
     const route = useRoute();
     const router = useRouter();
     let modalOpen = ref(false);
@@ -12,6 +13,13 @@ export default {
     watch(nowPath, (newValue, oldValue) => {
       if (newValue !== oldValue) {
         modalOpen.value = false;
+      }
+    });
+    watch(modalOpen, (newValue) => {
+      if (newValue === true) {
+        emit('fix-window', true);
+      } else {
+        emit('fix-window', false);
       }
     });
     function searchItem() {

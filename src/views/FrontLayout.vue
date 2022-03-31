@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { RouterView } from 'vue-router';
 import Cart from '@/components/front/Cart.vue';
 import HamMenu from '@/components/helpers/HamMenu.vue';
@@ -17,6 +17,14 @@ export default {
     function fixWindow(status) {
       modalOpen.value = status;
     }
+    watch(modalOpen, (newValue) => {
+      if (newValue === true) {
+        document.getElementsByTagName('body')[0].className =
+          'overflow-y-hidden';
+      } else {
+        document.body.removeAttribute('class');
+      }
+    });
     function scrollToTop() {
       window.scrollTo({
         top: 100,
@@ -35,10 +43,7 @@ export default {
 </script>
 
 <template>
-  <div
-    class="flex flex-col min-h-screen justify-between"
-    :class="{ 'no-scroll': modalOpen }"
-  >
+  <div class="flex flex-col min-h-screen justify-between">
     <header
       class="flex justify-between items-center bg-white sticky top-0 z-40 opacity-95"
     >

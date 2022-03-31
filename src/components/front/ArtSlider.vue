@@ -59,7 +59,7 @@ export default {
             class="absolute top-0 left-0 right-0 bottom-0 bg-black/50 flex justify-center items-center opacity-0 group-hover:opacity-100"
           >
             <p class="text-white font-medium text-lg">{{ artItem.title }}</p>
-            <div class="viewMoreBtn">
+            <div class="seeMore">
               <p class="text-white font-medium text-lg text-center mt-2">
                 VIEW MORE
               </p>
@@ -78,7 +78,7 @@ export default {
   transition-timing-function: linear;
   margin: 0 auto;
 }
-.viewMoreBtn {
+.seeMore {
   font-size: 1.5rem;
   font-weight: 500;
   transition: all 0.3s;
@@ -89,7 +89,7 @@ export default {
 }
 .group:hover {
   overflow: hidden;
-  .viewMoreBtn {
+  .seeMore {
     bottom: 1rem;
   }
 }
