@@ -53,7 +53,7 @@ export default {
           <Cart @fix-window="fixWindow" />
         </li>
         <li>
-          <HamMenu />
+          <HamMenu @fix-window="fixWindow" />
         </li>
       </ul>
     </header>
