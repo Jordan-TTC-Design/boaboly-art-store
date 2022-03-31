@@ -2,11 +2,13 @@
 import { ref, watch } from 'vue';
 import { RouterView } from 'vue-router';
 import Cart from '@/components/front/Cart.vue';
+import Collection from '@/components/front/Collection.vue';
 import HamMenu from '@/components/helpers/HamMenu.vue';
 import Loading from '@/components/helpers/Loading.vue';
 import PopReminder from '@/components/helpers/PopReminder.vue';
 export default {
   components: {
+    Collection,
     Cart,
     HamMenu,
     Loading,
@@ -49,6 +51,9 @@ export default {
     >
       <router-link to="/" class="text-2xl font-bold ml-6">Boaboly</router-link>
       <ul class="bg-black py-4 px-6 flex">
+        <li class="mr-4">
+          <Collection @fix-window="fixWindow" />
+        </li>
         <li class="mr-4">
           <Cart @fix-window="fixWindow" />
         </li>

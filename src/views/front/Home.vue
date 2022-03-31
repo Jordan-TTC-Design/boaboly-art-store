@@ -16,6 +16,7 @@ export default {
   },
   setup() {
     const productList = ref([]);
+    const collecitonList = ref([]);
     function getProduct() {
       emitter.emit('open-loading');
       frontApiMethod.getProductAll().then((res) => {
@@ -27,9 +28,17 @@ export default {
         }
       });
     }
+    function checkCollection(data) {
+      collecitonList.value = data;
+      console.log(collecitonList.value);
+    }
+    emitter.on('check-collection', (data) => {
+      checkCollection(data);
+    });
     getProduct();
     return {
       productList,
+      collecitonList,
       getProduct,
       emitter,
     };
@@ -74,10 +83,11 @@ export default {
       </h4>
       <h3 class="text-center font-bold text-4xl text-black mb-16">熱門商品</h3>
       <div class="grid grid-cols-3 gap-4">
-        <template v-for="(product, index) in productList" :key="product.id">
+        <template v-for="product in productList" :key="product.id">
           <ProductListItemSquare
             :product="product"
-            :list-index="index"
+            :colleciton-list="collecitonList"
+            :is_collection="collecitonList.indexOf(product.id)"
             @add-cart="
               emitter.emit('add-cart', {
                 id: product.id,

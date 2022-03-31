@@ -145,7 +145,7 @@ export default {
     </footer>
   </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 .hamListLink {
   display: flex;
   flex-direction: column;

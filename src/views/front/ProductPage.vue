@@ -10,6 +10,7 @@ export default {
   setup() {
     const route = useRoute();
     const productId = computed(() => route.params.id);
+    const collecitonList = ref([]);
     const productList = ref([]);
     const buyNum = ref(1);
     const productImgArray = ref([]);
@@ -46,13 +47,19 @@ export default {
         getProduct(productId.value);
       }
     });
+    emitter.on('check-collection', (data) => {
+      collecitonList.value = data;
+      console.log(collecitonList.value);
+    });
     getProduct(productId.value);
     return {
       product,
       productList,
+      collecitonList,
       productImgArray,
       buyNum,
       mainImg,
+      emitter,
       addCart,
     };
   },
@@ -136,12 +143,20 @@ export default {
                 </button>
               </div>
             </div>
-            <div class="flex">
+            <div class="flex gap-x-2">
               <button
                 type="button"
-                class="border border-gray-200 rounded py-2 px-3 hover:border-gray-300 bg-white mr-3"
+                class="rounded py-2 px-3 bg-white border border-gray-300"
+                data-id="product.id"
+                @click="emitter.emit('add-collection', product)"
               >
-                <i class="bi bi-heart-fill text-xl"></i>
+                <i
+                  :class="{
+                    'bi-heart': collecitonList.indexOf(product.id) < 0,
+                    'bi-heart-fill': collecitonList.indexOf(product.id) >= 0,
+                  }"
+                  class="bi text-xl text-black"
+                ></i>
               </button>
               <button
                 type="button"

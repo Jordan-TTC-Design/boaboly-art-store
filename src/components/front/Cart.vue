@@ -121,7 +121,7 @@ export default {
             @click="modalOpen = false"
           >
             <i class="bi bi-chevron-double-left mr-1"></i>
-            <p>返回繼續購物</p>
+            <p>返回</p>
           </button>
           <button
             type="button"
@@ -133,7 +133,7 @@ export default {
           </button>
         </div>
         <h2
-          class="inline-block py-3 pl-8 pr-32 bg-black text-3xl text-white font-bold mb-8 self-start"
+          class="inline-block py-3 px-8 bg-black text-2xl text-white font-bold self-start"
         >
           購物車
         </h2>
