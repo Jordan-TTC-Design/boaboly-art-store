@@ -16,6 +16,9 @@ export default {
     const productImgArray = ref([]);
     const product = ref({});
     const mainImg = ref(null);
+    let fullWidth = ref(window.innerWidth);
+    let swiperNum1 = ref(3);
+
     function getProduct(itemId) {
       emitter.emit('open-loading');
       frontApiMethod.getProduct(itemId).then((res) => {
@@ -42,11 +45,23 @@ export default {
       });
       buyNum.value = 1;
     }
+    watch(fullWidth, (newValue) => {
+      if (newValue >= 1280) {
+        swiperNum1.value = 3;
+      } else if (newValue < 1280 && newValue > 767) {
+        swiperNum1.value = 2;
+      } else if (newValue <= 767) {
+        swiperNum1.value = 1;
+      }
+    });
     watch(productId, (newValue, oldValue) => {
       if (newValue !== oldValue) {
         getProduct(productId.value);
       }
     });
+    window.onresize = () => {
+      fullWidth.value = window.innerWidth;
+    };
     emitter.on('check-collection', (data) => {
       collecitonList.value = data;
     });
@@ -59,19 +74,22 @@ export default {
       buyNum,
       mainImg,
       emitter,
+      swiperNum1,
       addCart,
     };
   },
 };
 </script>
 <template>
-  <div class="bg-gray-100 relative py-16 min-h-screen">
+  <div class="bg-gray-100 relative md:py-16 py-8 min-h-screen">
     <div class="bg-primaryLight w-full h-96 absolute top-0"></div>
-    <div class="container mx-auto bg-white shadow-sm p-24">
+    <div
+      class="sm:container sm:mx-auto mx-4 bg-white shadow-sm lg:p-24 md:p-12 p-4 pb-24"
+    >
       <div
-        class="grid grid-cols-12 gap-8 relative pb-12 border-b border-gray-300"
+        class="grid lg:grid-cols-12 grid-cols-1 gap-8 relative pb-12 border-b border-gray-300"
       >
-        <div class="col-span-5 gap-4">
+        <div class="lg:col-span-5 gap-4">
           <div class="bg-gray-100 p-2 flex flex-col gap-2">
             <img class="w-full" :src="mainImg" alt="產品主圖" />
             <div
@@ -94,7 +112,7 @@ export default {
             </div>
           </div>
         </div>
-        <div class="col-span-7 flex flex-col justify-between">
+        <div class="lg:col-span-7 flex flex-col justify-between">
           <div class="mb-12">
             <p class="productTag bg-primaryLight mb-4">
               {{ product.category }}
@@ -110,16 +128,12 @@ export default {
             </p>
           </div>
           <div>
-            <div class="flex items-center mb-4">
-              <p class="text-sm text-gray-400 mr-3 whitespace-nowrap">
-                剩餘庫存
-              </p>
+            <div class="flex items-center mb-4 gap-3">
+              <p class="text-sm text-gray-400 whitespace-nowrap">剩餘庫存</p>
               <p>{{ `${product.store} ${product.unit}` }}</p>
             </div>
-            <div class="flex items-center mb-6">
-              <p class="text-sm text-gray-400 mr-3 whitespace-nowrap">
-                購買數量
-              </p>
+            <div class="flex md:items-center mb-6 gap-3 md:flex-row flex-col">
+              <p class="text-sm text-gray-400 whitespace-nowrap">購買數量</p>
               <div class="numberSwitcher">
                 <button
                   type="button"
@@ -174,24 +188,24 @@ export default {
         </div>
       </div>
       <div
-        class="grid grid-cols-12 gap-8 relative mb-24 py-24 border-b border-gray-300"
+        class="grid lg:grid-cols-12 grid-cols-1 gap-8 relative mb-24 py-24 border-b border-gray-300"
       >
-        <div class="col-span-8">
+        <div class="lg:col-span-8">
           <h3 class="text-2xl text-black font-bold mb-8">商品介紹</h3>
           <div v-html="product.content"></div>
         </div>
-        <div class="col-span-4">
+        <div class="lg:col-span-4">
           <h3 class="text-2xl text-black font-bold mb-8">商品其他資訊</h3>
           <ul class="grid gap-y-4">
-            <li class="flex gap-3">
+            <li class="flex md:flex-row flex-col gap-x-3 gap-y-1">
               <p class="mt-0.5 text-sm text-gray-400 whitespace-nowrap">材質</p>
               <p>{{ product.material }}</p>
             </li>
-            <li class="flex gap-3">
+            <li class="flex md:flex-row flex-col gap-x-3 gap-y-1">
               <p class="mt-0.5 text-sm text-gray-400 whitespace-nowrap">描述</p>
               <p>{{ product.description }}</p>
             </li>
-            <li class="flex gap-3">
+            <li class="flex md:flex-row flex-col gap-x-3 gap-y-1">
               <p class="mt-0.5 text-sm text-gray-400 whitespace-nowrap">尺寸</p>
               <div class="flex gap-4" v-if="product.size">
                 <p>長：{{ product.size.sizeLength }}</p>
@@ -199,7 +213,7 @@ export default {
                 <p>高：{{ product.size.sizeHeight }}</p>
               </div>
             </li>
-            <li class="flex gap-3">
+            <li class="flex md:flex-row flex-col gap-x-3 gap-y-1">
               <p class="mt-0.5 text-sm text-gray-400 whitespace-nowrap">標籤</p>
               <div class="flex flex-wrap">
                 <p v-for="tag in product.tags" :key="tag"># {{ tag }}</p>
@@ -212,10 +226,12 @@ export default {
         <h3 class="text-center font-bold text-3xl text-black mb-12">
           其他推薦商品
         </h3>
-        <ProductSlider :product-list="productList" />
+        <ProductSlider :swiper-num="swiperNum1" :product-list="productList" />
       </div>
-      <div class="px-12 flex justify-end gap-x-8 goBackListBtn">
-        <router-link to="/products" class="text-3xl font-bold"
+      <div
+        class="flex md:flex-row flex-col justify-end items-center gap-x-8 px-12"
+      >
+        <router-link to="/products" class="lg:text-3xl tex-xl font-bold"
           >BACK TO PRODUCTS</router-link
         >
         <router-link to="/products" class="arrow"></router-link>

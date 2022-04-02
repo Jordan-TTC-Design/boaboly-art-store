@@ -48,7 +48,6 @@
   flex-direction: row;
   justify-content: space-between;
   transition: all 0.3s;
-  width: 100%;
 }
 .numberSwitcher__btn{
   cursor: pointer;

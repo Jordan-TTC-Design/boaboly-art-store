@@ -8,7 +8,7 @@ export default {
     Swiper,
     SwiperSlide,
   },
-  props: ['product-list'],
+  props: ['swiper-num', 'product-list'],
   setup(props) {
     const modules = ref([Autoplay]);
     const productList = computed(() => props.productList);
@@ -23,7 +23,7 @@ export default {
   <div class="relative">
     <div class="swiperBox">
       <swiper
-        :slides-per-view="3"
+        :slides-per-view="swiperNum"
         :modules="modules"
         :speed="3000"
         :loop="true"
@@ -65,12 +65,6 @@ export default {
   </div>
 </template>
 <style lang="scss" scoped>
-.swiper-free-mode > .swiper-wrapper {
-  -webkit-transition-timing-function: linear;
-  -o-transition-timing-function: linear;
-  transition-timing-function: linear;
-  margin: 0 auto;
-}
 .viewMoreBtn {
   font-size: 1.5rem;
   font-weight: 500;
