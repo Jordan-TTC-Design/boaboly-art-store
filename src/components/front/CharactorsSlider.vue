@@ -9,26 +9,10 @@ export default {
     Swiper,
     SwiperSlide,
   },
+  props: ['swiper-num'],
   setup() {
-    const swiperNum = ref(1);
-    const swiperDetail = ref({
-      autoPlay: {
-        delay: 2500,
-        disableOnInteraction: false,
-      },
-      pagination: {
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      slidesPerView: swiperNum.value,
-    });
     const modules = ref([Autoplay, FreeMode]);
     return {
-      swiperNum,
-      swiperDetail,
       modules,
       emitter,
     };
@@ -48,7 +32,7 @@ export default {
     <div class="col-start-2 col-span-2">
       <div class="charactorList">
         <swiper
-          :slides-per-view="3"
+          :slides-per-view="swiperNum"
           :space-between="50"
           :loop="true"
           :free-mode="true"

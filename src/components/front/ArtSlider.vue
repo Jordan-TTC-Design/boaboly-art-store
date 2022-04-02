@@ -10,6 +10,7 @@ export default {
     Swiper,
     SwiperSlide,
   },
+  props: ['swiper-num'],
   setup() {
     const modules = ref([Autoplay, FreeMode]);
     const artList = ref([]);
@@ -34,7 +35,7 @@ export default {
 <template>
   <div class="swiperBox">
     <swiper
-      :slides-per-view="4"
+      :slides-per-view="swiperNum"
       :modules="modules"
       :speed="4000"
       :free-mode="true"

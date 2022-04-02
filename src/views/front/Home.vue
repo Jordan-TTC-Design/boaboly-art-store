@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { frontApiMethod } from '@/methods/api.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
 import HomeMainBanner from '@/components/front/HomeMainBanner.vue';
@@ -17,6 +17,20 @@ export default {
   setup() {
     const productList = ref([]);
     const collecitonList = ref([]);
+    let fullWidth = ref(window.innerWidth);
+    let swiperNum1 = ref(4);
+    let swiperNum2 = ref(3);
+    watch(fullWidth, (newValue) => {
+      if (newValue >= 1280) {
+        swiperNum1.value = 4;
+        swiperNum2.value = 3;
+      } else if (newValue < 1280) {
+        swiperNum1.value = 3;
+        swiperNum2.value = 2;
+      } else if (newValue < 767) {
+        swiperNum1.value = 2;
+      }
+    });
     function getProduct() {
       emitter.emit('open-loading');
       frontApiMethod.getProductAll().then((res) => {
@@ -31,6 +45,9 @@ export default {
     function checkCollection(data) {
       collecitonList.value = data;
     }
+    window.onresize = () => {
+      fullWidth.value = window.innerWidth;
+    };
     emitter.on('check-collection', (data) => {
       checkCollection(data);
     });
@@ -38,8 +55,10 @@ export default {
     return {
       productList,
       collecitonList,
-      getProduct,
+      swiperNum1,
+      swiperNum2,
       emitter,
+      getProduct,
     };
   },
 };
@@ -51,9 +70,9 @@ export default {
     <h3 class="text-center font-bold text-4xl text-black mb-16">
       最新圖文創作
     </h3>
-    <ArtSlider />
+    <ArtSlider :swiper-num="swiperNum1" />
   </div>
-  <CharactorsSlider />
+  <CharactorsSlider :swiper-num="swiperNum2" />
   <div
     class="grid grid-cols-5 px-12 py-24 gap-4 relative bg-white border-b border-gray-300"
   >
