@@ -24,11 +24,12 @@ export default {
       if (newValue >= 1280) {
         swiperNum1.value = 4;
         swiperNum2.value = 3;
-      } else if (newValue < 1280) {
+      } else if (newValue < 1280 && newValue > 767) {
         swiperNum1.value = 3;
         swiperNum2.value = 2;
-      } else if (newValue < 767) {
+      } else if (newValue <= 767) {
         swiperNum1.value = 2;
+        swiperNum2.value = 2;
       }
     });
     function getProduct() {
@@ -65,7 +66,7 @@ export default {
 </script>
 <template>
   <HomeMainBanner />
-  <div class="pb-48 mt-24 relative">
+  <div class="md:mb-36 mb-24 mt-24 relative">
     <h4 class="text-center font-bold text-lg text-black mb-4">NEW WORKS</h4>
     <h3 class="text-center font-bold text-4xl text-black mb-16">
       最新圖文創作
@@ -74,35 +75,41 @@ export default {
   </div>
   <CharactorsSlider :swiper-num="swiperNum2" />
   <div
-    class="grid grid-cols-5 px-12 py-24 gap-4 relative bg-white border-b border-gray-300"
+    class="grid grid-cols-5 lg:px-12 px-4 md:py-36 py-24 gap-4 relative bg-white border-b border-gray-300"
   >
-    <div class="col-span-1 flex justify-center relative items-start pt-24 px-4">
-      <div class="homeBoabolyPen w-100 sticky top-32">
+    <div
+      class="col-span-1 relative md:pt-24 xl:px-16 lg:px-8 md:px-4 md:block hidden"
+    >
+      <div class="homeBoabolyPen sticky top-32 flex flex-col justify-center">
         <p
-          class="homeBoabolyPen__txt text-center text-xl font-medium text-black mb-12"
+          class="homeBoabolyPen__txt text-center lg:text-xl text-sm font-medium text-black mb-12"
         >
           希望你會喜歡
         </p>
         <img
-          class="w-100 mb-2"
+          class="mb-2"
           src="@/assets/images/img-boaboly-pen.svg"
           alt="Boaboly圖片"
         />
         <router-link
           :to="{ name: 'ProductList' }"
-          class="homeBoabolyPen__btn block py-6 px-4 text-center bg-black text-white font-bold"
+          class="homeBoabolyPen__btn block lg:text-xl text-sm lg:py-6 lg:px-4 px-2 py-4 text-center bg-black text-white font-bold"
           >VIEW MORE</router-link
         >
       </div>
     </div>
-    <div class="col-start-2 col-span-4">
+    <div class="md:col-start-2 md:col-span-4 col-span-5">
       <h4 class="text-center font-bold text-lg text-black mb-4">
         popular Products
       </h4>
       <h3 class="text-center font-bold text-4xl text-black mb-16">熱門商品</h3>
-      <div class="grid grid-cols-3 gap-4">
-        <template v-for="product in productList" :key="product.id">
+      <div class="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+        <template v-for="(product, index) in productList" :key="product.id">
           <ProductListItemSquare
+            :class="{
+              'md:border-none border-b border-gray-300':
+                index < productList.length - 1,
+            }"
             :product="product"
             :colleciton-list="collecitonList"
             :is_collection="collecitonList.indexOf(product.id)"
@@ -117,12 +124,14 @@ export default {
       </div>
     </div>
   </div>
-  <div class="px-48 py-24 grid grid-col-1 gap-y-12">
-    <div class="flex justify-end items-center gap-x-8 goBackListBtn">
+  <div class="lg:px-48 md:px-24 px-8 py-24 grid grid-col-1 gap-y-12">
+    <div
+      class="flex md:flex-row flex-col justify-end items-center gap-x-8 goBackListBtn"
+    >
       <a
         target="_brank"
         href="https://shopee.tw/boaboly.art"
-        class="text-3xl font-bold py-8"
+        class="xl:text-3xl text-xl font-bold py-8 md:px-0 px-8"
         ><i class="bi bi-shop mr-2"></i>GO TO SHOPEE STORE</a
       >
       <a
@@ -131,11 +140,13 @@ export default {
         class="goToArrow"
       ></a>
     </div>
-    <div class="flex justify-end items-center gap-x-8 goBackListBtn">
+    <div
+      class="flex md:flex-row flex-col justify-end items-center gap-x-8 goBackListBtn"
+    >
       <a
         target="_brank"
         href="https://www.pinkoi.com/store/boaboly"
-        class="text-3xl font-bold py-8"
+        class="xl:text-3xl text-xl font-bold py-8 md:px-0 px-8"
         ><i class="bi bi-shop mr-2"></i>GO TO PINKOI STORE</a
       >
       <a
@@ -236,6 +247,9 @@ export default {
   position: relative;
   width: 200px;
   height: 36px;
+  // @media (max-width: 767.98px) {
+  //   width: 100px;
+  // }
   cursor: pointer;
   transition: 0.5s;
   overflow: hidden;

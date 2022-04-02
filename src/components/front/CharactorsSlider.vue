@@ -20,16 +20,20 @@ export default {
 };
 </script>
 <template>
-  <div class="sectionCharactor bg-gray-100 grid grid-cols-3 py-36 relative">
+  <div
+    class="sectionCharactor bg-gray-100 grid md:grid-cols-3 grid-cols-1 md:py-36 py-24 gap-y-12 relative"
+  >
     <h3 class="sectionCharactor__bgWord sectionCharactor__bgWord--top">
       BOABOLY
     </h3>
-    <div class="col-start-1 flex justify-start items-start">
-      <div class="bg-black py-4 pl-5 pr-12 ml-8">
+    <div
+      class="col-start-1 flex md:justify-start justify-center items-start px-8"
+    >
+      <div class="bg-black py-4 md:pl-5 md:pr-12 px-8">
         <h3 class="text-3xl text-white font-bold">寶莉角色</h3>
       </div>
     </div>
-    <div class="col-start-2 col-span-2">
+    <div class="md:col-start-2 md:col-span-2">
       <div class="charactorList">
         <swiper
           :slides-per-view="swiperNum"
@@ -132,6 +136,16 @@ export default {
     &--bottom {
       bottom: -4rem;
       right: 2rem;
+    }
+    @media (max-width: 767.98px) {
+      font-size: 4rem;
+      letter-spacing: 0.25rem;
+      &--top {
+        top: -2rem;
+      }
+      &--bottom {
+        bottom: -2rem;
+      }
     }
   }
 }

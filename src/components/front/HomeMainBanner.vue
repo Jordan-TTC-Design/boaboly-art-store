@@ -1,5 +1,7 @@
 <template>
-  <div class="homeMainBanner grid grid-cols-3 pt-24 pb-36 relative">
+  <div
+    class="homeMainBanner grid md:grid-cols-3 grid-cols-1 py-36 md:px-0 px-12 relative"
+  >
     <img
       class="homeMainBanner__flower flower-white-pink"
       src="@/assets/images/flower-white-pink.svg"
@@ -50,7 +52,7 @@
       src="@/assets/images/flower-yellow.svg"
       alt="花瓣"
     />
-    <div class="col-start-2 col-span-1">
+    <div class="md:col-start-2 col-span-1">
       <div class="bg-primaryLight">
         <img
           class="w-full h-full"
@@ -68,8 +70,13 @@
 .homeMainBanner__flower {
   position: absolute;
   width: 4rem;
+  @media (max-width: 1199.98px) {
+    width: 3rem;
+  }
+  @media (max-width: 767.98px) {
+    width: 2rem;
+  }
   z-index: 1;
-
   &.flower-white-pink {
     top: 36%;
     left: 24%;
