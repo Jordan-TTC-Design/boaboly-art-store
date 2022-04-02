@@ -23,7 +23,6 @@ export default {
       array = artList.value;
       array = filterWord(filterKeyword.value, array);
       array = filterCategory(filterArticleCategory.value, array);
-      console.log(array);
       return array;
     });
     const nowPageArts = computed(() => {

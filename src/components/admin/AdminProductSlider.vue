@@ -42,7 +42,6 @@ export default {
     const imgCoverUploader = ref(null);
     const imgsData = ref([{ useUrl: true, url: '' }]);
     function upload() {
-      console.dir(imgCoverUploader);
       const [file] = imgCoverUploader.value.files;
       apiMethod.adminImageUpload(file);
     }

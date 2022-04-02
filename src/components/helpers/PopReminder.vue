@@ -10,7 +10,6 @@ export default {
       showed.value = false;
     }
     function openModal(data) {
-      console.log(data);
       showText.value = data;
       showed.value = true;
       setTimeout(() => {
@@ -19,7 +18,6 @@ export default {
     }
     onMounted(() => {
       emitter.on('open-pop-reminder', (data) => {
-        console.log(`good ${data}`);
         openModal(data);
       });
     });

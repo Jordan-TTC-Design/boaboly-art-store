@@ -24,7 +24,6 @@ export default {
     });
     function searchItem() {
       const keyword = searchKeyword.value.replace(/\s+/g, '');
-      console.log(`/search?keyword=${keyword}`);
       if (keyword.length > 0) {
         router.push(`/search?keyword=${keyword}`);
         searchKeyword.value = '';

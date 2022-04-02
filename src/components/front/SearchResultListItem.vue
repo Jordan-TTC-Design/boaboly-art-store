@@ -6,7 +6,6 @@ export default {
   setup() {
     const router = useRouter();
     function goToPage(item) {
-      console.log(item);
       if (item.searchCategory === '商品') {
         router.push(`/products/${item.id}`);
       } else {

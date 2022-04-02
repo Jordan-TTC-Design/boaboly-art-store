@@ -35,8 +35,6 @@ const frontApiMethod = {
     return axios
       .get(`${frontApiPath.getProduct}s/all`)
       .then((res) => {
-        console.log('成功取得全部商品資料');
-        console.log(res);
         return res.data.products;
       })
       .catch((err) => {
@@ -47,8 +45,6 @@ const frontApiMethod = {
     return axios
       .get(`${frontApiPath.getProduct}s`)
       .then((res) => {
-        console.log('成功取得多筆商品資料');
-        console.log(res);
         return res.data;
       })
       .catch((err) => {
@@ -59,8 +55,6 @@ const frontApiMethod = {
     return axios
       .get(`${frontApiPath.getProduct}/${productId}`)
       .then((res) => {
-        console.log('成功取得商品資料');
-        console.log(res);
         return res.data.product;
       })
       .catch((err) => {
@@ -71,8 +65,6 @@ const frontApiMethod = {
     return axios
       .get(`${frontApiPath.getArticle}s?page=${pageNum}`)
       .then((res) => {
-        console.log('成功取得多筆創作資料');
-        console.log(res.data);
         return res.data;
       })
       .catch((err) => {
@@ -83,8 +75,6 @@ const frontApiMethod = {
     return axios
       .get(`${frontApiPath.getArticle}/${articleId}`)
       .then((res) => {
-        console.log('成功取得創作資料');
-        console.log(res);
         return res.data.article;
       })
       .catch((err) => {
@@ -111,7 +101,6 @@ const frontApiMethod = {
     return axios
       .post(frontApiPath.cart, { data })
       .then((res) => {
-        console.log('已加入購物車');
         return res.data;
       })
       .catch((err) => {
@@ -126,8 +115,6 @@ const frontApiMethod = {
     return axios
       .put(`${frontApiPath.cart}/${cartItemId}`, { data })
       .then((res) => {
-        console.log('修改成功');
-        console.log(res);
         return res.data;
       })
       .catch((err) => {
@@ -138,8 +125,6 @@ const frontApiMethod = {
     return axios
       .delete(`${frontApiPath.cart}/${productId}`)
       .then((res) => {
-        console.log('刪除成功');
-        console.log(res);
         return res.data;
       })
       .catch((err) => {
@@ -164,8 +149,6 @@ const frontApiMethod = {
     return axios
       .post(frontApiPath.order, { data })
       .then((res) => {
-        console.log('送出成功');
-        console.log(res);
         return res.data;
       })
       .catch((err) => {

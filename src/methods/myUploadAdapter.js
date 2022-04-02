@@ -23,7 +23,6 @@ class MyUploadAdapter {
             }
           )
           .then((res) => {
-            // console.log(res.data.imageUrl);
             // return res.data.imageUrl;
             resolve({
               default: res.data.imageUrl,

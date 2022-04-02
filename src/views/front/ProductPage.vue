@@ -49,7 +49,6 @@ export default {
     });
     emitter.on('check-collection', (data) => {
       collecitonList.value = data;
-      console.log(collecitonList.value);
     });
     getProduct(productId.value);
     return {

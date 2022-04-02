@@ -30,7 +30,6 @@ export default {
     }
     function checkCollection(data) {
       collecitonList.value = data;
-      console.log(collecitonList.value);
     }
     emitter.on('check-collection', (data) => {
       checkCollection(data);

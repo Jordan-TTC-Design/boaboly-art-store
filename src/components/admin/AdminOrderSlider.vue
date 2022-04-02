@@ -22,9 +22,6 @@ export default {
     let editMode = ref(false);
     let listOpen = ref(false);
     const selectItem = computed(() => props.selectOrder);
-    function editOrder(itemId) {
-      console.log(itemId);
-    }
     function deleteOrder(itemId) {
       apiMethod.adminDeleteOrder(itemId).then(() => {
         modalOpen.value = false;
@@ -77,7 +74,6 @@ export default {
       payStatus,
       shippingStatus,
       orderStatus,
-      editOrder,
       deleteOrder,
       adminPutOrder,
       changePayState,
@@ -106,11 +102,7 @@ export default {
           編號：{{ `${selectItem.id.slice(1, 12)}... ` }}
         </p>
         <div class="flex">
-          <MoreMenu
-            :item-id="selectItem.id"
-            @delete-item="deleteOrder"
-            @edit-item="editOrder"
-          />
+          <MoreMenu :item-id="selectItem.id" @delete-item="deleteOrder" />
           <button
             type="button"
             class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white ml-2"

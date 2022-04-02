@@ -51,9 +51,7 @@ export default {
     }
     function addCollection(product) {
       const newId = product.id;
-      console.log(newId);
       const check = collection.value.indexOf(newId);
-      console.log(check);
       if (check < 0) {
         collection.value.push(newId);
         localStorage.setItem(
