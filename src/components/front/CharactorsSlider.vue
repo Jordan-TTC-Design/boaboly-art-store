@@ -65,7 +65,7 @@ export default {
               <img
                 class="charactorList__item__img"
                 src="@/assets/images/img-charactor-men.svg"
-                alt="face"
+                alt="角色寶莉"
               />
               <p class="charactorList__item__name">寶莉</p>
             </div>
@@ -76,7 +76,7 @@ export default {
               <img
                 class="charactorList__item__img"
                 src="@/assets/images/img-charactor-dog.svg"
-                alt="face"
+                alt="角色汪丸"
               />
               <p class="charactorList__item__name">汪丸</p>
             </div>
@@ -87,7 +87,7 @@ export default {
               <img
                 class="charactorList__item__img"
                 src="@/assets/images/img-charactor-cat.svg"
-                alt="face"
+                alt="角色咪拉"
               />
               <p class="charactorList__item__name">咪拉</p>
             </div>
@@ -98,7 +98,7 @@ export default {
               <img
                 class="charactorList__item__img"
                 src="@/assets/images/img-charactor-panda.svg"
-                alt="face"
+                alt="角色潘弟"
               />
               <p class="charactorList__item__name">潘弟</p>
             </div>
@@ -109,7 +109,7 @@ export default {
               <img
                 class="charactorList__item__img"
                 src="@/assets/images/img-charactor-squirrel.svg"
-                alt="face"
+                alt="角色鼠吉"
               />
               <p class="charactorList__item__name">鼠吉</p>
             </div>
@@ -120,7 +120,7 @@ export default {
               <img
                 class="charactorList__item__img"
                 src="@/assets/images/img-charactor-ghost.svg"
-                alt="face"
+                alt="角色晴子"
               />
               <p class="charactorList__item__name">晴子</p>
             </div>
