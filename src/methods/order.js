@@ -1,6 +1,7 @@
 const defaultOrderData = {
   user: {
     name: '',
+    type: 'shop',
     email: '',
     tel: '',
     address: '',
