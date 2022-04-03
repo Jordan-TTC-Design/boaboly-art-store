@@ -3,6 +3,7 @@ import { ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
 import emitter from '@/methods/emitter';
+import { changeTime } from '@/methods/filter';
 
 export default {
   setup() {
@@ -36,6 +37,7 @@ export default {
     return {
       artItem,
       artList,
+      changeTime,
       toOtherSamePage,
     };
   },
@@ -57,7 +59,7 @@ export default {
               <p class="border border-gray-300 py-0.5 px-2 mr-2">
                 {{ artItem.category }}
               </p>
-              <p class="text-gray-500">{{ artItem.create_at }}</p>
+              <p class="text-gray-500">{{ changeTime(artItem.create_at) }}</p>
             </div>
             <div
               v-html="artItem.content"
@@ -101,7 +103,7 @@ export default {
                 <div class="flex gap-x-2 text-gray-500 mb-4">
                   <p v-for="tag in artItem.tags" :key="tag">#{{ tag }}</p>
                 </div>
-                <p class="text-gray-500">{{ art.create_at }}</p>
+                <p class="text-gray-500">{{ changeTime(artItem.create_at) }}</p>
               </div>
             </div>
             <button

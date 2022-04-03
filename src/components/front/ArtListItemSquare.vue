@@ -1,9 +1,11 @@
 <script>
+import { changeTime } from '@/methods/filter';
+
 export default {
   props: ['artItem', 'listIndex'],
   emits: ['addCollection'],
   setup(props, { emit }) {
-    return { emit };
+    return { emit, changeTime };
   },
 };
 </script>
@@ -37,7 +39,7 @@ export default {
         <p v-for="tag in artItem.tags" :key="tag" class="mr-2">#{{ tag }}</p>
       </div>
       <p class="text-gray-500 text-right">
-        {{ artItem.create_at }}
+        {{ changeTime(artItem.create_at) }}
       </p>
     </div>
   </div>
