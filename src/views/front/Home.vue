@@ -1,5 +1,5 @@
 <script>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { frontApiMethod } from '@/methods/api.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
 import HomeMainBanner from '@/components/front/HomeMainBanner.vue';
@@ -46,11 +46,13 @@ export default {
     function checkCollection(data) {
       collecitonList.value = data;
     }
-    window.onresize = () => {
-      fullWidth.value = window.innerWidth;
-    };
-    emitter.on('check-collection', (data) => {
-      checkCollection(data);
+    onMounted(() => {
+      window.onresize = () => {
+        fullWidth.value = window.innerWidth;
+      };
+      emitter.on('check-collection', (data) => {
+        checkCollection(data);
+      });
     });
     getProduct();
     return {

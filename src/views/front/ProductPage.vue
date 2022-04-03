@@ -1,5 +1,5 @@
 <script>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
 import emitter from '@/methods/emitter';
@@ -58,11 +58,13 @@ export default {
         getProduct(productId.value);
       }
     });
-    window.onresize = () => {
-      fullWidth.value = window.innerWidth;
-    };
-    emitter.on('check-collection', (data) => {
-      collecitonList.value = data;
+    onMounted(() => {
+      window.onresize = () => {
+        fullWidth.value = window.innerWidth;
+      };
+      emitter.on('check-collection', (data) => {
+        collecitonList.value = data;
+      });
     });
     getProduct(productId.value);
     return {

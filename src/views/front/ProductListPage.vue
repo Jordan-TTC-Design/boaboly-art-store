@@ -1,5 +1,5 @@
 <script>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { frontApiMethod } from '@/methods/api.js';
 import { productCategory, materialCategory } from '@/methods/data.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
@@ -42,7 +42,6 @@ export default {
         return array;
       }
     });
-
     function filterWord(filterData, dataList) {
       let array = dataList;
       if (filterData !== '' && filterData !== undefined) {
@@ -85,8 +84,10 @@ export default {
     watch(paginationData.value, () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    emitter.on('check-collection', (data) => {
-      collecitonList.value = data;
+    onMounted(() => {
+      emitter.on('check-collection', (data) => {
+        collecitonList.value = data;
+      });
     });
     getProducts();
     return {

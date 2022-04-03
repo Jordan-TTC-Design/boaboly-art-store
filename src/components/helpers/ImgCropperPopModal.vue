@@ -85,13 +85,10 @@ export default {
     }
     onMounted(() => {
       emitter.on(`open-pop-modal-${props.imgName}`, openModal);
-      // emitter.on('close-pop-modal', closeModal);
     });
     onUnmounted(() => {
       emitter.off(`open-pop-modal-${props.imgName}`, openModal);
-      // emitter.off('close-pop-modal', closeModal);
     });
-
     return {
       showed,
       cropperImage,
