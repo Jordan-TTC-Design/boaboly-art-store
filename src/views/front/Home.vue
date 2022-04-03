@@ -41,12 +41,14 @@ export default {
           productList.value = JSON.parse(JSON.stringify(res)).filter(
             (item) => item.promoted.star > 0
           );
+          emitter.emit('send-check-collection');
           emitter.emit('close-loading');
         }
       });
     }
     function checkCollection(data) {
-      collecitonList.value = data;
+      collecitonList.value = Object.values(data);
+      console.log(collecitonList.value);
     }
     onMounted(() => {
       window.onresize = () => {
@@ -115,8 +117,7 @@ export default {
                 index < productList.length - 1,
             }"
             :product="product"
-            :colleciton-list="collecitonList"
-            :is_collection="collecitonList.indexOf(product.id)"
+            :collection-list="collecitonList"
             @add-cart="
               emitter.emit('add-cart', {
                 id: product.id,

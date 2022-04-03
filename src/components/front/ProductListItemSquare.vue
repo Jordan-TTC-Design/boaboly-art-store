@@ -1,10 +1,16 @@
 <script>
+import { computed } from 'vue';
 import emitter from '@/methods/emitter';
+
 export default {
-  props: ['product', 'collecitonList', 'is_collection'],
+  props: ['product', 'collection-list'],
   emits: ['addCollection', 'addCart'],
   setup(props, { emit }) {
-    return { emit, emitter };
+    let collection = computed(() => props.collectionList);
+    let is_collection = computed(() =>
+      collection.value.indexOf(props.product.id)
+    );
+    return { is_collection, emit, emitter };
   },
 };
 </script>

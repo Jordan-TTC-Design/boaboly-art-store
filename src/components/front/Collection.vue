@@ -72,14 +72,18 @@ export default {
         productList.value = JSON.parse(JSON.stringify(res));
       });
     }
+    function sendCheckCollection() {
+      console.log('檢查');
+      emitter.emit('check-collection', collection.value);
+    }
     getProducts();
     getCollection();
     onMounted(() => {
       emitter.on('get-collection', getCollection);
+      emitter.on('send-check-collection', sendCheckCollection);
       emitter.on('add-collection', (data) => {
         addCollection(data);
       });
-      emitter.emit('check-collection', collection.value);
     });
     onUnmounted(() => {
       modalOpen.value = false;

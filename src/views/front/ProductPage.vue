@@ -42,6 +42,7 @@ export default {
         productList.value = JSON.parse(JSON.stringify(res)).filter(
           (item) => item.id !== product.value.id && item.promoted.star > 0
         );
+        emitter.emit('send-check-collection');
         emitter.emit('close-loading');
       });
     }
