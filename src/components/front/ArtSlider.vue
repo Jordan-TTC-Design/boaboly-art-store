@@ -57,9 +57,9 @@ export default {
         >
           <img class="w-100" :src="artItem.imagesUrl[0]" alt="face" />
           <div
-            class="absolute top-0 left-0 right-0 bottom-0 bg-black/50 flex justify-center items-center opacity-0 group-hover:opacity-100"
+            class="absolute top-0 left-0 right-0 bottom-0 bg-black/50 flex justify-center items-center opacity-0 group-hover:opacity-100 px-3"
           >
-            <p class="text-white font-medium text-lg">{{ artItem.title }}</p>
+            <p class="text-white font-medium text-lg text-center">{{ artItem.title }}</p>
             <div class="seeMore">
               <p class="text-white font-medium text-lg text-center mt-2">
                 VIEW MORE

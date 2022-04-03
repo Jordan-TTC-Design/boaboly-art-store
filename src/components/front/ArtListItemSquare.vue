@@ -13,7 +13,7 @@ export default {
   <div class="artItem group bg-white border-b border-gray-300 py-12">
     <div class="flex sm:flex-row flex-col sm:items-end sm:mb-8 gap-4">
       <router-link
-        class="relative block sm:p-4 group-hover:bg-gray-100"
+        class="relative block sm:p-4 group-hover:bg-gray-100 flex-shrink-0"
         :to="`/arts/${artItem.id}`"
       >
         <img
