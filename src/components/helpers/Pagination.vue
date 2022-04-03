@@ -3,7 +3,7 @@ import { computed } from 'vue';
 export default {
   props: ['pagination-data'],
   emits: ['change-page-number'],
-  setup(props) {
+  setup(props, { emit }) {
     const pagination = computed(
       () => props.paginationData || { totalPages: 1, nowPage: 1 }
     );
@@ -14,15 +14,31 @@ export default {
       }
       return array;
     });
-    return { pagination, pageList };
+    function changePage(action) {
+      if (
+        action > 0 &&
+        pagination.value.nowPage < pagination.value.totalPages
+      ) {
+        pagination.value.nowPage += 1;
+        emit('change-page-number', pagination.value.nowPage);
+      } else if (action < 0 && pagination.value.nowPage > 1) {
+        pagination.value.nowPage -= 1;
+        emit('change-page-number', pagination.value.nowPage);
+      }
+    }
+    return { pagination, pageList, changePage };
   },
 };
 </script>
 <template>
   <ul class="pagination bg-gray-100 rounded">
     <li
-      class="pagination__item mr-1 is_able"
-      @click="$emit('change-page-number', pagination.nowPage - 1)"
+      class="pagination__item mr-1"
+      :class="{
+        is_able: pagination.nowPage > 1,
+        'text-gray-300': pagination.nowPage <= 1,
+      }"
+      @click="changePage(-1)"
     >
       <i class="bi bi-arrow-left"></i>
     </li>
@@ -36,8 +52,12 @@ export default {
       </li>
     </template>
     <li
-      class="pagination__item is_able"
-      @click="$emit('change-page-number', pagination.nowPage + 1)"
+      class="pagination__item"
+      :class="{
+        is_able: pagination.nowPage < pageList.length,
+        'text-gray-300': pagination.nowPage >= pageList.length,
+      }"
+      @click="changePage(1)"
     >
       <i class="bi bi-arrow-right"></i>
     </li>

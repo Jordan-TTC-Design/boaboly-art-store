@@ -71,6 +71,7 @@ export default {
       frontApiMethod.getProductAll().then((res) => {
         if (res) {
           productList.value = JSON.parse(JSON.stringify(res));
+          emitter.emit('send-check-collection');
           emitter.emit('close-loading');
         }
       });
@@ -173,7 +174,7 @@ export default {
         <ProductListItemSquare
           :product="product"
           :list-index="index"
-          :is_collection="collecitonList.indexOf(product.id)"
+          :collection-list="collecitonList"
           @add-cart="
             emitter.emit('add-cart', {
               id: product.id,
