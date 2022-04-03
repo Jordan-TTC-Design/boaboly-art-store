@@ -58,6 +58,7 @@
   background-color: var(--gray-line);
 }
 .numberSwitcher__numBox{
+  flex-grow: 1;
   flex-shrink: 1;
   min-width: 2rem;
   text-align: center;
