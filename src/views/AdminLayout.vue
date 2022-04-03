@@ -1,5 +1,5 @@
 <script>
-import { RouterView } from 'vue-router';
+import { useRouter, RouterView } from 'vue-router';
 import { apiMethod } from '@/methods/api.js';
 import AdminMainNav from '@/components/admin/AdminMainNav.vue';
 export default {
@@ -7,7 +7,12 @@ export default {
     AdminMainNav,
   },
   setup() {
-    apiMethod.checkLogin();
+    const router = useRouter();
+    apiMethod.checkLogin().then((res) => {
+      if (res !== true) {
+        router.push('admin-login');
+      }
+    });
     return {
       RouterView,
     };

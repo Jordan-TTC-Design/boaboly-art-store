@@ -158,7 +158,7 @@ const frontApiMethod = {
 };
 const apiMethod = {
   login(user) {
-    axios
+    return axios
       .post(adminApiPath.signin, user)
       .then((res) => {
         console.log(res);
@@ -167,8 +167,8 @@ const apiMethod = {
         document.cookie = `ttcDesignToken=${token}; expires=${new Date(
           expired
         )};`;
-        console.log('success');
-        window.location = '/#/admin';
+        console.log(res.data.success);
+        return res.data.success;
       })
       .catch((err) => {
         console.log(err.data);
@@ -189,7 +189,9 @@ const apiMethod = {
       })
       .catch((err) => {
         console.log(err.response);
-        this.turnBackLogin(err.response.status);
+        if (err.response === 401 || err.response === 403) {
+          return '/admin-login';
+        }
       });
   },
   adminGetProductsAll() {

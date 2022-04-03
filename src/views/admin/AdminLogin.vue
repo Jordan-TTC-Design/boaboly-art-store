@@ -1,6 +1,7 @@
 <script>
 import { ref } from 'vue';
 import { apiMethod } from '@/methods/api.js';
+import { useRouter } from 'vue-router';
 import { Form } from 'vee-validate';
 import VeeFormInput from '@/components/form/VeeFormInput.vue';
 export default {
@@ -9,12 +10,17 @@ export default {
     Form,
   },
   setup() {
+    const router = useRouter();
     const user = ref({
       username: '',
       password: '',
     });
     function login() {
-      apiMethod.login(user.value);
+      apiMethod.login(user.value).then((res) => {
+        if (res) {
+          router.push('admin');
+        }
+      });
     }
     return {
       user,
@@ -24,7 +30,7 @@ export default {
 };
 </script>
 <template>
-  <div class="w-72 mx-auto p-4 border border-gray-300 rounded mt-6">
+  <div class="w-72 mx-auto p-4 border border-gray-300 rounded mt-6 h-full">
     <h1 class="text-2xl font-bold text-center mb-6">請先登入</h1>
     <Form id="form" class="form-signin" v-slot="{ errors }" @submit="login">
       <div class="mb-6">
