@@ -139,22 +139,27 @@ export default {
         </h2>
       </div>
       <ul
-        class="cartList grid grid-cols-1 gap-y-4 flex-grow-1 overflow-y-auto px-8"
+        class="cartList grid grid-cols-1 flex-grow-1 overflow-y-auto px-8 pb-36"
       >
-        <li class="grid grid-cols-6 gap-2 border-b border-gray-300">
-          <div class="col-span-3">
+        <li class="grid md:grid-cols-6 gap-2 border-b border-gray-300">
+          <div class="md:col-span-3">
             <p class="text-sm text-gray-400 mb-2">品項</p>
           </div>
-          <div class="col-span-2 flex justify-center">
+          <div class="col-span-2 md:flex hidden justify-center">
             <p class="text-sm text-gray-400 mb-2">數量</p>
           </div>
-          <div class="col-span-1 flex justify-center">
+          <div class="col-span-1 md:flex hidden justify-center">
             <p class="text-sm text-gray-400 mb-2">刪除</p>
           </div>
         </li>
         <template v-for="(item, index) in cartList" :key="item.id">
-          <li class="grid grid-cols-6 gap-2 hover:bg-gray-100/50 py-2">
-            <div class="col-span-3 flex items-center">
+          <li
+            :class="{
+              'border-b border-gray-300': index < cartList.length - 1,
+            }"
+            class="grid md:grid-cols-6 grid-cols-2 gap-2 hover:bg-gray-100/50 py-6"
+          >
+            <div class="md:col-span-3 col-span-2 flex items-center">
               <img
                 class="w-20"
                 :src="item.product.imageUrl"
@@ -165,8 +170,10 @@ export default {
                 <p>NT$ {{ item.product.price }}</p>
               </div>
             </div>
-            <div class="col-span-2 flex justify-center items-center">
-              <div class="numberSwitcher">
+            <div
+              class="md:col-span-2 col-span-1 flex justify-center items-center"
+            >
+              <div class="numberSwitcher w-full">
                 <button
                   type="button"
                   class="numberSwitcher__btn"
@@ -192,7 +199,9 @@ export default {
                 </button>
               </div>
             </div>
-            <div class="col-span-1 flex justify-center items-center">
+            <div
+              class="col-span-1 flex md:justify-center justify-end items-center"
+            >
               <button
                 type="button"
                 class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"

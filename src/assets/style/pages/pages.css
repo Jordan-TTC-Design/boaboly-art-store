@@ -57,11 +57,28 @@
   transform: translateX(-100%);
   transition: all 0.3s;
 }
+
 .siderBg--x.active {
   transform: translateX(0);
 }
 .siderBg.active {
   transform: translateX(0);
+}
+@media(max-width:991.98px){
+  .siderBox--x {
+    width: 80%;
+  }
+  .siderBg--x{
+    width: 20%;
+  }
+}
+@media(max-width:767.98px){
+  .siderBox--x {
+    width: 100%;
+  }
+  .siderBg--x{
+    width: 0%;
+  }
 }
 .adminList__item {
   background-color: var(--white);
