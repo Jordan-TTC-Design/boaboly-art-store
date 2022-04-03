@@ -138,19 +138,25 @@ export default {
           收藏商品
         </h2>
       </div>
-      <ul
-        class="cartList grid grid-cols-1 gap-y-4 flex-grow-1 overflow-y-auto px-8"
-      >
-        <li class="grid grid-cols-4 gap-2 border-b border-gray-300">
-          <div class="col-span-3">
+      <ul class="cartList grid grid-cols-1 flex-grow-1 overflow-y-auto px-8">
+        <li class="grid md:grid-cols-4 gap-2 border-b border-gray-300">
+          <div class="md:col-span-3">
             <p class="text-sm text-gray-400 mb-2">品項</p>
           </div>
-          <div class="col-span-1 flex justify-center">
+          <div class="col-span-1 md:flex hidden justify-center">
             <p class="text-sm text-gray-400 mb-2">動作</p>
           </div>
         </li>
-        <template v-for="product in collectionProduct" :key="product.id">
-          <li class="grid grid-cols-4 gap-2 hover:bg-gray-100/50 py-2">
+        <template
+          v-for="(product, index) in collectionProduct"
+          :key="product.id"
+        >
+          <li
+            :class="{
+              'border-b border-gray-300': index < collectionProduct.length - 1,
+            }"
+            class="grid grid-cols-4 gap-2 hover:bg-gray-100/50 py-6"
+          >
             <div class="col-span-3 flex items-center">
               <img
                 class="w-20"
