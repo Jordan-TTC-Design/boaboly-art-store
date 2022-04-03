@@ -9,9 +9,9 @@ export default {
 </script>
 <template>
   <div class="artItem group bg-white border-b border-gray-300 py-12">
-    <div class="flex items-end mb-8 gap-4">
+    <div class="flex sm:flex-row flex-col sm:items-end sm:mb-8 gap-4">
       <router-link
-        class="relative block p-4 group-hover:bg-gray-100"
+        class="relative block sm:p-4 group-hover:bg-gray-100"
         :to="`/arts/${artItem.id}`"
       >
         <img
@@ -20,20 +20,20 @@ export default {
           :alt="`${artItem.title}產品圖片`"
         />
       </router-link>
-      <div class="flex flex-col items-start mb-8">
-        <p class="border border-gray-300 px-2 py-0.5 text-sm mb-2">
+      <div class="flex flex-col items-start sm:mb-8 mb-4 gap-y-2">
+        <p class="border border-gray-300 px-2 py-0.5 text-sm">
           {{ artItem.category }}
         </p>
         <router-link
           :to="`/arts/${artItem.id}`"
-          class="cursor-pointer text-xl text-black font-medium block mb-2"
+          class="cursor-pointer text-xl text-black font-medium block"
         >
           {{ artItem.title }}
         </router-link>
       </div>
     </div>
-    <div class="flex justify-between items-start gap-2 pl-4">
-      <div class="flex">
+    <div class="flex justify-between items-start gap-2 sm:pl-4">
+      <div class="flex flex-wrap">
         <p v-for="tag in artItem.tags" :key="tag" class="mr-2">#{{ tag }}</p>
       </div>
       <p class="text-gray-500 text-right">

@@ -98,11 +98,15 @@ export default {
 };
 </script>
 <template>
-  <div class="relative bg-white grid grid-cols-12 lg:px-24 px-16 py-32 gap-x-8">
-    <div class="col-start-2 col-span-10 pb-32">
+  <div
+    class="relative bg-white grid grid-cols-12 lg:px-24 md:px-16 px-4 md:py-32 py-16 md:gap-x-8 w-full"
+  >
+    <div class="col-start-2 col-span-10 lg:mb-32 md:mb-24 mb-16">
       <h4 class="text-xl text-black uppercase mb-8">All Products</h4>
-      <h3 class="text-8xl text-black font-medium mb-16">全部商品</h3>
-      <div class="flex gap-8">
+      <h3 class="lg:text-8xl text-5xl text-black font-medium md:mb-16 mb-8">
+        全部商品
+      </h3>
+      <div class="flex md:flex-row flex-col md:gap-8 gap-4">
         <div class="pageInputBox flex-1">
           <input
             class="appearance-none bg-transparent border-b border-gray-300 w-full text-gray-700 p-2 leading-tight focus:outline-none"
@@ -146,7 +150,7 @@ export default {
         </div>
       </div>
     </div>
-    <div class="col-span-2 relative md:block hidden">
+    <div class="lg:col-span-2 md:col-span-3 relative md:block hidden">
       <div class="sticky top-32">
         <SideNav
           :nav-list="productCategory"
@@ -156,7 +160,7 @@ export default {
       </div>
     </div>
     <div
-      class="md:col-span-10 col-span-12 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 mb-8"
+      class="lg:col-span-10 md:col-span-9 col-span-12 grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-4 mb-8"
     >
       <template v-for="(product, index) in nowPageProducts" :key="product.id">
         <ProductListItemSquare
@@ -172,7 +176,7 @@ export default {
       </template>
     </div>
     <div
-      class="col-start-3 col-span-10 flex justify-center"
+      class="lg:col-start-3 md:col-start-4 lg:col-span-10 md:col-span-9 col-span-12 flex justify-center"
       v-if="paginationData.totalPages > 1"
     >
       <Pagination

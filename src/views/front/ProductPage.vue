@@ -80,7 +80,7 @@ export default {
 };
 </script>
 <template>
-  <div class="bg-gray-100 relative  md:py-16 pt-4 pb-16 min-h-screen">
+  <div class="bg-gray-100 relative md:py-16 pt-4 pb-16 min-h-screen">
     <div class="bg-primaryLight w-full h-96 absolute top-0"></div>
     <div
       class="sm:container sm:mx-auto mx-4 bg-white shadow-sm lg:p-24 md:p-12 p-8 pb-24"
