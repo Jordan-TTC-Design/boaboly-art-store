@@ -73,7 +73,6 @@ export default {
       });
     }
     function sendCheckCollection() {
-      console.log('檢查');
       emitter.emit('check-collection', collection.value);
     }
     getProducts();

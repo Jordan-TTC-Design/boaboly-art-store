@@ -48,7 +48,6 @@ export default {
     }
     function checkCollection(data) {
       collecitonList.value = Object.values(data);
-      console.log(collecitonList.value);
     }
     onMounted(() => {
       window.onresize = () => {

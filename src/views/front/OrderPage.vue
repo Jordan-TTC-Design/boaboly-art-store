@@ -65,35 +65,45 @@ export default {
 };
 </script>
 <template>
-  <div class="bg-gray-100 relative py-16 min-h-screen">
+  <div class="bg-gray-100 relative md:py-16 pt-4 pb-16 min-h-screen">
     <div class="bg-primaryLight w-full h-96 absolute top-0"></div>
-    <div class="container mx-auto bg-white shadow-sm p-16">
+    <div
+      class="sm:container sm:mx-auto mx-4 bg-white shadow-sm lg:p-24 md:p-12 p-8 pb-24"
+    >
       <router-link
         :to="{ name: 'Home' }"
-        class="px-3 py-2 flex items-center mb-6"
+        class="px-3 py-2 flex items-center mb-4"
       >
         <i class="bi bi-chevron-double-left mr-1"></i>
         <p>返回繼續購物</p>
       </router-link>
-      <div class="grid grid-cols-12" v-if="checkStage === 1">
-        <div class="col-span-7">
+      <div
+        class="grid lg:grid-cols-12 grid-cols-1 gap-y-8"
+        v-if="checkStage === 1"
+      >
+        <div class="lg:col-span-7">
           <ul
-            class="carouter-link grid-cols-1 gap-y-4 flex-grow-1 overflow-y-auto px-8 mt-8"
+            class="carouter-link grid-cols-1 flex-grow-1 overflow-y-auto lg:px-8 mt-8"
           >
             <li class="grid grid-cols-6 gap-2 border-b border-gray-300">
               <div class="col-span-4">
                 <p class="text-sm text-gray-400 mb-2">品項</p>
               </div>
-              <div class="col-span-1 flex justify-center">
+              <div class="col-span-1 md:flex hidden justify-center">
                 <p class="text-sm text-gray-400 mb-2">數量</p>
               </div>
-              <div class="col-span-1 flex justify-center">
+              <div class="col-span-1 md:flex hidden justify-center">
                 <p class="text-sm text-gray-400 mb-2">金額</p>
               </div>
             </li>
-            <template v-for="item in cartList" :key="item.id">
-              <li class="grid grid-cols-6 gap-2 hover:bg-gray-100/50 py-2">
-                <div class="col-span-4 flex items-center">
+            <template v-for="(item, index) in cartList" :key="item.id">
+              <li
+                :class="{
+                  'border-b border-gray-300': index < cartList.length - 1,
+                }"
+                class="grid md:grid-cols-6 grid-cols-2 gap-2 hover:bg-gray-100/50 py-4"
+              >
+                <div class="md:col-span-4 col-span-2 flex items-center">
                   <img
                     class="w-20"
                     :src="item.product.imageUrl"
@@ -104,10 +114,12 @@ export default {
                     <p>NT$ {{ item.product.price }}</p>
                   </div>
                 </div>
-                <div class="col-span-1 flex justify-center items-center">
+                <div class="col-span-1 flex md:justify-center items-center">
                   <p>{{ item.qty }} 項</p>
                 </div>
-                <div class="col-span-1 flex justify-center items-center">
+                <div
+                  class="col-span-1 flex md:justify-center justify-end items-center"
+                >
                   <p>NT$ {{ item.total }}</p>
                 </div>
               </li>
@@ -120,7 +132,7 @@ export default {
             </li>
           </ul>
         </div>
-        <div class="col-span-5">
+        <div class="lg:col-span-5">
           <div class="border border-gray-300 p-6">
             <div class="border-b border-gray-300 mb-5">
               <p class="text-sm text-gray-400 mb-2">訂單狀態</p>
@@ -129,8 +141,8 @@ export default {
               <span class="text-sm text-gray-400 mr-4">商品總計</span>NT$
               {{ cartTotal }}
             </p>
-            <div class="flex justify-between">
-              <p class="mb-3">
+            <div class="xs:flex-row flex-col xs: justify-between mb-3">
+              <p>
                 <span class="text-sm text-gray-400 mr-4">運費</span>
                 {{ cartTotal >= 1000 ? '免運' : `NT$ ${shipping}` }}
               </p>
@@ -138,7 +150,7 @@ export default {
                 尚未達到免運門檻
               </p>
             </div>
-            <div class="mb-3 flex items-center">
+            <div class="mb-3 flex xs:flex-row flex-col xs:items-center">
               <label
                 class="block uppercase tracking-wide text-sm text-gray-400 mr-4"
                 for="discountTicket"
@@ -157,9 +169,9 @@ export default {
               {{ orderFormData.user.discount.price }}
             </p>
             <div
-              class="border-t border-gray-300 bg-white pt-6 mt-6 flex justify-between items-center"
+              class="border-t border-gray-300 bg-white pt-6 mt-6 xs:flex-row flex-col xs:justify-between items-center"
             >
-              <div>
+              <div class="xs:mb-0 mb-4">
                 <p class="text-sm text-gray-400 mb-1">總金額</p>
                 <p class="text-xl font-bold">NT$ {{ finalTotal }}</p>
               </div>
@@ -175,43 +187,37 @@ export default {
         </div>
       </div>
       <Form
-        class="grid grid-cols-12 gap-x-6"
+        class="grid lg:grid-cols-12 grid-cols-1 gap-x-6"
         v-if="checkStage === 2"
         v-slot="{ errors }"
         @submit="sendOrder"
       >
-        <div class="col-span-7">
-          <div class="mb-3">
-            <VeeFormInput
-              v-model="orderFormData.user.name"
-              input-id="userName"
-              input-type="text"
-              :errors="errors"
-              label-name="姓名"
-              text-holder="請輸入姓名"
-            />
-          </div>
-          <div class="mb-3">
-            <VeeFormInput
-              v-model="orderFormData.user.tel"
-              input-id="userTel"
-              input-type="text"
-              :errors="errors"
-              label-name="聯絡電話"
-              text-holder="請輸入聯絡電話"
-            />
-          </div>
-          <div class="mb-3">
-            <VeeFormInput
-              v-model="orderFormData.user.email"
-              input-id="userEmail"
-              input-type="email"
-              :errors="errors"
-              label-name="Email"
-              text-holder="請輸入Email"
-            />
-          </div>
-          <div class="mb-3">
+        <div class="lg:col-span-7 flex flex-col gap-y-3">
+          <VeeFormInput
+            v-model="orderFormData.user.name"
+            input-id="userName"
+            input-type="text"
+            :errors="errors"
+            label-name="姓名"
+            text-holder="請輸入姓名"
+          />
+          <VeeFormInput
+            v-model="orderFormData.user.tel"
+            input-id="userTel"
+            input-type="text"
+            :errors="errors"
+            label-name="聯絡電話"
+            text-holder="請輸入聯絡電話"
+          />
+          <VeeFormInput
+            v-model="orderFormData.user.email"
+            input-id="userEmail"
+            input-type="email"
+            :errors="errors"
+            label-name="Email"
+            text-holder="請輸入Email"
+          />
+          <div>
             <p
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"
             >
@@ -236,17 +242,15 @@ export default {
               </template>
             </div>
           </div>
-          <div class="mb-3">
-            <VeeFormInput
-              v-model="orderFormData.user.address"
-              input-id="userAddress"
-              input-type="text"
-              :errors="errors"
-              label-name="地址"
-              text-holder="請輸入地址"
-            />
-          </div>
-          <div class="mb-3">
+          <VeeFormInput
+            v-model="orderFormData.user.address"
+            input-id="userAddress"
+            input-type="text"
+            :errors="errors"
+            label-name="地址"
+            text-holder="請輸入地址"
+          />
+          <div>
             <FormInputTextArea
               v-model="orderFormData.messages"
               input-id="messages"
@@ -257,8 +261,8 @@ export default {
             </FormInputTextArea>
           </div>
         </div>
-        <div class="col-span-5">
-          <div class="border border-gray-300 p-6">
+        <div class="lg:col-span-5">
+          <div class="border border-gray-300 md:p-6 p-4">
             <div class="border-b border-gray-300 mb-5">
               <p class="text-sm text-gray-400 mb-2">付款資訊</p>
             </div>
@@ -267,7 +271,7 @@ export default {
             >
               付款方式
             </p>
-            <div class="flex mb-12 gap-4">
+            <div class="flex flex-wrap md:mb-12 mb-4 md:gap-4 gap-2">
               <template v-for="(pay, index) in payWay" :key="pay">
                 <button
                   type="button"
@@ -282,9 +286,9 @@ export default {
               </template>
             </div>
             <div
-              class="border-t border-gray-300 bg-white pt-5 flex justify-between items-center"
+              class="border-t border-gray-300 bg-white pt-6 mt-6 xs:flex-row flex-col xs:justify-between items-center"
             >
-              <div>
+              <div class="xs:mb-0 mb-4">
                 <p class="text-sm text-gray-400 mb-1">總金額</p>
                 <p class="text-xl font-bold">NT$ {{ finalTotal }}</p>
               </div>

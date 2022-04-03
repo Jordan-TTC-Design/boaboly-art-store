@@ -3,7 +3,7 @@ export default {
   setup() {
     function scrollToTop() {
       window.scrollTo({
-        top: 100,
+        top: 0,
         left: 100,
         behavior: 'smooth',
       });
