@@ -55,7 +55,7 @@ export default {
     class="siderBox--y--full z-sider bg-black flex flex-col"
     :class="{ active: modalOpen }"
   >
-    <header class="flex justify-between items-center">
+    <header class="flex justify-between items-center flex-shrink-0">
       <router-link to="/" class="text-2xl font-bold ml-6 text-white"
         >Boaboly<span class="text-xs block">寶兒寶莉美學商店</span></router-link
       >
@@ -111,7 +111,7 @@ export default {
         </div>
       </li>
     </ul>
-    <footer class="grid md:grid-cols-3 grid-cols-2">
+    <footer class="grid md:grid-cols-3 grid-cols-2 flex-shrink-0">
       <ul class="flex items-center ml-6">
         <li>
           <a
@@ -137,7 +137,7 @@ export default {
       <div class="flex justify-end">
         <div class="storeLogo w-24 h-24">
           <img
-            class="w-24 h-24"
+            class="h-24 max-h-full"
             src="@/assets/images/boabolyLogo.svg"
             alt="Logo"
           />

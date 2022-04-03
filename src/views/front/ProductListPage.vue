@@ -18,6 +18,7 @@ export default {
     let filterKeyword = ref('');
     let filterProductCategory = ref('');
     let filterMaterialCategory = ref('');
+    const collecitonList = ref([]);
     const paginationData = ref({ totalPages: 1, nowPage: 1 });
     const productfilterList = computed(() => {
       let array = [];
@@ -41,15 +42,7 @@ export default {
         return array;
       }
     });
-    watch(productfilterList, (newValue, oldValue) => {
-      if (newValue.length !== oldValue.length) {
-        paginationData.value.nowPage = 1;
-        paginationData.value.totalPages = Math.ceil(newValue.length / 12);
-      }
-    });
-    watch(paginationData.value, () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+
     function filterWord(filterData, dataList) {
       let array = dataList;
       if (filterData !== '' && filterData !== undefined) {
@@ -83,11 +76,24 @@ export default {
         }
       });
     }
+    watch(productfilterList, (newValue, oldValue) => {
+      if (newValue.length !== oldValue.length) {
+        paginationData.value.nowPage = 1;
+        paginationData.value.totalPages = Math.ceil(newValue.length / 12);
+      }
+    });
+    watch(paginationData.value, () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    emitter.on('check-collection', (data) => {
+      collecitonList.value = data;
+    });
     getProducts();
     return {
       filterKeyword,
       filterProductCategory,
       filterMaterialCategory,
+      collecitonList,
       nowPageProducts,
       productCategory,
       materialCategory,
@@ -166,6 +172,7 @@ export default {
         <ProductListItemSquare
           :product="product"
           :list-index="index"
+          :is_collection="collecitonList.indexOf(product.id)"
           @add-cart="
             emitter.emit('add-cart', {
               id: product.id,
