@@ -1,6 +1,20 @@
+<script>
+export default {
+  setup() {
+    function scrollToTop() {
+      window.scrollTo({
+        top: 100,
+        left: 100,
+        behavior: 'smooth',
+      });
+    }
+    return { scrollToTop };
+  },
+};
+</script>
 <template>
   <footer
-    class="bg-primaryLight py-12 px-6 flex justify-between lg:items-center flex-col xl:flex-row gap-y-8"
+    class="bg-primaryLight py-12 md:pb-12 pb-24 px-6 flex xl:flex-row flex-col justify-between lg:items-center gap-y-8"
   >
     <div
       class="flex items-center flex-col lg:flex-row gap-x-12 gap-y-4 lg:pb-0 pb-8 lg:border-0 border-b border-black"
@@ -53,6 +67,7 @@
       </ul>
       <p class="text-black text-xs">© 2022 Boaboly Art All Rights Reserved</p>
     </div>
+    <button @click="scrollToTop" class="pageUpBtn z-30">BACK TO TOP</button>
   </footer>
 </template>
 <style lang="scss" scoped>
@@ -88,7 +103,7 @@
 .pageUpBtn {
   position: fixed;
   top: 50%;
-  right: -1rem;
+  right: -3.5rem;
   transform: translateY(0) rotate(90deg);
   padding: 0.5rem 2rem;
   color: black;
@@ -96,6 +111,19 @@
   transition: all 0.3s;
   &:hover {
     transform: translateY(-1.5rem) rotate(90deg);
+  }
+  @media (max-width: 767.98px) {
+    position: absolute;
+    transform: translateY(-100%) rotate(0deg);
+    top: 100%;
+    right: 0;
+    width: 100%;
+    height: 3rem;
+    background-color: black;
+    color: white;
+    &:hover {
+      transform: translateY(-100%) rotate(0deg);
+    }
   }
 }
 </style>

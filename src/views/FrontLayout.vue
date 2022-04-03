@@ -29,16 +29,8 @@ export default {
         document.body.removeAttribute('class');
       }
     });
-    function scrollToTop() {
-      window.scrollTo({
-        top: 100,
-        left: 100,
-        behavior: 'smooth',
-      });
-    }
     return {
       modalOpen,
-      scrollToTop,
       fixWindow,
       RouterView,
     };
@@ -64,7 +56,6 @@ export default {
         </li>
       </ul>
     </header>
-    <button @click="scrollToTop" class="pageUpBtn z-30">BACK TO TOP</button>
     <div class="w-full mx-auto">
       <RouterView />
     </div>
@@ -75,17 +66,5 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.pageUpBtn {
-  position: fixed;
-  top: 50%;
-  right: -1rem;
-  transform: translateY(0) rotate(90deg);
-  padding: 0.5rem 2rem;
-  color: black;
-  font-weight: 600;
-  transition: all 0.3s;
-  &:hover {
-    transform: translateY(-1.5rem) rotate(90deg);
-  }
-}
+
 </style>
