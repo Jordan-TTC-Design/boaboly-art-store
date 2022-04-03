@@ -1,5 +1,29 @@
+<script>
+import { ref, onMounted } from 'vue';
+
+export default {
+  setup() {
+    let homeMainBanner = ref(null);
+    let homeMainBannerHeight = ref(0);
+    function goToSection() {
+      window.scrollTo({
+        top: homeMainBannerHeight.value + 180,
+        behavior: 'smooth',
+      });
+    }
+    onMounted(() => {
+      homeMainBannerHeight.value = homeMainBanner.value.clientHeight;
+    });
+    return {
+      homeMainBanner,
+      goToSection,
+    };
+  },
+};
+</script>
 <template>
   <div
+    ref="homeMainBanner"
     class="homeMainBanner grid md:grid-cols-3 grid-cols-1 py-36 md:px-0 px-12 relative"
   >
     <img
@@ -62,8 +86,10 @@
         <div class="homeBannerCircle"></div>
       </div>
     </div>
-    <div class="arrow arrow-1"></div>
-    <div class="arrow arrow-2"></div>
+    <div @click="goToSection" class="goToArrowBox">
+      <div class="arrow arrow-1"></div>
+      <div class="arrow arrow-2"></div>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -151,10 +177,18 @@
     transform: rotate(0deg);
   }
 }
+.goToArrowBox {
+  position: absolute;
+  left: calc(50% - 1rem);
+  bottom: 5%;
+  height: 120px;
+  padding: 0 1rem;
+  cursor: pointer;
+}
 .arrow {
   position: absolute;
   left: calc(50% - 1rem);
-  top: 90%;
+  top: 100%;
   -webkit-transform-origin: 50% 50%;
   transform-origin: 50% 50%;
   -webkit-transform: translate3d(-50%, -50%, 0);
@@ -200,7 +234,7 @@
 @-webkit-keyframes arrow-movement {
   0% {
     opacity: 0;
-    top: 85%;
+    top: 70%;
   }
   70% {
     opacity: 1;
@@ -213,7 +247,7 @@
 @keyframes arrow-movement {
   0% {
     opacity: 0;
-    top: 85%;
+    top: 70%;
   }
   70% {
     opacity: 1;
