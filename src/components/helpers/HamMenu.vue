@@ -69,7 +69,9 @@ export default {
         </button>
       </div>
     </header>
-    <ul class="grid grid-cols-3 gap-4 mx-auto container flex-grow my-12">
+    <ul
+      class="container grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 flex-grow gap-4 mx-auto my-12 md:px-0 px-6"
+    >
       <li class="flex items-center">
         <router-link :to="{ name: 'ArtList' }" class="hamListLink w-full">
           WORKS <span>寶莉圖文作品</span>
@@ -90,7 +92,7 @@ export default {
           CONTACT <span>合作＆聯絡</span>
         </router-link>
       </li>
-      <li class="col-span-3 hamSearchBox">
+      <li class="md:col-span-3 sm:col-span-2 hamSearchBox sm:w-1/2">
         <label
           class="hamListLink w-full search"
           for="hamSearchBox__inputBox__input"
@@ -109,8 +111,8 @@ export default {
         </div>
       </li>
     </ul>
-    <footer class="grid grid-cols-3">
-      <ul class="col-span-1 flex py-6 ml-6">
+    <footer class="grid md:grid-cols-3 grid-cols-2">
+      <ul class="flex items-center ml-6">
         <li>
           <a
             class="underline text-white text-sm py-1 px-2"
@@ -127,12 +129,12 @@ export default {
           >
         </li>
       </ul>
-      <div class="col-span-1 flex justify-center items-center">
+      <div class="justify-center items-center hidden md:flex">
         <p class="text-white text-xs text-center">
           © 2022 Boaboly Art All Rights Reserved
         </p>
       </div>
-      <div class="col-span-1 flex justify-end">
+      <div class="flex justify-end">
         <div class="storeLogo w-24 h-24">
           <img
             class="w-24 h-24"
@@ -154,6 +156,9 @@ export default {
   font-weight: bold;
   letter-spacing: 0.5rem;
   cursor: pointer;
+  @media (max-width: 767.98px) {
+    font-size: 1.5rem;
+  }
   span {
     margin-top: 0.5rem;
     font-size: 1rem;
@@ -179,7 +184,6 @@ export default {
     }
   }
   .hamSearchBox__inputBox {
-    width: 50%;
     display: flex;
     input {
       flex-grow: 1;
