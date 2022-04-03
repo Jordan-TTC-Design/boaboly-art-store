@@ -33,7 +33,7 @@ export default {
             PRODUCTS
           </router-link>
         </li>
-        <li>
+        <!-- <li>
           <router-link :to="{ name: 'About' }" class="footerNav__item">
             ABOUT
           </router-link>
@@ -42,7 +42,7 @@ export default {
           <router-link :to="{ name: 'Contact' }" class="footerNav__item">
             CONTACT
           </router-link>
-        </li>
+        </li> -->
       </ul>
     </div>
     <div
