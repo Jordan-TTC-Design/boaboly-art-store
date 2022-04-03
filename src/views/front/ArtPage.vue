@@ -42,11 +42,13 @@ export default {
 };
 </script>
 <template>
-  <div class="bg-gray-100 relative py-16 min-h-screen">
+  <div class="bg-gray-100 relative md:py-16 pt-4 pb-16 min-h-screen">
     <div class="bg-primaryLight w-full h-96 absolute top-0"></div>
-    <div class="container mx-auto bg-white shadow-sm p-24">
+    <div
+      class="sm:container sm:mx-auto mx-4 bg-white shadow-sm lg:p-24 md:p-12 p-8 pb-24"
+    >
       <div
-        class="grid grid-cols-2 gap-8 relative mb-24 pb-12 border-b border-gray-300"
+        class="grid md:grid-cols-2 grid-cols-1 gap-8 relative mb-24 pb-12 border-b border-gray-300"
       >
         <div>
           <div class="artContentBox">
@@ -80,16 +82,20 @@ export default {
         <template v-for="(art, index) in artList" :key="art.id">
           <li
             v-if="index < 3"
-            class="otherArtItem flex justify-between items-center pb-4 group border-b border-gray-line"
+            class="otherArtItem flex md:flex-row flex-col justify-between items-center pb-4 group border-b border-gray-line"
           >
-            <div class="flex items-center">
+            <div class="flex md:flex-row flex-col items-center">
               <img
-                class="w-40 group-hover:bg-gray-100 p-4"
+                class="md:w-40 w-64 group-hover:bg-gray-100 p-4"
                 :src="art.imagesUrl[0]"
                 :alt="`文章圖片${index}`"
+                @click="toOtherSamePage(art.id)"
               />
               <div class="p-6">
-                <p class="text-xl font-medium text-black mb-2">
+                <p
+                  class="text-xl font-medium text-black mb-2"
+                  @click="toOtherSamePage(art.id)"
+                >
                   {{ art.title }}
                 </p>
                 <div class="flex gap-x-2 text-gray-500 mb-4">
@@ -101,15 +107,17 @@ export default {
             <button
               type="button"
               @click="toOtherSamePage(art.id)"
-              class="viewMoreBtn font-medium text-black self-end mb-2"
+              class="viewMoreBtn font-medium text-black self-end mb-2 md:block hidden"
             >
               VIEW MORE
             </button>
           </li>
         </template>
       </ul>
-      <div class="px-12 flex justify-end gap-x-8 goBackListBtn">
-        <router-link to="/arts" class="text-3xl font-bold"
+      <div
+        class="flex md:flex-row flex-col justify-end items-center gap-x-8 px-12"
+      >
+        <router-link to="/arts" class="lg:text-3xl tex-xl font-bold"
           >BACK TO WORKS</router-link
         >
         <router-link to="/arts" class="arrow"></router-link>
@@ -168,7 +176,6 @@ export default {
   width: 200px;
   height: 36px;
   cursor: pointer;
-  /*   border:solid 1px white; */
   transition: 0.5s;
   overflow: hidden;
 }

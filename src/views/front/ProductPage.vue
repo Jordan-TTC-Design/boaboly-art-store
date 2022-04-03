@@ -18,7 +18,6 @@ export default {
     const mainImg = ref(null);
     let fullWidth = ref(window.innerWidth);
     let swiperNum1 = ref(3);
-
     function getProduct(itemId) {
       emitter.emit('open-loading');
       frontApiMethod.getProduct(itemId).then((res) => {
@@ -81,10 +80,10 @@ export default {
 };
 </script>
 <template>
-  <div class="bg-gray-100 relative md:py-16 py-8 min-h-screen">
+  <div class="bg-gray-100 relative  md:py-16 pt-4 pb-16 min-h-screen">
     <div class="bg-primaryLight w-full h-96 absolute top-0"></div>
     <div
-      class="sm:container sm:mx-auto mx-4 bg-white shadow-sm lg:p-24 md:p-12 p-4 pb-24"
+      class="sm:container sm:mx-auto mx-4 bg-white shadow-sm lg:p-24 md:p-12 p-8 pb-24"
     >
       <div
         class="grid lg:grid-cols-12 grid-cols-1 gap-8 relative pb-12 border-b border-gray-300"
