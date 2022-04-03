@@ -44,7 +44,7 @@ export default {
       class="flex justify-between items-center bg-white sticky top-0 z-40 opacity-95"
     >
       <router-link to="/" class="text-2xl font-bold ml-6">Boaboly</router-link>
-      <ul class="bg-black py-4 px-6 flex gap-x-4">
+      <ul class="bg-black sm:py-4 sm:px-6 px-2 py-3 flex gap-x-4">
         <li>
           <Collection @fix-window="fixWindow" />
         </li>
