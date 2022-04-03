@@ -1,5 +1,5 @@
 <script>
-import { ref, watch, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { frontApiMethod } from '@/methods/api.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
 import HomeMainBanner from '@/components/front/HomeMainBanner.vue';
@@ -18,18 +18,20 @@ export default {
     const productList = ref([]);
     const collecitonList = ref([]);
     let fullWidth = ref(window.innerWidth);
-    let swiperNum1 = ref(4);
-    let swiperNum2 = ref(3);
-    watch(fullWidth, (newValue) => {
-      if (newValue >= 1280) {
-        swiperNum1.value = 4;
-        swiperNum2.value = 3;
-      } else if (newValue < 1280 && newValue > 767) {
-        swiperNum1.value = 3;
-        swiperNum2.value = 2;
-      } else if (newValue <= 767) {
-        swiperNum1.value = 2;
-        swiperNum2.value = 2;
+    let swiperNum1 = computed(() => {
+      if (fullWidth.value >= 1280) {
+        return 4;
+      } else if (fullWidth.value < 1280 && fullWidth.value > 767) {
+        return 3;
+      } else {
+        return 2;
+      }
+    });
+    let swiperNum2 = computed(() => {
+      if (fullWidth.value >= 1280) {
+        return 3;
+      } else {
+        return 2;
       }
     });
     function getProduct() {

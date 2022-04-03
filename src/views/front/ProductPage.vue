@@ -17,7 +17,15 @@ export default {
     const product = ref({});
     const mainImg = ref(null);
     let fullWidth = ref(window.innerWidth);
-    let swiperNum1 = ref(3);
+    let swiperNum1 = computed(() => {
+      if (fullWidth.value >= 1280) {
+        return 3;
+      } else if (fullWidth.value < 1280 && fullWidth.value > 767) {
+        return 2;
+      } else {
+        return 1;
+      }
+    });
     function getProduct(itemId) {
       emitter.emit('open-loading');
       frontApiMethod.getProduct(itemId).then((res) => {
@@ -44,15 +52,6 @@ export default {
       });
       buyNum.value = 1;
     }
-    watch(fullWidth, (newValue) => {
-      if (newValue >= 1280) {
-        swiperNum1.value = 3;
-      } else if (newValue < 1280 && newValue > 767) {
-        swiperNum1.value = 2;
-      } else if (newValue <= 767) {
-        swiperNum1.value = 1;
-      }
-    });
     watch(productId, (newValue, oldValue) => {
       if (newValue !== oldValue) {
         getProduct(productId.value);
