@@ -47,17 +47,25 @@ export default {
       modalState.value = state;
     }
     async function deleteProduct(itemId) {
-      await apiMethod.adminDeleteProduct(itemId);
-      getProduct();
-      selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
+      try {
+        await apiMethod.adminDeleteProduct(itemId);
+        getProduct();
+        selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
+      } catch (err) {
+        console.log(err);
+      }
     }
     function changeProductState(productData) {
       productData.is_enabled = !productData.is_enabled;
       updateProduct(productData.id, productData);
     }
     async function updateProduct(itemId, productData) {
-      await apiMethod.adminUpdateProduct(itemId, productData);
-      getProduct();
+      try {
+        await apiMethod.adminUpdateProduct(itemId, productData);
+        getProduct();
+      } catch (err) {
+        console.log(err);
+      }
     }
     function getProduct() {
       apiMethod.adminGetProductsAll().then((res) => {

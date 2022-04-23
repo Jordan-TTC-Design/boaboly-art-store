@@ -49,12 +49,20 @@ export default {
       });
     }
     async function updateArticle(articleId, articleData) {
-      await apiMethod.adminUpdateArticle(articleId, articleData);
-      getArticles();
+      try {
+        await apiMethod.adminUpdateArticle(articleId, articleData);
+        getArticles();
+      } catch (err) {
+        console.log(err);
+      }
     }
     async function deleteArticle(articleId) {
-      await apiMethod.adminDeleteArticle(articleId);
-      getArticles();
+      try {
+        await apiMethod.adminDeleteArticle(articleId);
+        getArticles();
+      } catch (err) {
+        console.log(err);
+      }
     }
     function getArticles() {
       apiMethod.adminGetArticles().then((res) => {
