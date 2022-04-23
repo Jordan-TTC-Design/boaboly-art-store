@@ -1,6 +1,7 @@
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import MyUploadAdapter from '@/methods/myUploadAdapter';
+import { ref, watch } from '@vue/reactivity';
 function MyCustomUploadAdapterPlugin(editor) {
   editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
     return new MyUploadAdapter(loader);
@@ -8,47 +9,44 @@ function MyCustomUploadAdapterPlugin(editor) {
 }
 export default {
   props: ['child-data', 'input-id', 'input-name', 'text-holder'],
-  data() {
-    return {
-      textData: '',
-      editor: ClassicEditor,
-      editorData: '<p>Content of the editor.</p>',
-      editorConfig: {
-        toolbar: ['heading', '|', 'bold', 'italic', 'link'],
-        extraPlugins: [MyCustomUploadAdapterPlugin],
-        language: 'zh',
-        placeholder: `${this.textHolder}`,
-        heading: {
-          options: [
-            {
-              model: 'paragraph',
-              title: 'Paragraph',
-              class: 'ck-heading_paragraph',
-            },
-            {
-              model: 'heading1',
-              view: 'h2',
-              title: 'Heading 1',
-              class: 'ck-heading_heading1',
-            },
-            {
-              model: 'heading2',
-              view: 'h3',
-              title: 'Heading 2',
-              class: 'ck-heading_heading2',
-            },
-          ],
-        },
+  setup(props, { emit }) {
+    const textData = ref('');
+    const editor = ref(ClassicEditor);
+    const editorData = ref('<p>請輸入</p>');
+    const editorConfig = ref({
+      toolbar: ['heading', '|', 'bold', 'italic', 'link'],
+      extraPlugins: [MyCustomUploadAdapterPlugin],
+      language: 'zh',
+      placeholder: `${this.textHolder}`,
+      heading: {
+        options: [
+          {
+            model: 'paragraph',
+            title: 'Paragraph',
+            class: 'ck-heading_paragraph',
+          },
+          {
+            model: 'heading1',
+            view: 'h2',
+            title: 'Heading 1',
+            class: 'ck-heading_heading1',
+          },
+          {
+            model: 'heading2',
+            view: 'h3',
+            title: 'Heading 2',
+            class: 'ck-heading_heading2',
+          },
+        ],
       },
-    };
-  },
-  watch: {
-    childData(val) {
-      this.textData = val;
-    },
-    textData(val) {
-      this.$emit('update:childData', val);
-    },
+    });
+    watch(props.childData, (newVal) => {
+      textData.value = newVal;
+    });
+    watch(textData, (newVal) => {
+      emit('update:childData', newVal);
+    });
+    return { textData, editor, editorData, editorConfig };
   },
 };
 </script>
