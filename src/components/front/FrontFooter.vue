@@ -67,7 +67,9 @@ export default {
       </ul>
       <p class="text-black text-xs">© 2022 Boaboly Art All Rights Reserved</p>
     </div>
-    <button @click="scrollToTop" class="pageUpBtn z-30">BACK TO TOP</button>
+    <button type="button" @click="scrollToTop" class="pageUpBtn z-30">
+      BACK TO TOP
+    </button>
   </footer>
 </template>
 <style lang="scss" scoped>

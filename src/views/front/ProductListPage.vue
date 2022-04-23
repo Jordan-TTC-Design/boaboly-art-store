@@ -123,7 +123,7 @@ export default {
             placeholder="搜尋關鍵字"
             v-model="filterKeyword"
           />
-          <button class="py-1.5 px-2 searchBtn group">
+          <button type="button" class="py-1.5 px-2 searchBtn group">
             <i class="bi bi-x text-xl group-hover:text-red-600"></i>
           </button>
           <div class="underLine"></div>

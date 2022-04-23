@@ -124,6 +124,7 @@ export default {
             v-model="filterKeyword"
           />
           <button
+            type="button"
             class="py-1.5 px-2 searchBtn group"
             @click="filterKeyword = ''"
           >
