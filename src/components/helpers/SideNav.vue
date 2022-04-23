@@ -21,7 +21,7 @@ export default {
   <ul>
     <li class="text-sm text-gray-400 mb-2"><slot></slot></li>
     <li
-      @click="changeNav()"
+      @click="changeNav"
       :class="{ 'text-yellow-600': nowNavItem === '' }"
       class="group py-2 px-5 cursor-pointer relative hover:text-yellow-600"
     >
