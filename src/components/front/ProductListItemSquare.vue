@@ -7,10 +7,10 @@ export default {
   emits: ['addCollection', 'addCart'],
   setup(props, { emit }) {
     let collection = computed(() => props.collectionList);
-    let is_collection = computed(() =>
+    let isCollection = computed(() =>
       collection.value.indexOf(props.product.id)
     );
-    return { is_collection, emit, emitter };
+    return { isCollection, emit, emitter };
   },
 };
 </script>
@@ -54,8 +54,8 @@ export default {
         >
           <i
             :class="{
-              'bi-heart': is_collection < 0,
-              'bi-heart-fill': is_collection >= 0,
+              'bi-heart': isCollection < 0,
+              'bi-heart-fill': isCollection >= 0,
             }"
             class="bi text-xl text-black"
           ></i>
