@@ -90,9 +90,7 @@ export default {
         }
         emitter.emit('close-loading');
         // 打亂順序：避免產品先顯示
-        allResultList.value.sort(function () {
-          return 0.5 - Math.random();
-        });
+        allResultList.value.sort(() => 0.5 - Math.random());
       });
     }
     getProducts();
