@@ -21,6 +21,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div
     ref="homeMainBanner"
@@ -92,6 +93,7 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .homeMainBanner__flower {
   position: absolute;

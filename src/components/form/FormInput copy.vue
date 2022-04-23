@@ -9,6 +9,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="w-full px-3 mb-6 md:mb-0">
     <label
@@ -28,4 +29,5 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss"></style>

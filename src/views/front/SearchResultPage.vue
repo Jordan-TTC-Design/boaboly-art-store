@@ -105,6 +105,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div
     class="relative bg-white grid grid-cols-12 lg:px-24 md:px-16 px-4 md:py-32 py-16 md:gap-x-8 w-full"
@@ -174,6 +175,7 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .pageSelectBox {
   position: relative;

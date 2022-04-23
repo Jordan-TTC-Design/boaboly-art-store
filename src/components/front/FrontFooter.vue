@@ -12,6 +12,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <footer
     class="bg-primaryLight py-12 md:pb-12 pb-24 px-6 flex xl:flex-row flex-col justify-between lg:items-center gap-y-8"
@@ -72,6 +73,7 @@ export default {
     </button>
   </footer>
 </template>
+
 <style lang="scss" scoped>
 .footerNav {
   display: flex;

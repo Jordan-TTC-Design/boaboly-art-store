@@ -99,6 +99,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div
     :class="[
@@ -191,6 +192,7 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss">
 .imgCropperPopModal {
   transform: translateY(-5%);

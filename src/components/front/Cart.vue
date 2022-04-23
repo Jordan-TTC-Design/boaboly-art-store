@@ -97,6 +97,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <button
     type="button"
@@ -231,4 +232,5 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss"></style>

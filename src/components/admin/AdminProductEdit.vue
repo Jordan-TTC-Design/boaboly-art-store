@@ -62,6 +62,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="flex flex-col relative h-full">
     <div
@@ -395,4 +396,5 @@ export default {
     </form>
   </div>
 </template>
+
 <style lang="scss"></style>

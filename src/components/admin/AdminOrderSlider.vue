@@ -82,6 +82,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div
     class="siderBg--x z-sider w-2/3"
@@ -429,6 +430,7 @@ export default {
     </Form>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .orderInfoItem {
   display: flex;

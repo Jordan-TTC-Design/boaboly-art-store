@@ -32,6 +32,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="swiperBox">
     <swiper
@@ -75,6 +76,7 @@ export default {
     </swiper>
   </div>
 </template>
+
 <style lang="scss">
 // 搭配上freemode
 .swiper-free-mode > .swiper-wrapper {

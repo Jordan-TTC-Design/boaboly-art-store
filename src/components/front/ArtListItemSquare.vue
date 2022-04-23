@@ -9,6 +9,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="artItem group bg-white border-b border-gray-300 py-12">
     <div class="flex sm:flex-row flex-col sm:items-end sm:mb-8 gap-4">
@@ -44,6 +45,7 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .artItem {
   min-height: 360px;

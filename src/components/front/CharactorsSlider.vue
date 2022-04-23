@@ -19,6 +19,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div
     class="sectionCharactor bg-gray-100 grid md:grid-cols-3 grid-cols-1 md:py-36 py-24 gap-y-12 relative"
@@ -121,6 +122,7 @@ export default {
     </h3>
   </div>
 </template>
+
 <style lang="scss">
 .sectionCharactor {
   overflow: hidden;

@@ -34,6 +34,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div
     :class="[
@@ -45,4 +46,5 @@ export default {
     <p class="font-bold text-white text-right">{{ showText }}</p>
   </div>
 </template>
+
 <style lang="scss"></style>

@@ -52,6 +52,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="w-full mb-6 md:mb-0 form__infoEditBox">
     <label
@@ -70,6 +71,7 @@ export default {
     ></ckeditor>
   </div>
 </template>
+
 <style lang="scss">
 .form__infoEditBox {
   .ck-editor__editable_inline {

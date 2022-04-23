@@ -81,6 +81,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="bg-gray-100 relative md:py-16 pt-4 pb-16 min-h-screen">
     <div class="bg-primaryLight w-full h-96 absolute top-0"></div>
@@ -240,6 +241,7 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .arrow {
   position: relative;

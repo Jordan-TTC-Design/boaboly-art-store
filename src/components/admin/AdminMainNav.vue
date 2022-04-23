@@ -9,6 +9,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div
     class="flex flex-col items-center w-40 min-h-screen text-yellow-500 bg-black shadow-sm"
@@ -65,4 +66,5 @@ export default {
     </a>
   </div>
 </template>
+
 <style lang="scss"></style>

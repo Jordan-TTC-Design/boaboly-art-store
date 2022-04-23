@@ -56,6 +56,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="relative bg-white">
     <div
@@ -79,4 +80,5 @@ export default {
   </div>
   <AdminOrderSlider :select-order="selectItem" @get-orders="getOrders" />
 </template>
+
 <style lang="scss" scoped></style>

@@ -80,6 +80,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="relative bg-white">
     <div
@@ -157,4 +158,5 @@ export default {
     @clear-item="clearItem"
   />
 </template>
+
 <style lang="scss"></style>

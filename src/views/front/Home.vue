@@ -69,6 +69,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <HomeMainBanner />
   <div class="md:mb-36 mb-24 mt-24 relative">
@@ -161,6 +162,7 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .homeBoabolyPen {
   &__txt {

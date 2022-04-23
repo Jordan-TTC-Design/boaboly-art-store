@@ -11,6 +11,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="moreMenu">
     <button
@@ -44,6 +45,7 @@ export default {
     @click="modalOpen = false"
   ></div>
 </template>
+
 <style lang="scss" scoped>
 .moreMenu {
   position: relative;

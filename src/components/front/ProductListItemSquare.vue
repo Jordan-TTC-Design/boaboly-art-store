@@ -14,6 +14,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="bg-white group p-4 hover:bg-gray-100/50 flex flex-col">
     <div class="flex-grow">
@@ -71,4 +72,5 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss"></style>

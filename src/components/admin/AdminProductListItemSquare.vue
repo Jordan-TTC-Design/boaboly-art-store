@@ -4,6 +4,7 @@ export default {
   emits: ['changeProductState', 'openProductDetail', 'deleteProduct'],
 };
 </script>
+
 <template>
   <div class="group">
     <div class="relative mb-2">
@@ -59,4 +60,5 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss"></style>

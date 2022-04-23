@@ -85,6 +85,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="relative bg-white">
     <div
@@ -190,4 +191,5 @@ export default {
     />
   </div>
 </template>
+
 <style lang="scss"></style>

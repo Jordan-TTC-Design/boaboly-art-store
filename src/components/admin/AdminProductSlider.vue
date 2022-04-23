@@ -88,6 +88,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="flex flex-col relative h-full">
     <div class="relative border-b border-gray-300 p-6 pb-0">
@@ -424,4 +425,5 @@ export default {
     </form>
   </div>
 </template>
+
 <style lang="scss"></style>

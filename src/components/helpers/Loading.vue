@@ -31,6 +31,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <loading :active="isLoading" />
 </template>

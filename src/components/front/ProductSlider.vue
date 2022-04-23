@@ -19,6 +19,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="relative">
     <div class="swiperBox">
@@ -64,6 +65,7 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .viewMoreBtn {
   font-size: 1.5rem;

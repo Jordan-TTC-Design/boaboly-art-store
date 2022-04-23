@@ -3,6 +3,7 @@ export default {
   props: { modelValue: Number, 'input-id': String },
 };
 </script>
+
 <template>
   <div class="w-full mb-6 md:mb-0">
     <label
@@ -20,4 +21,5 @@ export default {
     />
   </div>
 </template>
+
 <style lang="scss"></style>

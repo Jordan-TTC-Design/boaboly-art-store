@@ -43,6 +43,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <button
     type="button"
@@ -146,6 +147,7 @@ export default {
     </footer>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .hamListLink {
   display: flex;

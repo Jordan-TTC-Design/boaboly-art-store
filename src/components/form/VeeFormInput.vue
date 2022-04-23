@@ -16,6 +16,7 @@ export default {
   setup() {},
 };
 </script>
+
 <template>
   <div class="w-full mb-6 md:mb-0">
     <label
@@ -41,4 +42,5 @@ export default {
     ></error-message>
   </div>
 </template>
+
 <style lang="scss"></style>
