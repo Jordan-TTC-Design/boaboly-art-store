@@ -70,13 +70,13 @@ export default {
     <div
       class="sm:container sm:mx-auto mx-4 bg-white shadow-sm lg:p-24 md:p-12 p-8 pb-24"
     >
-      <router-link
+      <RouterLink
         :to="{ name: 'Home' }"
         class="px-3 py-2 flex items-center mb-4"
       >
         <i class="bi bi-chevron-double-left mr-1"></i>
         <p>返回繼續購物</p>
-      </router-link>
+      </RouterLink>
       <div
         class="grid lg:grid-cols-12 grid-cols-1 gap-y-8"
         v-if="checkStage === 1"

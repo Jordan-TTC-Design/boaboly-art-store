@@ -119,10 +119,10 @@ export default {
       <div
         class="flex md:flex-row flex-col justify-end items-center gap-x-8 px-12"
       >
-        <router-link to="/arts" class="lg:text-3xl tex-xl font-bold"
-          >BACK TO WORKS</router-link
+        <RouterLink to="/arts" class="lg:text-3xl tex-xl font-bold"
+          >BACK TO WORKS</RouterLink
         >
-        <router-link to="/arts" class="arrow"></router-link>
+        <RouterLink to="/arts" class="arrow"></RouterLink>
       </div>
     </div>
   </div>

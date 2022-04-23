@@ -18,29 +18,21 @@ export default {
     </a>
     <div class="w-full px-2">
       <div class="flex flex-col items-center w-full border-t border-white">
-        <router-link
-          :class="btnStyle"
-          class="group"
-          :to="{ name: 'AdminHome' }"
-        >
+        <RouterLink :class="btnStyle" class="group" :to="{ name: 'AdminHome' }">
           <i class="bi bi-bar-chart-fill text-xl group-hover:text-gray-900"></i>
           <span
             class="ml-3 align-middle inline-block text-sm font-medium group-hover:text-gray-900"
             >總覽</span
           >
-        </router-link>
-        <router-link
-          :class="btnStyle"
-          class="group"
-          :to="{ name: 'AdminArts' }"
-        >
+        </RouterLink>
+        <RouterLink :class="btnStyle" class="group" :to="{ name: 'AdminArts' }">
           <i class="bi bi-brush-fill text-xl group-hover:text-gray-900"></i>
           <span
             class="ml-3 align-middle inline-block text-sm font-medium group-hover:text-gray-900"
             >文章</span
           >
-        </router-link>
-        <router-link
+        </RouterLink>
+        <RouterLink
           :class="btnStyle"
           class="group"
           :to="{ name: 'AdminProducts' }"
@@ -50,8 +42,8 @@ export default {
             class="ml-3 align-middle inline-block text-sm font-medium group-hover:text-gray-900"
             >商品</span
           >
-        </router-link>
-        <router-link
+        </RouterLink>
+        <RouterLink
           :class="btnStyle"
           class="group"
           :to="{ name: 'AdminOrders' }"
@@ -61,7 +53,7 @@ export default {
             class="ml-3 align-middle inline-block text-sm font-medium group-hover:text-gray-900"
             >訂單</span
           >
-        </router-link>
+        </RouterLink>
       </div>
     </div>
     <a

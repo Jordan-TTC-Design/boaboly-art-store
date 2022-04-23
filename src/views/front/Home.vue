@@ -96,10 +96,10 @@ export default {
           src="@/assets/images/img-boaboly-pen.svg"
           alt="Boaboly圖片"
         />
-        <router-link
+        <RouterLink
           :to="{ name: 'ProductList' }"
           class="homeBoabolyPen__btn block lg:text-xl text-sm lg:py-6 lg:px-4 px-2 py-4 text-center bg-black text-white font-bold"
-          >VIEW MORE</router-link
+          >VIEW MORE</RouterLink
         >
       </div>
     </div>

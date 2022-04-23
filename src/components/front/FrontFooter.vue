@@ -19,30 +19,30 @@ export default {
     <div
       class="flex items-center flex-col lg:flex-row gap-x-12 gap-y-4 lg:pb-0 pb-8 lg:border-0 border-b border-black"
     >
-      <router-link to="/" class="text-2xl font-bold text-black"
-        >Boaboly</router-link
+      <RouterLink to="/" class="text-2xl font-bold text-black"
+        >Boaboly</RouterLink
       >
       <ul class="footerNav">
         <li>
-          <router-link :to="{ name: 'ArtList' }" class="footerNav__item">
+          <RouterLink :to="{ name: 'ArtList' }" class="footerNav__item">
             WORKS
-          </router-link>
+          </RouterLink>
         </li>
         <li>
-          <router-link :to="{ name: 'ProductList' }" class="footerNav__item">
+          <RouterLink :to="{ name: 'ProductList' }" class="footerNav__item">
             PRODUCTS
-          </router-link>
-        </li>
-        <!-- <li>
-          <router-link :to="{ name: 'About' }" class="footerNav__item">
-            ABOUT
-          </router-link>
+          </RouterLink>
         </li>
         <li>
-          <router-link :to="{ name: 'Contact' }" class="footerNav__item">
+          <RouterLink :to="{ name: 'About' }" class="footerNav__item">
+            ABOUT
+          </RouterLink>
+        </li>
+        <li>
+          <RouterLink :to="{ name: 'Contact' }" class="footerNav__item">
             CONTACT
-          </router-link>
-        </li> -->
+          </RouterLink>
+        </li>
       </ul>
     </div>
     <div

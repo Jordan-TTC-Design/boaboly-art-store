@@ -56,8 +56,8 @@ export default {
     :class="{ active: modalOpen }"
   >
     <header class="flex justify-between items-center flex-shrink-0">
-      <router-link to="/" class="text-2xl font-bold ml-6 text-white"
-        >Boaboly<span class="text-xs block">寶兒寶莉美學商店</span></router-link
+      <RouterLink to="/" class="text-2xl font-bold ml-6 text-white"
+        >Boaboly<span class="text-xs block">寶兒寶莉美學商店</span></RouterLink
       >
       <div class="bg-black py-4 px-6 flex">
         <button
@@ -73,25 +73,25 @@ export default {
       class="container grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 flex-grow gap-4 mx-auto my-12 md:px-0 px-6"
     >
       <li class="flex items-center">
-        <router-link :to="{ name: 'ArtList' }" class="hamListLink w-full">
+        <RouterLink :to="{ name: 'ArtList' }" class="hamListLink w-full">
           WORKS <span>寶莉圖文作品</span>
-        </router-link>
+        </RouterLink>
       </li>
       <li class="flex items-center">
-        <router-link :to="{ name: 'ProductList' }" class="hamListLink w-full">
+        <RouterLink :to="{ name: 'ProductList' }" class="hamListLink w-full">
           PRODUCTS <span>寶莉自製商品</span>
-        </router-link>
-      </li>
-      <!-- <li class="flex items-center">
-        <router-link :to="{ name: 'About' }" class="hamListLink w-full">
-          ABOUT <span>美學商店理念</span>
-        </router-link>
+        </RouterLink>
       </li>
       <li class="flex items-center">
-        <router-link :to="{ name: 'Contact' }" class="hamListLink w-full">
+        <RouterLink :to="{ name: 'About' }" class="hamListLink w-full">
+          ABOUT <span>美學商店理念</span>
+        </RouterLink>
+      </li>
+      <li class="flex items-center">
+        <RouterLink :to="{ name: 'Contact' }" class="hamListLink w-full">
           CONTACT <span>合作＆聯絡</span>
-        </router-link>
-      </li> -->
+        </RouterLink>
+      </li>
       <li class="md:col-span-3 sm:col-span-2 hamSearchBox sm:w-1/2">
         <label
           class="hamListLink w-full search"

@@ -37,7 +37,7 @@ export default {
           :key="productItem.id"
           class="px-8 sliderItem group"
         >
-          <router-link :to="productItem.id" class="relative cursor-pointer">
+          <RouterLink :to="productItem.id" class="relative cursor-pointer">
             <img
               class="w-100"
               :src="productItem.imageUrl"
@@ -58,7 +58,7 @@ export default {
                 NT$ {{ productItem.price }}
               </p>
             </div>
-          </router-link>
+          </RouterLink>
         </swiper-slide>
       </swiper>
     </div>

@@ -232,10 +232,10 @@ export default {
       <div
         class="flex md:flex-row flex-col justify-end items-center gap-x-8 px-12"
       >
-        <router-link to="/products" class="lg:text-3xl tex-xl font-bold"
-          >BACK TO PRODUCTS</router-link
+        <RouterLink to="/products" class="lg:text-3xl tex-xl font-bold"
+          >BACK TO PRODUCTS</RouterLink
         >
-        <router-link to="/products" class="arrow"></router-link>
+        <RouterLink to="/products" class="arrow"></RouterLink>
       </div>
     </div>
   </div>

@@ -51,7 +51,7 @@ export default {
         :key="artItem.id"
         class="px-8 group"
       >
-        <router-link
+        <RouterLink
           :to="`/arts/${artItem.id}`"
           class="flex justify-center relative"
         >
@@ -70,7 +70,7 @@ export default {
               </p>
             </div>
           </div>
-        </router-link>
+        </RouterLink>
       </swiper-slide>
     </swiper>
   </div>

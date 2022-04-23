@@ -220,13 +220,13 @@ export default {
           <p class="text-sm text-gray-400 mb-1">總金額</p>
           <p class="text-xl font-bold">NT$ {{ cartTotal }}</p>
         </div>
-        <router-link
+        <RouterLink
           :to="cartList.length === 0 ? '' : '/checkout'"
           :class="{ 'opacity-50': cartList.length === 0 }"
           class="bg-black rounded py-2 px-3 hover:bg-gray-800 text-white"
         >
           前往結賬
-        </router-link>
+        </RouterLink>
       </div>
     </div>
   </div>
