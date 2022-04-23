@@ -23,7 +23,7 @@ export default {
 <template>
   <div class="relative">
     <div class="swiperBox">
-      <swiper
+      <Swiper
         :slides-per-view="swiperNum"
         :modules="modules"
         :speed="3000"
@@ -33,7 +33,7 @@ export default {
           disableOnInteraction: false,
         }"
       >
-        <swiper-slide
+        <Swiper-slide
           v-for="productItem in productList"
           :key="productItem.id"
           class="px-8 sliderItem group"
@@ -60,8 +60,8 @@ export default {
               </p>
             </div>
           </RouterLink>
-        </swiper-slide>
-      </swiper>
+        </Swiper-slide>
+      </Swiper>
     </div>
   </div>
 </template>

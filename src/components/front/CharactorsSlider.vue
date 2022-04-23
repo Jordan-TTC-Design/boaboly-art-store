@@ -36,7 +36,7 @@ export default {
     </div>
     <div class="md:col-start-2 md:col-span-2">
       <div class="charactorList">
-        <swiper
+        <Swiper
           :slides-per-view="swiperNum"
           :space-between="50"
           :loop="true"
@@ -48,7 +48,7 @@ export default {
             disableOnInteraction: false,
           }"
         >
-          <swiper-slide>
+          <Swiper-slide>
             <div class="charactorList__item">
               <p class="charactorList__item__number">001</p>
               <img
@@ -58,8 +58,8 @@ export default {
               />
               <p class="charactorList__item__name">寶莉</p>
             </div>
-          </swiper-slide>
-          <swiper-slide>
+          </Swiper-slide>
+          <Swiper-slide>
             <div class="charactorList__item">
               <p class="charactorList__item__number">002</p>
               <img
@@ -69,8 +69,8 @@ export default {
               />
               <p class="charactorList__item__name">汪丸</p>
             </div>
-          </swiper-slide>
-          <swiper-slide>
+          </Swiper-slide>
+          <Swiper-slide>
             <div class="charactorList__item">
               <p class="charactorList__item__number">003</p>
               <img
@@ -80,8 +80,8 @@ export default {
               />
               <p class="charactorList__item__name">咪拉</p>
             </div>
-          </swiper-slide>
-          <swiper-slide>
+          </Swiper-slide>
+          <Swiper-slide>
             <div class="charactorList__item">
               <p class="charactorList__item__number">004</p>
               <img
@@ -91,8 +91,8 @@ export default {
               />
               <p class="charactorList__item__name">潘弟</p>
             </div>
-          </swiper-slide>
-          <swiper-slide>
+          </Swiper-slide>
+          <Swiper-slide>
             <div class="charactorList__item">
               <p class="charactorList__item__number">005</p>
               <img
@@ -102,8 +102,8 @@ export default {
               />
               <p class="charactorList__item__name">鼠吉</p>
             </div>
-          </swiper-slide>
-          <swiper-slide>
+          </Swiper-slide>
+          <Swiper-slide>
             <div class="charactorList__item">
               <p class="charactorList__item__number">006</p>
               <img
@@ -113,8 +113,8 @@ export default {
               />
               <p class="charactorList__item__name">晴子</p>
             </div>
-          </swiper-slide>
-        </swiper>
+          </Swiper-slide>
+        </Swiper>
       </div>
     </div>
     <h3 class="sectionCharactor__bgWord sectionCharactor__bgWord--bottom">
