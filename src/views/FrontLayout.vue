@@ -39,7 +39,7 @@ export default {
   <div class="wrapper__content">
     <div class="flex flex-col min-h-screen justify-between">
       <header
-        class="flex justify-between items-center bg-white sticky top-0 z-40 opacity-95"
+        class="flex justify-between items-center bg-white/95 sticky top-0 z-40"
       >
         <RouterLink to="/" class="text-2xl font-bold ml-6">Boaboly</RouterLink>
         <ul class="bg-black sm:py-4 sm:px-6 px-2 py-3 flex gap-x-4">
