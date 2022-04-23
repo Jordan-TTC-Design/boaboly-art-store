@@ -23,8 +23,8 @@
   --text-dark-1: var(--white);
   --text-dark-2: rgba(235, 235, 235, 0.64);
 
-  --bgBlackTrans:rgba(0,0,0, 0.6);
-  --bgGrayTrans:rgba(226,226,226, 0.6);
+  --bgBlackTrans: rgba(0, 0, 0, 0.6);
+  --bgGrayTrans: rgba(226, 226, 226, 0.6);
 }
 
 /* semantic color variables for this project */
@@ -72,28 +72,54 @@ body {
   background: var(--white);
   transition: color 0.5s, background-color 0.5s;
   line-height: 1.5;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   font-size: 16px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* 設定打開modal時候背景fixed */
+html {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.wrapper {
+  height: 100%;
+}
+
+.wrapper__content {
+  height: 100%;
+  overflow: scroll;
+}
+.no-scroll .wrapper__content {
+  overflow: hidden;
+  -webkit-overflow-scrolling: auto;
+}
+
 /* 設定所有bi icon往上移動一點 */
-.bi{
+.bi {
   position: relative;
   top: -1px;
 }
 
 /* Chrome, Safari, Edge, Opera */
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }

@@ -23,8 +23,7 @@ export default {
     }
     watch(modalOpen, (newValue) => {
       if (newValue === true) {
-        document.getElementsByTagName('body')[0].className =
-          'overflow-y-hidden';
+        document.getElementsByTagName('body')[0].className = 'no-scroll';
       } else {
         document.body.removeAttribute('class');
       }
@@ -39,30 +38,34 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen justify-between">
-    <header
-      class="flex justify-between items-center bg-white sticky top-0 z-40 opacity-95"
-    >
-      <router-link to="/" class="text-2xl font-bold ml-6">Boaboly</router-link>
-      <ul class="bg-black sm:py-4 sm:px-6 px-2 py-3 flex gap-x-4">
-        <li>
-          <Collection @fix-window="fixWindow" />
-        </li>
-        <li>
-          <Cart @fix-window="fixWindow" />
-        </li>
-        <li>
-          <HamMenu @fix-window="fixWindow" />
-        </li>
-      </ul>
-    </header>
-    <div class="w-full mx-auto">
-      <RouterView />
+  <div class="wrapper__content">
+    <div class="flex flex-col min-h-screen justify-between">
+      <header
+        class="flex justify-between items-center bg-white sticky top-0 z-40 opacity-95"
+      >
+        <router-link to="/" class="text-2xl font-bold ml-6"
+          >Boaboly</router-link
+        >
+        <ul class="bg-black sm:py-4 sm:px-6 px-2 py-3 flex gap-x-4">
+          <li>
+            <Collection @fix-window="fixWindow" />
+          </li>
+          <li>
+            <Cart @fix-window="fixWindow" />
+          </li>
+          <li>
+            <HamMenu @fix-window="fixWindow" />
+          </li>
+        </ul>
+      </header>
+      <div class="w-full mx-auto">
+        <RouterView />
+      </div>
     </div>
+    <Loading />
+    <PopReminder />
+    <FrontFooter />
   </div>
-  <Loading />
-  <PopReminder />
-  <FrontFooter />
 </template>
 
 <style lang="scss" scoped></style>
