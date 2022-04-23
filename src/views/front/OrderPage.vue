@@ -21,8 +21,8 @@ export default {
   },
   setup() {
     const router = useRouter();
-    let cartTotal = ref(0);
-    let checkStage = ref(1);
+    const cartTotal = ref(0);
+    const checkStage = ref(1);
     const cartList = ref([]);
     let shipping = computed(() => {
       let num = 60;

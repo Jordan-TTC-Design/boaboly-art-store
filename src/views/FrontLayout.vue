@@ -17,7 +17,7 @@ export default {
     FrontFooter,
   },
   setup() {
-    let modalOpen = ref(false);
+    const modalOpen = ref(false);
     function fixWindow(status) {
       modalOpen.value = status;
     }

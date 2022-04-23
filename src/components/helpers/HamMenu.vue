@@ -7,8 +7,8 @@ export default {
   setup(props, { emit }) {
     const route = useRoute();
     const router = useRouter();
-    let modalOpen = ref(false);
-    let searchKeyword = ref('');
+    const modalOpen = ref(false);
+    const searchKeyword = ref('');
     const nowPath = computed(() => route.path);
     watch(nowPath, (newValue, oldValue) => {
       if (newValue !== oldValue) {

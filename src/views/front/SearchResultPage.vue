@@ -17,8 +17,8 @@ export default {
     const route = useRoute();
     let keyword = computed(() => route.query.keyword);
     const allResultList = ref([]);
-    let filterKeyword = ref(keyword.value || '');
-    let resultCategory = ref('');
+    const filterKeyword = ref(keyword.value || '');
+    const resultCategory = ref('');
     const paginationData = ref({ totalPages: 1, nowPage: 1 });
     const resultfilterList = computed(() => {
       let array = allResultList.value;

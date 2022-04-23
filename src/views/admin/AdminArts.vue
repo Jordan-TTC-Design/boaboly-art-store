@@ -14,8 +14,8 @@ export default {
   },
   setup() {
     const articles = ref([]);
-    let listState = ref(1);
-    let showed = ref(true);
+    const listState = ref(1);
+    const showed = ref(true);
     const articleList = computed(() => {
       let array = [];
       if (listState.value === 2) {
@@ -27,8 +27,8 @@ export default {
       }
       return array;
     });
-    let selectItem = ref(JSON.parse(JSON.stringify(defaultArticleData)));
-    let modalState = ref(null);
+    const selectItem = ref(JSON.parse(JSON.stringify(defaultArticleData)));
+    const modalState = ref(null);
     function clearItem() {
       modalState.value = null;
       selectItem.value = JSON.parse(JSON.stringify(defaultArticleData));

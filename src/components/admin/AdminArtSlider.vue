@@ -21,7 +21,7 @@ export default {
     const modalOpen = ref(false);
     const modalState = computed(() => props.modalState);
     const selectItemId = computed(() => props.selectItem.id);
-    let listState = ref(1);
+    const listState = ref(1);
     const imgCoverUploader = ref(null);
     const imgsData = ref([{ useUrl: true, url: '' }]);
     function upload() {

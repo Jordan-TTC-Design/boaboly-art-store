@@ -37,7 +37,7 @@ export default {
         return newProductItem;
       }
     });
-    let listState = ref(1);
+    const listState = ref(1);
     const state = computed(() => props.modalState);
     const imgCoverUploader = ref(null);
     const imgsData = ref([{ useUrl: true, url: '' }]);

@@ -4,7 +4,7 @@ export default {
   props: ['item-id'],
   emits: ['delete-item', 'edit-item'],
   setup() {
-    let modalOpen = ref(false);
+    const modalOpen = ref(false);
     return {
       modalOpen,
     };

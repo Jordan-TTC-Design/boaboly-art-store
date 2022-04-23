@@ -7,9 +7,9 @@ export default {
   props: ['imgName'],
   emits: ['send-img-data'],
   setup(props, { emit }) {
-    let showed = ref(false);
-    let isImg = ref(false);
-    let cropsrc = ref('');
+    const showed = ref(false);
+    const isImg = ref(false);
+    const cropsrc = ref('');
     let cropper = {};
     let imgData = {};
     const cropperImage = ref(null);

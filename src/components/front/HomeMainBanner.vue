@@ -3,8 +3,8 @@ import { ref, onMounted } from 'vue';
 
 export default {
   setup() {
-    let homeMainBanner = ref(null);
-    let homeMainBannerHeight = ref(0);
+    const homeMainBanner = ref(null);
+    const homeMainBannerHeight = ref(0);
     function goToSection() {
       window.scrollTo({
         top: homeMainBannerHeight.value + 180,

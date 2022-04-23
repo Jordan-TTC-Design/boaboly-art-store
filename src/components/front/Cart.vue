@@ -8,8 +8,8 @@ export default {
   emits: ['fix-window'],
   setup(props, { emit }) {
     const route = useRoute();
-    let modalOpen = ref(false);
-    let cartTotal = ref(0);
+    const modalOpen = ref(false);
+    const cartTotal = ref(0);
     const cartList = ref([]);
     const cartAmount = computed(() => {
       let num = 0;

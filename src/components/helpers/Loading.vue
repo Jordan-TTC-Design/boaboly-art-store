@@ -9,7 +9,7 @@ export default {
     Loading,
   },
   setup() {
-    let isLoading = ref(false);
+    const isLoading = ref(false);
     function openLoadingSetTime() {
       isLoading.value = true;
       setTimeout(() => {

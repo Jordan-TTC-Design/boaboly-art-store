@@ -17,7 +17,7 @@ export default {
   setup() {
     const productList = ref([]);
     const collecitonList = ref([]);
-    let fullWidth = ref(window.innerWidth);
+    const fullWidth = ref(window.innerWidth);
     let swiperNum1 = computed(() => {
       if (fullWidth.value >= 1280) {
         return 4;

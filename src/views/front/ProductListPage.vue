@@ -15,9 +15,9 @@ export default {
   },
   setup() {
     const productList = ref([]);
-    let filterKeyword = ref('');
-    let filterProductCategory = ref('');
-    let filterMaterialCategory = ref('');
+    const filterKeyword = ref('');
+    const filterProductCategory = ref('');
+    const filterMaterialCategory = ref('');
     const collecitonList = ref([]);
     const paginationData = ref({ totalPages: 1, nowPage: 1 });
     const productfilterList = computed(() => {

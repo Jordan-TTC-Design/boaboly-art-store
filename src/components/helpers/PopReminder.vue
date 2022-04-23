@@ -4,8 +4,8 @@ import emitter from '@/methods/emitter';
 
 export default {
   setup() {
-    let showed = ref(false);
-    let showText = ref('');
+    const showed = ref(false);
+    const showText = ref('');
     function closeModal() {
       showed.value = false;
     }

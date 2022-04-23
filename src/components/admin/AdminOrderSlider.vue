@@ -18,9 +18,9 @@ export default {
   props: ['select-order'],
   emits: ['get-orders'],
   setup(props, { emit }) {
-    let modalOpen = ref(false);
-    let editMode = ref(false);
-    let listOpen = ref(false);
+    const modalOpen = ref(false);
+    const editMode = ref(false);
+    const listOpen = ref(false);
     const selectItem = computed(() => props.selectOrder);
     function deleteOrder(itemId) {
       apiMethod.adminDeleteOrder(itemId).then(() => {

@@ -16,7 +16,7 @@ export default {
     const productImgArray = ref([]);
     const product = ref({});
     const mainImg = ref(null);
-    let fullWidth = ref(window.innerWidth);
+    const fullWidth = ref(window.innerWidth);
     let swiperNum1 = computed(() => {
       if (fullWidth.value >= 1280) {
         return 3;

@@ -14,8 +14,8 @@ export default {
   },
   setup() {
     const orders = ref([]);
-    let listState = ref(1);
-    let showed = ref(true);
+    const listState = ref(1);
+    const showed = ref(true);
     const orderList = computed(() => {
       let array = [];
       if (listState.value === 2) {
@@ -27,9 +27,9 @@ export default {
       }
       return array;
     });
-    let selectItem = ref({});
-    let modalState = ref(null);
-    let modalOpen = ref(false);
+    const selectItem = ref({});
+    const modalState = ref(null);
+    const modalOpen = ref(false);
     function getOrders() {
       apiMethod.adminGetOrders().then((res) => {
         if (res) {

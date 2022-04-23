@@ -9,8 +9,8 @@ export default {
   setup(props, { emit }) {
     const route = useRoute();
     const nowPath = computed(() => route.path);
-    let modalOpen = ref(false);
-    let collection = ref([]);
+    const modalOpen = ref(false);
+    const collection = ref([]);
     const productList = ref([]);
     const collectionProduct = computed(() => {
       let array = [];

@@ -15,8 +15,8 @@ export default {
   },
   setup() {
     const artList = ref([]);
-    let filterKeyword = ref('');
-    let filterArticleCategory = ref('');
+    const filterKeyword = ref('');
+    const filterArticleCategory = ref('');
     const paginationData = ref({ totalPages: 1, nowPage: 1 });
     const artfilterList = computed(() => {
       let array = [];
