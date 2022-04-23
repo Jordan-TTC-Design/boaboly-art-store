@@ -1,14 +1,4 @@
-<script>
-import { ref } from 'vue';
-export default {
-  setup() {
-    const btnStyle = ref(
-      'flex items-center w-full h-12 px-3 mt-3 rounded hover:bg-opacity-75 hover:bg-yellow-500'
-    );
-    return { btnStyle };
-  },
-};
-</script>
+<script></script>
 
 <template>
   <div
@@ -19,14 +9,20 @@ export default {
     </a>
     <div class="w-full px-2">
       <div class="flex flex-col items-center w-full border-t border-white">
-        <RouterLink :class="btnStyle" class="group" :to="{ name: 'AdminHome' }">
+        <RouterLink
+          class="group flex items-center w-full h-12 px-3 mt-3 rounded hover:bg-opacity-75 hover:bg-yellow-500"
+          :to="{ name: 'AdminHome' }"
+        >
           <i class="bi bi-bar-chart-fill text-xl group-hover:text-gray-900"></i>
           <span
             class="ml-3 align-middle inline-block text-sm font-medium group-hover:text-gray-900"
             >總覽</span
           >
         </RouterLink>
-        <RouterLink :class="btnStyle" class="group" :to="{ name: 'AdminArts' }">
+        <RouterLink
+          class="group flex items-center w-full h-12 px-3 mt-3 rounded hover:bg-opacity-75 hover:bg-yellow-500"
+          :to="{ name: 'AdminArts' }"
+        >
           <i class="bi bi-brush-fill text-xl group-hover:text-gray-900"></i>
           <span
             class="ml-3 align-middle inline-block text-sm font-medium group-hover:text-gray-900"
@@ -34,8 +30,7 @@ export default {
           >
         </RouterLink>
         <RouterLink
-          :class="btnStyle"
-          class="group"
+          class="group flex items-center w-full h-12 px-3 mt-3 rounded hover:bg-opacity-75 hover:bg-yellow-500"
           :to="{ name: 'AdminProducts' }"
         >
           <i class="bi bi-folder-fill text-xl group-hover:text-gray-900"></i>
@@ -45,8 +40,7 @@ export default {
           >
         </RouterLink>
         <RouterLink
-          :class="btnStyle"
-          class="group"
+          class="group flex items-center w-full h-12 px-3 mt-3 rounded hover:bg-opacity-75 hover:bg-yellow-500"
           :to="{ name: 'AdminOrders' }"
         >
           <i class="bi bi-bag-check-fill text-xl group-hover:text-gray-900"></i>
