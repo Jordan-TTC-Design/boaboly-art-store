@@ -85,6 +85,10 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: '/:catchAll(.*)',
+      redirect: '/',
+    },
   ],
 });
 
