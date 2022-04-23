@@ -1,6 +1,5 @@
 <script>
 import { ref, watch } from 'vue';
-import { RouterView } from 'vue-router';
 import Cart from '@/components/front/Cart.vue';
 import Collection from '@/components/front/Collection.vue';
 import FrontFooter from '@/components/front/FrontFooter.vue';
@@ -31,7 +30,6 @@ export default {
     return {
       modalOpen,
       fixWindow,
-      RouterView,
     };
   },
 };
