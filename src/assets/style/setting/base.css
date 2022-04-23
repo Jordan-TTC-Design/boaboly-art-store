@@ -77,8 +77,6 @@ body {
     sans-serif;
   font-size: 16px;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 /* 設定打開modal時候背景fixed */
@@ -103,7 +101,6 @@ body {
 }
 .no-scroll .wrapper__content {
   overflow: hidden;
-  -webkit-overflow-scrolling: auto;
 }
 
 /* 設定所有bi icon往上移動一點 */
@@ -112,14 +109,3 @@ body {
   top: -1px;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input[type='number']::-webkit-outer-spin-button,
-input[type='number']::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type='number'] {
-  -moz-appearance: textfield;
-}

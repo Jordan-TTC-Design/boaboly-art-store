@@ -80,8 +80,6 @@ export default {
 <style lang="scss">
 // 搭配上freemode
 .swiper-free-mode > .swiper-wrapper {
-  -webkit-transition-timing-function: linear;
-  -o-transition-timing-function: linear;
   transition-timing-function: linear;
   margin: 0 auto;
 }

@@ -167,7 +167,6 @@ export default {
 .homeBoabolyPen {
   &__txt {
     position: relative;
-    -webkit-animation: pen-txt-bar 2s ease-in-out infinite;
     animation: pen-txt-bar 2s ease-in-out infinite;
     &::before {
       content: '';
@@ -231,21 +230,12 @@ export default {
     border: 5px var(--color-black) solid;
     border-right-color: transparent;
     border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
     animation: black-circle 1s linear infinite reverse;
-    -webkit-animation: black-circle 1s linear infinite reverse;
   }
 
   @keyframes black-circle {
     100% {
       transform: rotate(360deg);
-      -webkit-transform: rotate(360deg);
-      -moz-transform: rotate(360deg);
-      -ms-transform: rotate(360deg);
-      -o-transform: rotate(360deg);
     }
   }
 }
