@@ -235,7 +235,7 @@ export default {
         <RouterLink to="/products" class="lg:text-3xl tex-xl font-bold"
           >BACK TO PRODUCTS</RouterLink
         >
-        <RouterLink to="/products" class="arrow"></RouterLink>
+        <RouterLink to="/products" class="arrow" />
       </div>
     </div>
   </div>

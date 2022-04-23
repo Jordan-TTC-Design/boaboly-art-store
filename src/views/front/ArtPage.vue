@@ -122,7 +122,7 @@ export default {
         <RouterLink to="/arts" class="lg:text-3xl tex-xl font-bold"
           >BACK TO WORKS</RouterLink
         >
-        <RouterLink to="/arts" class="arrow"></RouterLink>
+        <RouterLink to="/arts" class="arrow" />
       </div>
     </div>
   </div>

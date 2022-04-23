@@ -152,7 +152,7 @@ export default {
       <Pagination
         :pagination-data="paginationData"
         @change-page-number="paginationData.nowPage = $event"
-      ></Pagination>
+      />
     </div>
   </div>
 </template>
