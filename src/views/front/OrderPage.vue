@@ -1,5 +1,5 @@
 <script>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
 import {
@@ -12,7 +12,7 @@ import emitter from '@/methods/emitter';
 import VeeFormInput from '@/components/form/VeeFormInput.vue';
 import FormInputTextArea from '@/components/form/FormInputTextArea.vue';
 import { Form } from 'vee-validate';
-
+import { cartStore } from '@/stores/cartStore';
 export default {
   components: {
     VeeFormInput,
@@ -21,45 +21,27 @@ export default {
   },
   setup() {
     const router = useRouter();
-    const cartTotal = ref(0);
+    const cartData = cartStore();
     const checkStage = ref(1);
-    const cartList = ref([]);
-    let shipping = computed(() => {
-      let num = 60;
-      if (cartTotal.value >= 1000) {
-        num = 0;
-      }
-      return num;
-    });
-    let finalTotal = computed(() => cartTotal.value + shipping.value);
     const orderFormData = ref(JSON.parse(JSON.stringify(defaultOrderData)));
-    function getCart() {
-      frontApiMethod.getCart().then((res) => {
-        cartList.value = JSON.parse(JSON.stringify(res.carts));
-        cartTotal.value = res.total;
-      });
-    }
     function sendOrder() {
-      orderFormData.value.user.shipping.price = shipping.value;
-      orderFormData.value.user.finalPrice = finalTotal.value;
+      orderFormData.value.user.shipping.price = cartData.shippingFee;
+      orderFormData.value.user.finalPrice = cartData.orderTotal;
       frontApiMethod.postOrder(orderFormData.value).then(() => {
-        emitter.emit('get-cart');
+        cartData.getCart();
         router.push({ name: 'Home' });
         emitter.emit('open-pop-reminder', '購買成功 !');
       });
     }
-    getCart();
+    cartData.getCart();
     return {
-      cartTotal,
-      shipping,
-      finalTotal,
-      cartList,
+      cartData,
       checkStage,
       orderFormData,
-      sendOrder,
       orderStatus,
       shippingWay,
       payWay,
+      sendOrder,
     };
   },
 };
@@ -97,10 +79,10 @@ export default {
                 <p class="text-sm text-gray-400 mb-2">金額</p>
               </div>
             </li>
-            <template v-for="(item, index) in cartList" :key="item.id">
+            <template v-for="(item, index) in cartData.carts" :key="item.id">
               <li
                 :class="{
-                  'border-b border-gray-300': index < cartList.length - 1,
+                  'border-b border-gray-300': index < cartData.carts.length - 1,
                 }"
                 class="grid md:grid-cols-6 grid-cols-2 gap-2 hover:bg-gray-100/50 py-4"
               >
@@ -129,7 +111,7 @@ export default {
               class="col border-t border-gray-300 bg-white p-2 flex items-center"
             >
               <p class="text-sm text-gray-400 mr-3">總金額</p>
-              <p class="text font-bold">NT$ {{ cartTotal }}</p>
+              <p class="text font-bold">NT$ {{ cartData.cartTotal }}</p>
             </li>
           </ul>
         </div>
@@ -140,14 +122,18 @@ export default {
             </div>
             <p class="mb-3">
               <span class="text-sm text-gray-400 mr-4">商品總計</span>NT$
-              {{ cartTotal }}
+              {{ cartData.cartTotal }}
             </p>
             <div class="xs:flex-row flex-col xs: justify-between mb-3">
               <p>
                 <span class="text-sm text-gray-400 mr-4">運費</span>
-                {{ cartTotal >= 1000 ? '免運' : `NT$ ${shipping}` }}
+                {{
+                  cartData.cartTotal >= 1000
+                    ? '免運'
+                    : `NT$ ${cartData.shippingFee}`
+                }}
               </p>
-              <p v-show="cartTotal < 1000" class="text-red-500">
+              <p v-show="cartData.cartTotal < 1000" class="text-red-500">
                 尚未達到免運門檻
               </p>
             </div>
@@ -174,7 +160,7 @@ export default {
             >
               <div class="xs:mb-0 mb-4">
                 <p class="text-sm text-gray-400 mb-1">總金額</p>
-                <p class="text-xl font-bold">NT$ {{ finalTotal }}</p>
+                <p class="text-xl font-bold">NT$ {{ cartData.orderTotal }}</p>
               </div>
               <button
                 type="button"
@@ -291,16 +277,18 @@ export default {
             >
               <div class="xs:mb-0 mb-4">
                 <p class="text-sm text-gray-400 mb-1">總金額</p>
-                <p class="text-xl font-bold">NT$ {{ finalTotal }}</p>
+                <p class="text-xl font-bold">NT$ {{ cartData.orderTotal }}</p>
               </div>
               <button
                 :disabled="
-                  Object.keys(errors).length === 0 && cartList.length === 0
+                  Object.keys(errors).length === 0 &&
+                  cartData.carts.length === 0
                 "
                 type="submit"
                 :class="{
                   'bg-opacity-50 hover:bg-opacity-50':
-                    Object.keys(errors).length === 0 && cartList.length === 0,
+                    Object.keys(errors).length === 0 &&
+                    cartData.carts.length === 0,
                 }"
                 class="bg-black rounded py-2 px-3 hover:bg-gray-800 text-white"
               >

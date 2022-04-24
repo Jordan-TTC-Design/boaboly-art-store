@@ -16,6 +16,16 @@ export const cartStore = defineStore({
       });
       return num;
     },
+    shippingFee: (state) => {
+      let num = 60;
+      if (state.cartTotal >= 1000) {
+        num = 0;
+      }
+      return num;
+    },
+    orderTotal(state) {
+      return this.shippingFee + state.cartTotal;
+    },
   },
   actions: {
     getCart() {

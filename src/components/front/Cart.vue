@@ -1,7 +1,6 @@
 <script>
-import { watch, computed, onMounted, onUnmounted } from 'vue';
+import { watch, computed, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
-import emitter from '@/methods/emitter';
 import { cartStore } from '@/stores/cartStore';
 import { statusStore } from '@/stores/statusStore';
 export default {
@@ -25,9 +24,6 @@ export default {
       }
     });
     cartData.getCart();
-    onMounted(() => {
-      emitter.on('get-cart', cartData.getCart);
-    });
     onUnmounted(() => {
       statusData.cartModel = false;
     });
