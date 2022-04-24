@@ -42,8 +42,8 @@ export default {
       cartData.addCart(product.value.id, buyNum.value);
       buyNum.value = 1;
     }
-    watch(productId, (newValue, oldValue) => {
-      if (newValue !== oldValue) {
+    watch(productId, (newValue) => {
+      if (newValue !== undefined) {
         getProduct(productId.value);
       }
     });

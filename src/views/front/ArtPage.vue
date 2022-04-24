@@ -25,8 +25,10 @@ export default {
     function toOtherSamePage(itemId) {
       router.push(`/arts/${itemId}`);
     }
-    watch(articleId, () => {
-      getArt(articleId.value);
+    watch(articleId, (newValue) => {
+      if (newValue !== undefined) {
+        getArt(articleId.value);
+      }
     });
     getArt(articleId.value);
     return {
