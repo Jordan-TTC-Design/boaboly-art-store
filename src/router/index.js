@@ -14,16 +14,6 @@ const router = createRouter({
           component: () => import('../views/front/Home.vue'),
         },
         {
-          path: 'about',
-          name: 'About',
-          component: () => import('../views/front/About.vue'),
-        },
-        {
-          path: 'contact',
-          name: 'Contact',
-          component: () => import('../views/front/Contact.vue'),
-        },
-        {
           path: 'search',
           name: 'SearchResult',
           component: () => import('../views/front/SearchResultPage.vue'),

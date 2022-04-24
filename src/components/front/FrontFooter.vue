@@ -34,16 +34,6 @@ export default {
             PRODUCTS
           </RouterLink>
         </li>
-        <li>
-          <RouterLink :to="{ name: 'About' }" class="footerNav__item">
-            ABOUT
-          </RouterLink>
-        </li>
-        <li>
-          <RouterLink :to="{ name: 'Contact' }" class="footerNav__item">
-            CONTACT
-          </RouterLink>
-        </li>
       </ul>
     </div>
     <div

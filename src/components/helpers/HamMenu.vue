@@ -76,16 +76,6 @@ export default {
           PRODUCTS <span>寶莉自製商品</span>
         </RouterLink>
       </li>
-      <li class="flex items-center">
-        <RouterLink :to="{ name: 'About' }" class="hamListLink w-full">
-          ABOUT <span>美學商店理念</span>
-        </RouterLink>
-      </li>
-      <li class="flex items-center">
-        <RouterLink :to="{ name: 'Contact' }" class="hamListLink w-full">
-          CONTACT <span>合作＆聯絡</span>
-        </RouterLink>
-      </li>
       <li class="md:col-span-3 sm:col-span-2 hamSearchBox sm:w-1/2">
         <label
           class="hamListLink w-full search"
