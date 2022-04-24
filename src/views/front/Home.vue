@@ -1,12 +1,11 @@
 <script>
 import { ref, computed, onMounted } from 'vue';
-import { frontApiMethod } from '@/methods/api.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
 import HomeMainBanner from '@/components/front/HomeMainBanner.vue';
 import CharactorsSlider from '@/components/front/CharactorsSlider.vue';
 import ArtSlider from '@/components/front/ArtSlider.vue';
 import emitter from '@/methods/emitter';
-
+import { productStore } from '@/stores/productStore';
 export default {
   components: {
     ProductListItemSquare,
@@ -15,8 +14,7 @@ export default {
     ArtSlider,
   },
   setup() {
-    const productList = ref([]);
-    const collecitonList = ref([]);
+    const productsData = productStore();
     const fullWidth = ref(window.innerWidth);
     let swiperNum1 = computed(() => {
       if (fullWidth.value >= 1280) {
@@ -34,37 +32,17 @@ export default {
         return 2;
       }
     });
-    function getProduct() {
-      emitter.emit('open-loading');
-      frontApiMethod.getProductAll().then((res) => {
-        if (res) {
-          productList.value = JSON.parse(JSON.stringify(res)).filter(
-            (item) => item.promoted.star > 0
-          );
-          emitter.emit('send-check-collection');
-          emitter.emit('close-loading');
-        }
-      });
-    }
-    function checkCollection(data) {
-      collecitonList.value = Object.values(data);
-    }
     onMounted(() => {
       window.onresize = () => {
         fullWidth.value = window.innerWidth;
       };
-      emitter.on('check-collection', (data) => {
-        checkCollection(data);
-      });
     });
-    getProduct();
+    productsData.getHotProducts();
     return {
-      productList,
-      collecitonList,
+      productsData,
       swiperNum1,
       swiperNum2,
       emitter,
-      getProduct,
     };
   },
 };
@@ -110,14 +88,17 @@ export default {
       </h4>
       <h3 class="text-center font-bold text-4xl text-black mb-16">熱門商品</h3>
       <div class="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-        <template v-for="(product, index) in productList" :key="product.id">
+        <template
+          v-for="(product, index) in productsData.hotProducts"
+          :key="product.id"
+        >
           <ProductListItemSquare
             :class="{
               'md:border-none border-b border-gray-300':
-                index < productList.length - 1,
+                index < productsData.hotProducts.length - 1,
             }"
             :product="product"
-            :collection-list="collecitonList"
+            :collection-list="productsData.collections"
             @add-cart="
               emitter.emit('add-cart', {
                 id: product.id,

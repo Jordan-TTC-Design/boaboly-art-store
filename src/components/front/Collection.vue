@@ -57,14 +57,9 @@ export default {
       }
       productsData.getCollections();
     }
-    function sendCheckCollection() {
-      emitter.emit('check-collection', productsData.collections);
-    }
     productsData.getProducts();
     productsData.getCollections();
     onMounted(() => {
-      emitter.on('get-collection', productsData.getCollections);
-      emitter.on('send-check-collection', sendCheckCollection);
       emitter.on('add-collection', (data) => {
         addCollection(data);
       });

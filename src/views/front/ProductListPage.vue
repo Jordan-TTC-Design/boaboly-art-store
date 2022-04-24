@@ -1,5 +1,5 @@
 <script>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { productCategory, materialCategory } from '@/methods/data.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
 import Pagination from '@/components/helpers/Pagination.vue';
@@ -17,7 +17,6 @@ export default {
     const filterKeyword = ref('');
     const filterProductCategory = ref('');
     const filterMaterialCategory = ref('');
-    const collecitonList = ref([]);
     const paginationData = ref({ totalPages: 1, nowPage: 1 });
     const productfilterList = computed(() => {
       let array = [];
@@ -74,18 +73,12 @@ export default {
     watch(paginationData.value, () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    onMounted(() => {
-      emitter.on('check-collection', (data) => {
-        collecitonList.value = data;
-      });
-    });
     productsData.getProducts();
     productsData.getCollections();
     return {
       filterKeyword,
       filterProductCategory,
       filterMaterialCategory,
-      collecitonList,
       nowPageProducts,
       productCategory,
       materialCategory,
