@@ -6,6 +6,8 @@ import HamMenu from '@/components/helpers/HamMenu.vue';
 import Loading from '@/components/helpers/Loading.vue';
 import PopReminder from '@/components/helpers/PopReminder.vue';
 import { statusStore } from '@/stores/statusStore';
+import { ref, onMounted } from 'vue';
+
 export default {
   components: {
     Collection,
@@ -16,16 +18,23 @@ export default {
     FrontFooter,
   },
   setup() {
+    const mainContainer = ref(null);
     const statusData = statusStore();
+    onMounted(() => {
+      setTimeout(() => {
+        statusData.mainContainer = mainContainer.value;
+      }, 100);
+    });
     return {
       statusData,
+      mainContainer,
     };
   },
 };
 </script>
 
 <template>
-  <div class="wrapper__content">
+  <div ref="mainContainer" class="wrapper__content">
     <div class="flex flex-col min-h-screen justify-between">
       <header
         class="flex justify-between items-center bg-white/95 sticky top-0 z-40"

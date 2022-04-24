@@ -1,21 +1,21 @@
 <script>
 import { ref, onMounted } from 'vue';
+import { statusStore } from '@/stores/statusStore';
 
 export default {
   setup() {
+    const statusData = statusStore();
     const homeMainBanner = ref(null);
     const homeMainBannerHeight = ref(0);
     function goToSection() {
-      window.scrollTo({
-        top: homeMainBannerHeight.value + 180,
+      statusData.mainContainer.scrollTo({
+        top: homeMainBannerHeight.value + 100,
         behavior: 'smooth',
       });
-      console.log(homeMainBannerHeight.value + 180);
     }
     onMounted(() => {
       setTimeout(() => {
         homeMainBannerHeight.value = homeMainBanner.value.clientHeight;
-        console.log(window);
       }, 100);
     });
     return {

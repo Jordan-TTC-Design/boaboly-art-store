@@ -9,6 +9,7 @@ export const statusStore = defineStore({
     collectionModel: false,
     popReminderModel: false,
     popReminderText: '',
+    mainContainer: {},
   }),
   getters: {
     fixWindow(state) {

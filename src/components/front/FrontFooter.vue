@@ -1,8 +1,10 @@
 <script>
+import { statusStore } from '@/stores/statusStore';
 export default {
   setup() {
+    const statusData = statusStore();
     function scrollToTop() {
-      window.scrollTo({
+      statusData.mainContainer.scrollTo({
         top: 0,
         left: 100,
         behavior: 'smooth',
