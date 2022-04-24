@@ -60,8 +60,11 @@ export default {
     }
     function filterCategory(filterData, dataList) {
       let array = dataList;
+      console.log(filterData, dataList);
       if (filterData !== '' && filterData !== undefined) {
         array = dataList.filter((item) => item.category === filterData);
+      } else {
+        return dataList;
       }
       return array;
     }

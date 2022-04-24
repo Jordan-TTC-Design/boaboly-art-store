@@ -2,22 +2,30 @@
 import { computed } from 'vue';
 import { productStore } from '@/stores/productStore';
 import { cartStore } from '@/stores/cartStore';
+import { useRouter } from 'vue-router';
 export default {
   props: ['product', 'collection-list'],
   setup(props) {
+    const router = useRouter();
     const productsData = productStore();
     const cartData = cartStore();
     let collection = computed(() => productsData.collections);
     let isCollection = computed(() =>
       collection.value.indexOf(props.product.id)
     );
-    return { isCollection, productsData, cartData };
+    function goToPage(url) {
+      router.push(url);
+    }
+    return { isCollection, productsData, cartData, goToPage };
   },
 };
 </script>
 
 <template>
-  <div class="bg-white group p-4 hover:bg-gray-100/50 flex flex-col">
+  <div
+    @click="goToPage(`/products/${product.id}`)"
+    class="bg-white group p-4 hover:bg-gray-100/50 flex flex-col cursor-pointer"
+  >
     <div class="flex-grow">
       <RouterLink class="relative mb-3 block" :to="`/products/${product.id}`">
         <p
@@ -51,7 +59,7 @@ export default {
           type="button"
           class="rounded py-2 px-3 bg-white border-gray-300"
           data-id="product.id"
-          @click="productsData.addCollection(product)"
+          @click.stop="productsData.addCollection(product)"
         >
           <i
             :class="{
@@ -65,7 +73,7 @@ export default {
           type="button"
           class="rounded py-2 px-3 bg-white border-gray-300"
           data-id="product.id"
-          @click="cartData.addCart(product.id, 1)"
+          @click.stop="cartData.addCart(product.id, 1)"
         >
           <i class="bi bi-cart text-xl text-black"></i>
         </button>

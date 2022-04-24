@@ -86,14 +86,14 @@ export default {
           >
             <div class="flex md:flex-row flex-col items-center">
               <img
-                class="md:w-40 w-64 group-hover:bg-gray-100 p-4"
+                class="md:w-40 w-64 group-hover:bg-gray-100 p-4 cursor-pointer"
                 :src="art.imagesUrl[0]"
                 :alt="`文章圖片${index}`"
                 @click="toOtherSamePage(art.id)"
               />
               <div class="p-6">
                 <p
-                  class="text-xl font-medium text-black mb-2"
+                  class="text-xl font-medium text-black mb-2 cursor-pointer"
                   @click="toOtherSamePage(art.id)"
                 >
                   {{ art.title }}
