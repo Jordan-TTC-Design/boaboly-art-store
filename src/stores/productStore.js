@@ -34,5 +34,27 @@ export const productStore = defineStore({
         localStorage.getItem('boaboly-store-collection')
       );
     },
+    addCollection(product) {
+      const newId = product.id;
+      const check = this.collections.indexOf(newId);
+      if (check < 0) {
+        this.collections.push(newId);
+        localStorage.setItem(
+          'boaboly-store-collection',
+          JSON.stringify(this.collections)
+        );
+      } else {
+        this.collections.splice(check, 1);
+        localStorage.setItem(
+          'boaboly-store-collection',
+          JSON.stringify(this.collections)
+        );
+      }
+      this.getCollections();
+    },
+    deleteAllCollections() {
+      localStorage.setItem('boaboly-store-collection', JSON.stringify([]));
+      this.getCollections();
+    },
   },
 });

@@ -1,5 +1,5 @@
 <script>
-import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
+import { ref, watch, computed, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import emitter from '@/methods/emitter';
 import { productStore } from '@/stores/productStore';
@@ -59,11 +59,6 @@ export default {
     }
     productsData.getProducts();
     productsData.getCollections();
-    onMounted(() => {
-      emitter.on('add-collection', (data) => {
-        addCollection(data);
-      });
-    });
     onUnmounted(() => {
       modalOpen.value = false;
     });
