@@ -1,11 +1,11 @@
 <script>
 import { ref, watch, computed } from 'vue';
-import { frontApiMethod } from '@/methods/api.js';
 import { articleCategory } from '@/methods/article.js';
 import ArtListItemSquare from '@/components/front/ArtListItemSquare.vue';
 import Pagination from '@/components/helpers/Pagination.vue';
 import SideNav from '@/components/helpers/SideNav.vue';
 import emitter from '@/methods/emitter';
+import { artStore } from '@/stores/artStore';
 
 export default {
   components: {
@@ -14,13 +14,12 @@ export default {
     Pagination,
   },
   setup() {
-    const artList = ref([]);
+    const artData = artStore();
     const filterKeyword = ref('');
     const filterArticleCategory = ref('');
-    const paginationData = ref({ totalPages: 1, nowPage: 1 });
     const artfilterList = computed(() => {
       let array = [];
-      array = artList.value;
+      array = artData.arts;
       array = filterWord(filterKeyword.value, array);
       array = filterCategory(filterArticleCategory.value, array);
       return array;
@@ -30,9 +29,9 @@ export default {
       if (artfilterList.value.length <= 8) {
         return artfilterList.value;
       } else {
-        const pageFrist = paginationData.value.nowPage * 8 - 8;
+        const pageFrist = artData.pagination.nowPage * 8 - 8;
         artfilterList.value.forEach((item, index) => {
-          if (pageFrist <= index && index < paginationData.value.nowPage * 8) {
+          if (pageFrist <= index && index < artData.pagination.nowPage * 8) {
             array.push(item);
           }
         });
@@ -41,11 +40,11 @@ export default {
     });
     watch(artfilterList, (newValue, oldValue) => {
       if (newValue.length !== oldValue.length) {
-        paginationData.value.nowPage = 1;
-        paginationData.value.totalPages = Math.ceil(newValue.length / 8);
+        artData.pagination.nowPage = 1;
+        artData.pagination.totalPages = Math.ceil(newValue.length / 8);
       }
     });
-    watch(paginationData.value, () => {
+    watch(artData.pagination, () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
     function filterWord(filterData, dataList) {
@@ -65,27 +64,14 @@ export default {
       }
       return array;
     }
-    function getArts(pageNum = 1) {
-      emitter.emit('open-loading');
-      frontApiMethod.getArts(pageNum).then((res) => {
-        paginationData.value.totalPages = res.pagination.total_pages;
-        res.articles.forEach((item) => {
-          artList.value.push(item);
-        });
-        if (res.pagination.has_next) {
-          getArts(res.pagination.current_page + 1);
-        }
-        emitter.emit('close-loading');
-      });
-    }
-    getArts();
+    artData.getArtList();
     return {
       filterKeyword,
       filterArticleCategory,
       articleCategory,
       nowPageArts,
       emitter,
-      paginationData,
+      artData,
     };
   },
 };
@@ -148,11 +134,11 @@ export default {
     </div>
     <div
       class="lg:col-start-3 md:col-start-4 lg:col-span-10 md:col-span-9 col-span-12 flex justify-center"
-      v-if="paginationData.totalPages >= 2"
+      v-if="artData.pagination.totalPages >= 2"
     >
       <Pagination
-        :pagination-data="paginationData"
-        @change-page-number="paginationData.nowPage = $event"
+        :pagination-data="artData.pagination"
+        @change-page-number="artData.pagination.nowPage = $event"
       />
     </div>
   </div>

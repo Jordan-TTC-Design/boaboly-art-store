@@ -4,7 +4,6 @@ import { productCategory, materialCategory } from '@/methods/data.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
 import Pagination from '@/components/helpers/Pagination.vue';
 import SideNav from '@/components/helpers/SideNav.vue';
-import emitter from '@/methods/emitter';
 import { productStore } from '@/stores/productStore';
 export default {
   components: {
@@ -82,7 +81,6 @@ export default {
       nowPageProducts,
       productCategory,
       materialCategory,
-      emitter,
       paginationData,
       productsData,
     };

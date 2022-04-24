@@ -2,29 +2,24 @@
 import { ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
-import emitter from '@/methods/emitter';
 import { changeTime } from '@/methods/filter';
+import { statusStore } from '@/stores/statusStore';
+import { artStore } from '@/stores/artStore';
 
 export default {
   setup() {
     const router = useRouter();
     const route = useRoute();
+    const statusData = statusStore();
+    const artData = artStore();
     const articleId = computed(() => route.params.id);
     const artItem = ref({});
-    const artList = ref([]);
-    const pagination = ref({});
     function getArt(itemId) {
-      emitter.emit('open-loading');
+      statusData.isLoading = true;
       frontApiMethod.getArt(itemId).then((res) => {
         artItem.value = res;
-        getArts();
-      });
-    }
-    function getArts() {
-      frontApiMethod.getArts().then((res) => {
-        artList.value = JSON.parse(JSON.stringify(res.articles));
-        pagination.value = JSON.parse(JSON.stringify(res.pagination));
-        emitter.emit('close-loading');
+        artData.getArts();
+        statusData.isLoading = false;
       });
     }
     function toOtherSamePage(itemId) {
@@ -36,7 +31,7 @@ export default {
     getArt(articleId.value);
     return {
       artItem,
-      artList,
+      artData,
       changeTime,
       toOtherSamePage,
     };
@@ -82,7 +77,7 @@ export default {
       </div>
       <h4 class="mb-12 text-center text-3xl font-bold text-black">其他創作</h4>
       <ul class="grid grid-cols-1 gap-4 mb-24">
-        <template v-for="(art, index) in artList" :key="art.id">
+        <template v-for="(art, index) in artData.arts" :key="art.id">
           <li
             v-if="index < 3"
             class="otherArtItem flex md:flex-row flex-col justify-between items-center pb-4 group border-b border-gray-line"

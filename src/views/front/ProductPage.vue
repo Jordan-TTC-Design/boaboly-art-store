@@ -2,7 +2,6 @@
 import { ref, watch, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
-import emitter from '@/methods/emitter';
 import ProductSlider from '@/components/front/ProductSlider.vue';
 import { productStore } from '@/stores/productStore';
 import { statusStore } from '@/stores/statusStore';
@@ -59,7 +58,6 @@ export default {
       productImgArray,
       buyNum,
       mainImg,
-      emitter,
       swiperNum1,
       addCart,
       productsData,

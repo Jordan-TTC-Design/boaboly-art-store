@@ -4,7 +4,6 @@ import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue'
 import HomeMainBanner from '@/components/front/HomeMainBanner.vue';
 import CharactorsSlider from '@/components/front/CharactorsSlider.vue';
 import ArtSlider from '@/components/front/ArtSlider.vue';
-import emitter from '@/methods/emitter';
 import { productStore } from '@/stores/productStore';
 export default {
   components: {
@@ -42,7 +41,6 @@ export default {
       productsData,
       swiperNum1,
       swiperNum2,
-      emitter,
     };
   },
 };
