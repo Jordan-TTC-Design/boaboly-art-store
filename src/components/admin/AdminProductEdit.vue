@@ -200,7 +200,7 @@ export default {
                   ] !== ''
                 "
                 type="button"
-                class="w-full py-24 border border-gray-300 rounded py-2 px-3 hover:bg-gray-100"
+                class="w-full border border-gray-300 rounded py-2 px-3 hover:bg-gray-100"
                 @click="adminData.productItem.imagesUrl.push('')"
               >
                 新增圖片欄位
@@ -334,7 +334,7 @@ export default {
             </div>
           </div>
           <div class="col-span-6 mb-12">
-            <div class="grid grid-cols-3 gap-4 flex items-end">
+            <div class="grid grid-cols-3 gap-4">
               <div
                 v-for="(tag, index) in adminData.productItem.tags"
                 :key="index"
@@ -377,7 +377,7 @@ export default {
                   ] !== ''
                 "
                 type="button"
-                class="w-full py-1.5 border border-gray-300 py-2 px-3 hover:bg-gray-100"
+                class="w-full border border-gray-300 py-1.5 px-3 hover:bg-gray-100"
                 @click="adminData.productItem.tags.push('')"
               >
                 新增標籤欄位

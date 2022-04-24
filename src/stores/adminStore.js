@@ -19,6 +19,26 @@ export const adminStore = defineStore({
         }
       });
     },
+    newProduct() {
+      if (this.productModel.state === 'isNew') {
+        apiMethod.adminPostProduct(this.productItem).then(() => {
+          this.getProduct();
+          this.clearProductItem();
+        });
+      } else if (this.productModel.state === 'edit') {
+        apiMethod
+          .adminUpdateProduct(this.productItem.id, this.productItem)
+          .then(() => {
+            this.getProduct();
+            this.clearProductItem();
+          });
+      }
+    },
+    clearProductItem() {
+      this.productModel.open = false;
+      this.productModel.state = '';
+      this.productItem = JSON.parse(JSON.stringify(defaultProductData));
+    },
     async deleteProduct(itemId) {
       try {
         await apiMethod.adminDeleteProduct(itemId);
