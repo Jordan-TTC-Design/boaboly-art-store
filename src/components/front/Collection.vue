@@ -78,7 +78,7 @@ export default {
           收藏商品
         </h2>
       </div>
-      <ul class="cartList grid grid-cols-1 flex-grow-1 overflow-y-auto px-8">
+      <ul class="cartList flex flex-col flex-grow-1 overflow-y-auto px-8">
         <li class="grid md:grid-cols-4 gap-2 border-b border-gray-300">
           <div class="md:col-span-3">
             <p class="text-sm text-gray-400 mb-2">品項</p>
@@ -127,6 +127,17 @@ export default {
             </div>
           </li>
         </template>
+        <li
+          v-if="productsData.collectionProduct.length === 0"
+          class="flex flex-col justify-center items-center pt-6 gap-4"
+        >
+          <p class="text-gray-400">目前尚無任何商品</p>
+          <RouterLink
+            to="/products"
+            class="bg-black rounded py-2 px-3 hover:bg-gray-800 text-white"
+            >去看看有什麼喜歡的
+          </RouterLink>
+        </li>
       </ul>
     </div>
   </div>
