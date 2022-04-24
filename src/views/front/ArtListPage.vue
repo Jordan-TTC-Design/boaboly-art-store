@@ -5,6 +5,7 @@ import ArtListItemSquare from '@/components/front/ArtListItemSquare.vue';
 import Pagination from '@/components/helpers/Pagination.vue';
 import SideNav from '@/components/helpers/SideNav.vue';
 import { artStore } from '@/stores/artStore';
+import { statusStore } from '@/stores/statusStore';
 
 export default {
   components: {
@@ -14,6 +15,7 @@ export default {
   },
   setup() {
     const artData = artStore();
+    const statusData = statusStore();
     const filterKeyword = ref('');
     const filterArticleCategory = ref('');
     const artfilterList = computed(() => {
@@ -44,7 +46,7 @@ export default {
       }
     });
     watch(artData.pagination, () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      statusData.mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
     });
     function filterWord(filterData, dataList) {
       let array = dataList;

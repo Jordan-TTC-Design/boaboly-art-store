@@ -5,6 +5,7 @@ import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue'
 import Pagination from '@/components/helpers/Pagination.vue';
 import SideNav from '@/components/helpers/SideNav.vue';
 import { productStore } from '@/stores/productStore';
+import { statusStore } from '@/stores/statusStore';
 export default {
   components: {
     ProductListItemSquare,
@@ -13,6 +14,7 @@ export default {
   },
   setup() {
     const productsData = productStore();
+    const statusData = statusStore();
     const filterKeyword = ref('');
     const filterProductCategory = ref('');
     const filterMaterialCategory = ref('');
@@ -70,7 +72,7 @@ export default {
       }
     });
     watch(paginationData.value, () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      statusData.mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
     });
     productsData.getProducts();
     productsData.getCollections();

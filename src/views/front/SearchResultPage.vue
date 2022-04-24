@@ -47,7 +47,7 @@ export default {
       }
     });
     watch(paginationData.value, () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      statusData.mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
     });
     watch(keyword, (newValue) => {
       filterKeyword.value = newValue;

@@ -15,7 +15,7 @@ export default {
     watch(nowPath, (newValue, oldValue) => {
       if (newValue !== oldValue) {
         statusData.collectionModel = false;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        statusData.mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
     productsData.getProducts();

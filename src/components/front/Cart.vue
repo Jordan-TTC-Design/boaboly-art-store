@@ -12,7 +12,7 @@ export default {
     watch(nowPath, (newValue, oldValue) => {
       if (newValue !== oldValue) {
         statusStore.cartModel = false;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        statusData.mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
     cartData.getCart();
