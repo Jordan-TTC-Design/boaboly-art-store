@@ -5,8 +5,7 @@ import { frontApiMethod } from '@/methods/api.js';
 import Pagination from '@/components/helpers/Pagination.vue';
 import SideNav from '@/components/helpers/SideNav.vue';
 import SearchResultListItem from '@/components/front/SearchResultListItem.vue';
-import emitter from '@/methods/emitter';
-
+import { statusStore } from '@/stores/statusStore';
 export default {
   components: {
     SideNav,
@@ -14,6 +13,7 @@ export default {
     SearchResultListItem,
   },
   setup() {
+    const statusData = statusStore();
     const route = useRoute();
     let keyword = computed(() => route.query.keyword);
     const allResultList = ref([]);
@@ -70,16 +70,16 @@ export default {
       return array;
     }
     function getProducts() {
-      emitter.emit('open-loading');
+      statusData.isLoading = true;
       frontApiMethod.getProductAll().then((res) => {
         allResultList.value = JSON.parse(JSON.stringify(res));
         allResultList.value.forEach((item) => (item.searchCategory = '商品'));
-        emitter.emit('close-loading');
+        statusData.isLoading = false;
         getArts();
       });
     }
     function getArts(pageNum = 1) {
-      emitter.emit('open-loading');
+      statusData.isLoading = true;
       frontApiMethod.getArts(pageNum).then((res) => {
         res.articles.forEach((item) => {
           item.searchCategory = '創作';
@@ -88,7 +88,7 @@ export default {
         if (res.pagination.has_next) {
           getArts(res.pagination.current_page + 1);
         }
-        emitter.emit('close-loading');
+        statusData.isLoading = false;
         // 打亂順序：避免產品先顯示
         allResultList.value.sort(() => 0.5 - Math.random());
       });
@@ -99,7 +99,6 @@ export default {
       filterKeyword,
       resultCategory,
       nowPageItems,
-      emitter,
       paginationData,
     };
   },
