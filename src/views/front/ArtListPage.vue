@@ -4,7 +4,6 @@ import { articleCategory } from '@/methods/article.js';
 import ArtListItemSquare from '@/components/front/ArtListItemSquare.vue';
 import Pagination from '@/components/helpers/Pagination.vue';
 import SideNav from '@/components/helpers/SideNav.vue';
-import emitter from '@/methods/emitter';
 import { artStore } from '@/stores/artStore';
 
 export default {
@@ -70,7 +69,6 @@ export default {
       filterArticleCategory,
       articleCategory,
       nowPageArts,
-      emitter,
       artData,
     };
   },

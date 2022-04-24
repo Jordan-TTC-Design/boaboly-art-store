@@ -1,6 +1,5 @@
 <script>
 import { computed } from 'vue';
-import emitter from '@/methods/emitter';
 import { productStore } from '@/stores/productStore';
 import { cartStore } from '@/stores/cartStore';
 export default {
@@ -12,7 +11,7 @@ export default {
     let isCollection = computed(() =>
       collection.value.indexOf(props.product.id)
     );
-    return { isCollection, emitter, productsData, cartData };
+    return { isCollection, productsData, cartData };
   },
 };
 </script>

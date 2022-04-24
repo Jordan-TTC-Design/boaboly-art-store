@@ -1,7 +1,6 @@
 <script>
 import { watch, computed, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
-import emitter from '@/methods/emitter';
 import { productStore } from '@/stores/productStore';
 import { cartStore } from '@/stores/cartStore';
 import { statusStore } from '@/stores/statusStore';
@@ -33,7 +32,6 @@ export default {
       statusData.collectionModel = false;
     });
     return {
-      emitter,
       productsData,
       cartData,
       statusData,

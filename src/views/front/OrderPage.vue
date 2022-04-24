@@ -8,11 +8,11 @@ import {
   shippingWay,
   payWay,
 } from '@/methods/order.js';
-import emitter from '@/methods/emitter';
 import VeeFormInput from '@/components/form/VeeFormInput.vue';
 import FormInputTextArea from '@/components/form/FormInputTextArea.vue';
 import { Form } from 'vee-validate';
 import { cartStore } from '@/stores/cartStore';
+import { statusStore } from '@/stores/statusStore';
 export default {
   components: {
     VeeFormInput,
@@ -22,6 +22,7 @@ export default {
   setup() {
     const router = useRouter();
     const cartData = cartStore();
+    const statusData = statusStore();
     const checkStage = ref(1);
     const orderFormData = ref(JSON.parse(JSON.stringify(defaultOrderData)));
     function sendOrder() {
@@ -30,7 +31,8 @@ export default {
       frontApiMethod.postOrder(orderFormData.value).then(() => {
         cartData.getCart();
         router.push({ name: 'Home' });
-        emitter.emit('open-pop-reminder', '購買成功 !');
+        statusData.popReminderModel = true;
+        statusData.popReminderText = '購買成功 !';
       });
     }
     cartData.getCart();
