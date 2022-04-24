@@ -12,6 +12,7 @@ import FormInputNumber from '@/components/form/FormInputNumber.vue';
 import FormInputTextArea from '@/components/form/FormInputTextArea.vue';
 import FromArtic from '@/components/form/FromArtic.vue';
 import FormInputSelect from '@/components/form/FormInputSelect.vue';
+import { adminStore } from '@/stores/adminStore';
 
 export default {
   components: {
@@ -25,6 +26,7 @@ export default {
   props: ['selectItem', 'modal-state'],
   emits: ['get-product', 'clear-item'],
   setup(props, { emit }) {
+    const adminData = adminStore();
     const productItem = computed(() => {
       return props.selectItem;
     });
@@ -49,11 +51,11 @@ export default {
       });
     }
     return {
+      adminData,
       materialCategory,
       productCategory,
       unitCategory,
       imgsData,
-      productItem,
       imgCoverUploader,
       upload,
       getUrl,
@@ -92,7 +94,7 @@ export default {
           <ImgUploader
             @send-img-url="getUrl"
             img-name="主要圖片"
-            :exist-img-url="productItem.imageUrl"
+            :exist-img-url="adminData.productItem.imageUrl"
           />
         </div>
         <div class="col-span-4 grid grid-cols-6 gap-4">
@@ -103,7 +105,7 @@ export default {
           </h3>
           <div class="col-span-6 lg:col-span-3">
             <FormInput
-              v-model="productItem.title"
+              v-model="adminData.productItem.title"
               input-id="productTitle"
               type="text"
             >
@@ -112,7 +114,7 @@ export default {
           </div>
           <div class="col-span-6 lg:col-span-3">
             <FormInputSelect
-              v-model="productItem.category"
+              v-model="adminData.productItem.category"
               input-id="productCategory"
               :select-data="productCategory"
             >
@@ -121,7 +123,7 @@ export default {
           </div>
           <div class="col-span-6 lg:col-span-3">
             <FormInput
-              v-model.number="productItem.origin_price"
+              v-model.number="adminData.productItem.origin_price"
               input-id="productOriginPrice"
               input-type="number"
             >
@@ -130,7 +132,7 @@ export default {
           </div>
           <div class="col-span-6 lg:col-span-3">
             <FormInputNumber
-              v-model.number="productItem.price"
+              v-model.number="adminData.productItem.price"
               input-id="productPrice"
             >
               <template v-slot:default>商品價格</template>
@@ -138,7 +140,7 @@ export default {
           </div>
           <div class="col-span-6 mb-12">
             <FormInputTextArea
-              v-model="productItem.description"
+              v-model="adminData.productItem.description"
               input-id="productDescription"
               text-area-row="5"
               text-holder="請輸入商品摘要"
@@ -160,7 +162,7 @@ export default {
             <div class="grid grid-cols-3 gap-4">
               <div
                 class="relative"
-                v-for="(img, index) in productItem.imagesUrl"
+                v-for="(img, index) in adminData.productItem.imagesUrl"
                 :key="`img${index}`"
               >
                 <ImgUploader
@@ -172,7 +174,7 @@ export default {
                   type="button"
                   :class="{ hidden: index == 0 }"
                   class="h-7 w-7 p-1 bg-gray-200 active:scale-90 rounded-md cursor-pointer transition-all absolute top-0 right-0 translate-x-3 -translate-y-3"
-                  @click="productItem.imagesUrl.splice(index, 1)"
+                  @click="adminData.productItem.imagesUrl.splice(index, 1)"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -192,12 +194,14 @@ export default {
               </div>
               <button
                 v-if="
-                  productItem.imagesUrl.length ||
-                  productItem.imagesUrl[productItem.imagesUrl.length - 1] !== ''
+                  adminData.productItem.imagesUrl.length ||
+                  adminData.productItem.imagesUrl[
+                    adminData.productItem.imagesUrl.length - 1
+                  ] !== ''
                 "
                 type="button"
                 class="w-full py-24 border border-gray-300 rounded py-2 px-3 hover:bg-gray-100"
-                @click="productItem.imagesUrl.push('')"
+                @click="adminData.productItem.imagesUrl.push('')"
               >
                 新增圖片欄位
               </button>
@@ -213,7 +217,7 @@ export default {
               input-id="productContent"
               input-name="商品介紹內容"
               text-holder="請輸入商品介紹內容"
-              v-model="productItem.content"
+              v-model="adminData.productItem.content"
             />
           </div>
           <h3
@@ -223,7 +227,7 @@ export default {
           </h3>
           <div class="col-span-6 lg:col-span-2">
             <FormInputSelect
-              v-model="productItem.unit"
+              v-model="adminData.productItem.unit"
               input-id="productUnit"
               :select-data="unitCategory"
             >
@@ -232,7 +236,7 @@ export default {
           </div>
           <div class="col-span-6 lg:col-span-2">
             <FormInputNumber
-              v-model.number="productItem.store"
+              v-model.number="adminData.productItem.store"
               input-id="productReserve"
             >
               <template v-slot:default>商品庫存</template>
@@ -240,7 +244,7 @@ export default {
           </div>
           <div class="col-span-6 lg:col-span-2">
             <FormInputSelect
-              v-model="productItem.material"
+              v-model="adminData.productItem.material"
               input-id="productMaterial"
               :select-data="materialCategory"
             >
@@ -249,7 +253,7 @@ export default {
           </div>
           <div class="col-span-6 lg:col-span-2">
             <FormInput
-              v-model="productItem.made"
+              v-model="adminData.productItem.made"
               input-id="productMade"
               type="text"
             >
@@ -270,11 +274,12 @@ export default {
                   type="radio"
                   id="productNormal"
                   value="0"
-                  v-model.number="productItem.promoted.star"
+                  v-model.number="adminData.productItem.promoted.star"
                 /><label
                   for="productNormal"
                   :class="{
-                    'bg-black/60 text-white': productItem.promoted.star == 0,
+                    'bg-black/60 text-white':
+                      adminData.productItem.promoted.star == 0,
                   }"
                   class="cursor-pointer block py-1.5 px-3 mr-2 border border-gray-200 rounded hover:border-gray-300"
                   >一般商品</label
@@ -286,11 +291,12 @@ export default {
                   type="radio"
                   id="productStar"
                   value="1"
-                  v-model.number="productItem.promoted.star"
+                  v-model.number="adminData.productItem.promoted.star"
                 /><label
                   for="productStar"
                   :class="{
-                    'bg-black/60 text-white': productItem.promoted.star > 0,
+                    'bg-black/60 text-white':
+                      adminData.productItem.promoted.star > 0,
                   }"
                   class="cursor-pointer block py-1.5 px-3 mr-2 border border-gray-200 rounded hover:border-gray-300"
                   >首頁商品</label
@@ -301,7 +307,7 @@ export default {
           <div class="col-span-6 flex gap-x-4">
             <div class="flex-1">
               <FormInput
-                v-model="productItem.size.sizeLength"
+                v-model="adminData.productItem.size.sizeLength"
                 input-id="productLength"
                 type="text"
               >
@@ -310,7 +316,7 @@ export default {
             </div>
             <div class="flex-1">
               <FormInput
-                v-model="productItem.size.sizeWidth"
+                v-model="adminData.productItem.size.sizeWidth"
                 input-id="productWidth"
                 type="text"
               >
@@ -319,7 +325,7 @@ export default {
             </div>
             <div class="flex-1">
               <FormInput
-                v-model="productItem.size.sizeHeight"
+                v-model="adminData.productItem.size.sizeHeight"
                 input-id="productHeight"
                 type="text"
               >
@@ -330,12 +336,12 @@ export default {
           <div class="col-span-6 mb-12">
             <div class="grid grid-cols-3 gap-4 flex items-end">
               <div
-                v-for="(tag, index) in productItem.tags"
+                v-for="(tag, index) in adminData.productItem.tags"
                 :key="index"
                 class="flex-1 relative"
               >
                 <FormInput
-                  v-model="productItem.tags[index]"
+                  v-model="adminData.productItem.tags[index]"
                   input-id="productlength"
                   type="text"
                 >
@@ -345,7 +351,7 @@ export default {
                   type="button"
                   :class="{ hidden: index == 0 }"
                   class="h-7 w-7 p-1 bg-gray-200 active:scale-90 rounded-md cursor-pointer transition-all absolute top-0 right-0 translate-x-3 translate-y-2"
-                  @click="productItem.tags.splice(index, 1)"
+                  @click="adminData.productItem.tags.splice(index, 1)"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -365,12 +371,14 @@ export default {
               </div>
               <button
                 v-if="
-                  productItem.tags.length ||
-                  productItem.tags[productItem.tags.length - 1] !== ''
+                  adminData.productItem.tags.length ||
+                  adminData.productItem.tags[
+                    adminData.productItem.tags.length - 1
+                  ] !== ''
                 "
                 type="button"
                 class="w-full py-1.5 border border-gray-300 py-2 px-3 hover:bg-gray-100"
-                @click="productItem.tags.push('')"
+                @click="adminData.productItem.tags.push('')"
               >
                 新增標籤欄位
               </button>

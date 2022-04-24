@@ -1,12 +1,11 @@
 <script>
 import { ref, computed } from 'vue';
-import { apiMethod } from '@/methods/api.js';
 import { defaultProductData, productCategory } from '@/methods/data.js';
 import AdminProductEdit from '@/components/admin/AdminProductEdit.vue';
 import AdminProductSlider from '@/components/admin/AdminProductSlider.vue';
 import RowNav from '@/components/helpers/RowNav.vue';
 import AdminProductListItemSquare from '@/components/admin/AdminProductListItemSquare.vue';
-
+import { adminStore } from '@/stores/adminStore';
 export default {
   components: {
     AdminProductEdit,
@@ -15,80 +14,41 @@ export default {
     AdminProductListItemSquare,
   },
   setup() {
-    const products = ref([]);
+    const adminData = adminStore();
     const listState = ref(1);
-    const showed = ref(true);
     const productList = computed(() => {
       let array = [];
       if (listState.value === 2) {
-        array = products.value.filter((product) => product.is_enabled);
+        array = adminData.products.filter((product) => product.is_enabled);
       } else if (listState.value === 3) {
-        array = products.value.filter((product) => !product.is_enabled);
+        array = adminData.products.filter((product) => !product.is_enabled);
       } else {
-        array = products.value;
+        array = adminData.products;
       }
       return array;
     });
-    const selectItem = ref(JSON.parse(JSON.stringify(defaultProductData)));
-    const modalState = ref(null);
-    const modalOpen = ref(false);
     function clearItem() {
-      modalOpen.value = false;
-      modalState.value = null;
-      selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
+      adminData.productModel.open = false;
+      adminData.productModel.state = '';
+      adminData.productItem = JSON.parse(JSON.stringify(defaultProductData));
     }
     function openProductDetail(state, item) {
       if (state === 'isNew') {
-        selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
+        adminData.productItem = JSON.parse(JSON.stringify(defaultProductData));
       } else if (state === 'edit') {
-        selectItem.value = JSON.parse(JSON.stringify(item));
+        adminData.productItem = JSON.parse(JSON.stringify(item));
       }
-      modalOpen.value = true;
-      modalState.value = state;
+      adminData.productModel.open = true;
+      adminData.productModel.state = state;
     }
-    async function deleteProduct(itemId) {
-      try {
-        await apiMethod.adminDeleteProduct(itemId);
-        getProduct();
-        selectItem.value = JSON.parse(JSON.stringify(defaultProductData));
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    function changeProductState(productData) {
-      productData.is_enabled = !productData.is_enabled;
-      updateProduct(productData.id, productData);
-    }
-    async function updateProduct(itemId, productData) {
-      try {
-        await apiMethod.adminUpdateProduct(itemId, productData);
-        getProduct();
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    function getProduct() {
-      apiMethod.adminGetProductsAll().then((res) => {
-        if (res) {
-          products.value = Object.values(res);
-        }
-      });
-    }
-    getProduct();
+    adminData.getProduct();
     return {
+      adminData,
       productList,
       listState,
-      modalState,
-      modalOpen,
-      selectItem,
-      showed,
       productCategory,
-      defaultProductData,
       openProductDetail,
-      deleteProduct,
-      changeProductState,
       clearItem,
-      getProduct,
     };
   },
 };
@@ -162,9 +122,9 @@ export default {
             <AdminProductListItemSquare
               :product="product"
               :list-index="index"
-              @change-product-state="changeProductState"
+              @change-product-state="adminData.changeProductState"
               @open-product-detail="openProductDetail"
-              @delete-product="deleteProduct"
+              @delete-product="adminData.deleteProduct"
             />
           </template>
         </div>
@@ -173,28 +133,36 @@ export default {
   </div>
   <div
     class="siderBg z-sider"
-    :class="{ active: modalOpen }"
-    @click="modalOpen = false"
+    :class="{ active: adminData.productModel.open }"
+    @click="adminData.productModel.open = false"
   ></div>
   <div
     class="siderBox z-sider"
-    :class="{ active: modalOpen === true && modalState === 'isNew' }"
+    :class="{
+      active:
+        adminData.productModel.open === true &&
+        adminData.productModel.state === 'isNew',
+    }"
   >
     <AdminProductEdit
-      :select-item="selectItem"
-      :modal-state="modalState"
-      @get-product="getProduct"
+      :select-item="adminData.productItem"
+      :modal-state="adminData.productModel.state"
+      @get-product="adminData.getProduct"
       @clear-item="clearItem"
     />
   </div>
   <div
     class="siderBox z-sider"
-    :class="{ active: modalOpen === true && modalState === 'edit' }"
+    :class="{
+      active:
+        adminData.productModel.open === true &&
+        adminData.productModel.state === 'edit',
+    }"
   >
     <AdminProductSlider
-      :select-item="selectItem"
-      :modal-state="modalState"
-      @get-product="getProduct"
+      :select-item="adminData.productItem"
+      :modal-state="adminData.productModel.state"
+      @get-product="adminData.getProduct"
       @clear-item="clearItem"
     />
   </div>
