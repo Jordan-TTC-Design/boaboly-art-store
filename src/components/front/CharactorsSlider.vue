@@ -1,6 +1,5 @@
 <script>
 import { ref } from 'vue';
-import emitter from '@/methods/emitter';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import { Autoplay, FreeMode } from 'swiper';
@@ -14,7 +13,6 @@ export default {
     const modules = ref([Autoplay, FreeMode]);
     return {
       modules,
-      emitter,
     };
   },
 };

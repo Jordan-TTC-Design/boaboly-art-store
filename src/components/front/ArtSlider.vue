@@ -1,10 +1,9 @@
 <script>
 import { ref } from 'vue';
-import { frontApiMethod } from '@/methods/api.js';
-import emitter from '@/methods/emitter';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import { Autoplay, FreeMode } from 'swiper';
+import { artStore } from '@/stores/artStore';
 export default {
   components: {
     Swiper,
@@ -12,22 +11,12 @@ export default {
   },
   props: ['swiper-num'],
   setup() {
+    const artData = artStore();
     const modules = ref([Autoplay, FreeMode]);
-    const artList = ref([]);
-    function getArts() {
-      emitter.emit('open-loading');
-      frontApiMethod.getArts().then((res) => {
-        if (res.success) {
-          artList.value = JSON.parse(JSON.stringify(res.articles));
-          emitter.emit('close-loading');
-        }
-      });
-    }
-    getArts();
+    artData.getArts();
     return {
-      artList,
+      artData,
       modules,
-      emitter,
     };
   },
 };
@@ -48,7 +37,7 @@ export default {
       }"
     >
       <Swiper-slide
-        v-for="artItem in artList"
+        v-for="artItem in artData.arts"
         :key="artItem.id"
         class="px-8 group"
       >
