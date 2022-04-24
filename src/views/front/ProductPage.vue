@@ -103,7 +103,9 @@ export default {
             <p class="productTag bg-primaryLight mb-4">
               {{ product.category }}
             </p>
-            <h2 class="text-3xl font-bold mb-3">{{ product.title }}</h2>
+            <h2 class="sm:text-3xl text-xl font-bold mb-3">
+              {{ product.title }}
+            </h2>
             <h4 class="text-2xl mb-1">NT$ {{ product.price }}</h4>
             <p
               v-show="product.origin_price == product.price"

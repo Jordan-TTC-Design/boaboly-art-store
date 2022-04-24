@@ -52,12 +52,18 @@ export default {
       >
         <div>
           <div class="artContentBox">
-            <h2 class="text-3xl font-bold mb-4">{{ artItem.title }}</h2>
-            <div class="flex items-center mb-12 pb-12 border-b border-gray-300">
+            <h2 class="sm:text-3xl text-xl font-bold mb-4">
+              {{ artItem.title }}
+            </h2>
+            <div
+              class="flex sm:flex-row flex-col flex-wrap sm:items-center items-start md:mb-12 md:pb-12 mb-8 pb-8 border-b border-gray-300 gap-3"
+            >
               <p class="border border-gray-300 py-0.5 px-2 mr-2">
                 {{ artItem.category }}
               </p>
-              <p class="text-gray-500">{{ changeTime(artItem.create_at) }}</p>
+              <p class="text-gray-500 sm:self-center self-end">
+                {{ changeTime(artItem.create_at) }}
+              </p>
             </div>
             <div
               v-html="artItem.content"

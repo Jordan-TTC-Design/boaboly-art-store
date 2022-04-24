@@ -96,7 +96,9 @@ export default {
   >
     <div class="col-start-2 col-span-10 lg:mb-32 md:mb-24 mb-16">
       <h4 class="text-xl text-black uppercase mb-8">All Products</h4>
-      <h3 class="lg:text-8xl text-5xl text-black font-medium md:mb-16 mb-8">
+      <h3
+        class="lg:text-8xl sm:text-5xl text-4xl text-black font-medium md:mb-16 mb-8"
+      >
         全部商品
       </h3>
       <div class="flex md:flex-row flex-col md:gap-8 gap-4">
