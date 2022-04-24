@@ -39,6 +39,7 @@ export const cartStore = defineStore({
     addCart(productId, buyNum) {
       statusData.isLoading = true;
       frontApiMethod.addCart(productId, buyNum).then(() => {
+        statusData.openPopReminder('成功加入購物車');
         this.getCart();
       });
     },
@@ -51,12 +52,14 @@ export const cartStore = defineStore({
     deleteCart(cartItemId) {
       statusData.isLoading = true;
       frontApiMethod.deleteCart(cartItemId).then(() => {
+        statusData.openPopReminder('成功刪除');
         this.getCart();
       });
     },
     deleteCartAll() {
       statusData.isLoading = true;
       frontApiMethod.deleteCartAll().then(() => {
+        statusData.openPopReminder('成功刪除');
         this.getCart();
       });
     },

@@ -145,7 +145,7 @@ export default {
               <button
                 type="button"
                 class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-                @click="deleteCart(item.id)"
+                @click="cartData.deleteCart(item.id)"
               >
                 <i class="bi bi-x text-xl"></i>
               </button>

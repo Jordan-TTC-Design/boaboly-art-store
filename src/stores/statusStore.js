@@ -6,7 +6,17 @@ export const statusStore = defineStore({
     isLoading: false,
     cartModel: false,
     collectionModel: false,
+    popReminderModel: false,
+    popReminderText: '',
   }),
   getters: {},
-  actions: {},
+  actions: {
+    openPopReminder(txt = '成功') {
+      this.popReminderText = txt;
+      this.popReminderModel = true;
+      setTimeout(() => {
+        this.popReminderModel = false;
+      }, 1500);
+    },
+  },
 });

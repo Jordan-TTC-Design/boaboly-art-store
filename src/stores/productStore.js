@@ -55,12 +55,14 @@ export const productStore = defineStore({
           'boaboly-store-collection',
           JSON.stringify(this.collections)
         );
+        statusData.openPopReminder('已加入收藏');
       } else {
         this.collections.splice(check, 1);
         localStorage.setItem(
           'boaboly-store-collection',
           JSON.stringify(this.collections)
         );
+        statusData.openPopReminder('已移除收藏');
       }
       this.getCollections();
     },
