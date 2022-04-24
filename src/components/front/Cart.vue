@@ -4,8 +4,7 @@ import { useRoute } from 'vue-router';
 import { cartStore } from '@/stores/cartStore';
 import { statusStore } from '@/stores/statusStore';
 export default {
-  emits: ['fix-window'],
-  setup(props, { emit }) {
+  setup() {
     const cartData = cartStore();
     const statusData = statusStore();
     const route = useRoute();
@@ -14,13 +13,6 @@ export default {
       if (newValue !== oldValue) {
         statusStore.cartModel = false;
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    });
-    watch(statusStore.cartModel, (newValue) => {
-      if (newValue === true) {
-        emit('fix-window', true);
-      } else {
-        emit('fix-window', false);
       }
     });
     cartData.getCart();

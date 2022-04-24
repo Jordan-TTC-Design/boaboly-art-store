@@ -1,11 +1,11 @@
 <script>
-import { ref, watch } from 'vue';
 import Cart from '@/components/front/Cart.vue';
 import Collection from '@/components/front/Collection.vue';
 import FrontFooter from '@/components/front/FrontFooter.vue';
 import HamMenu from '@/components/helpers/HamMenu.vue';
 import Loading from '@/components/helpers/Loading.vue';
 import PopReminder from '@/components/helpers/PopReminder.vue';
+import { statusStore } from '@/stores/statusStore';
 export default {
   components: {
     Collection,
@@ -16,20 +16,9 @@ export default {
     FrontFooter,
   },
   setup() {
-    const modalOpen = ref(false);
-    function fixWindow(status) {
-      modalOpen.value = status;
-    }
-    watch(modalOpen, (newValue) => {
-      if (newValue === true) {
-        document.getElementsByTagName('body')[0].className = 'no-scroll';
-      } else {
-        document.body.removeAttribute('class');
-      }
-    });
+    const statusData = statusStore();
     return {
-      modalOpen,
-      fixWindow,
+      statusData,
     };
   },
 };
@@ -44,13 +33,13 @@ export default {
         <RouterLink to="/" class="text-2xl font-bold ml-6">Boaboly</RouterLink>
         <ul class="bg-black sm:py-4 sm:px-6 px-2 py-3 flex gap-x-4">
           <li>
-            <Collection @fix-window="fixWindow" />
+            <Collection />
           </li>
           <li>
-            <Cart @fix-window="fixWindow" />
+            <Cart />
           </li>
           <li>
-            <HamMenu @fix-window="fixWindow" />
+            <HamMenu />
           </li>
         </ul>
       </header>

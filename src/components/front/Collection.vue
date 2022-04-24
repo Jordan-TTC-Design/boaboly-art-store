@@ -6,8 +6,7 @@ import { cartStore } from '@/stores/cartStore';
 import { statusStore } from '@/stores/statusStore';
 
 export default {
-  emits: ['fix-window'],
-  setup(props, { emit }) {
+  setup() {
     const route = useRoute();
     const productsData = productStore();
     const cartData = cartStore();
@@ -17,13 +16,6 @@ export default {
       if (newValue !== oldValue) {
         statusData.collectionModel = false;
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    });
-    watch(statusData.collectionModel, (newValue) => {
-      if (newValue === true) {
-        emit('fix-window', true);
-      } else {
-        emit('fix-window', false);
       }
     });
     productsData.getProducts();

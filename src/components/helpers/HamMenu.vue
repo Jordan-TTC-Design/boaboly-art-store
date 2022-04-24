@@ -1,25 +1,18 @@
 <script>
 import { ref, watch, computed, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { statusStore } from '@/stores/statusStore';
 
 export default {
-  emits: ['fix-window'],
-  setup(props, { emit }) {
+  setup() {
     const route = useRoute();
     const router = useRouter();
-    const modalOpen = ref(false);
+    const statusData = statusStore();
     const searchKeyword = ref('');
     const nowPath = computed(() => route.path);
     watch(nowPath, (newValue, oldValue) => {
       if (newValue !== oldValue) {
-        modalOpen.value = false;
-      }
-    });
-    watch(modalOpen, (newValue) => {
-      if (newValue === true) {
-        emit('fix-window', true);
-      } else {
-        emit('fix-window', false);
+        statusData.hamMenuModel = false;
       }
     });
     function searchItem() {
@@ -27,17 +20,17 @@ export default {
       if (keyword.length > 0) {
         router.push(`/search?keyword=${keyword}`);
         searchKeyword.value = '';
-        modalOpen.value = false;
+        statusData.hamMenuModel = false;
       } else {
         return;
       }
     }
     onUnmounted(() => {
-      modalOpen.value = false;
+      statusData.hamMenuModel = false;
     });
     return {
       searchKeyword,
-      modalOpen,
+      statusData,
       searchItem,
     };
   },
@@ -48,13 +41,13 @@ export default {
   <button
     type="button"
     class="rounded py-2 px-3 hover:border-gray-300 hover:bg-white/50 relative"
-    @click="modalOpen = !modalOpen"
+    @click="statusData.hamMenuModel = !statusData.hamMenuModel"
   >
     <i class="bi bi-list text-xl text-white"></i>
   </button>
   <div
     class="siderBox--y--full z-sider bg-black flex flex-col"
-    :class="{ active: modalOpen }"
+    :class="{ active: statusData.hamMenuModel }"
   >
     <header class="flex justify-between items-center flex-shrink-0">
       <RouterLink to="/" class="text-2xl font-bold ml-6 text-white"
@@ -64,7 +57,7 @@ export default {
         <button
           type="button"
           class="rounded py-2 px-3 hover:border-gray-300 hover:bg-white/50 relative"
-          @click="modalOpen = !modalOpen"
+          @click="statusData.hamMenuModel = !statusData.hamMenuModel"
         >
           <i class="bi bi-list text-xl text-white"></i>
         </button>

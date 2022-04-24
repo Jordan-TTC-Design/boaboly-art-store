@@ -5,11 +5,20 @@ export const statusStore = defineStore({
   state: () => ({
     isLoading: false,
     cartModel: false,
+    hamMenuModel: false,
     collectionModel: false,
     popReminderModel: false,
     popReminderText: '',
   }),
-  getters: {},
+  getters: {
+    fixWindow(state) {
+      let isFixed = false;
+      if (state.hamMenuModel || state.cartModel || state.collectionModel) {
+        isFixed = true;
+      }
+      return isFixed;
+    },
+  },
   actions: {
     openPopReminder(txt = '成功') {
       this.popReminderText = txt;
