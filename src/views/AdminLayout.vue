@@ -9,8 +9,9 @@ export default {
   setup() {
     const router = useRouter();
     apiMethod.checkLogin().then((res) => {
+      console.log(res);
       if (res !== true) {
-        router.push('admin-login');
+        router.push('/admin-login');
       }
     });
   },

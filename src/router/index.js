@@ -86,6 +86,11 @@ const router = createRouter({
       ],
     },
     {
+      path: '/admin-login',
+      name: 'AdminLogin',
+      component: () => import('../views/admin/AdminLogin.vue'),
+    },
+    {
       path: '/:catchAll(.*)',
       redirect: '/',
     },

@@ -9,14 +9,14 @@ function MyCustomUploadAdapterPlugin(editor) {
 }
 export default {
   props: ['modelValue', 'input-id', 'input-name', 'text-holder'],
-  setup() {
+  setup(props) {
     const editor = ref(ClassicEditor);
     const editorData = ref('<p>請輸入</p>');
     const editorConfig = ref({
       toolbar: ['heading', '|', 'bold', 'italic', 'link'],
       extraPlugins: [MyCustomUploadAdapterPlugin],
       language: 'zh',
-      placeholder: `${this.textHolder}`,
+      placeholder: `${props.textHolder}`,
       heading: {
         options: [
           {

@@ -1,5 +1,7 @@
 <script>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { apiMethod } from '@/methods/api.js';
 import { Form } from 'vee-validate';
 import VeeFormInput from '@/components/form/VeeFormInput.vue';
@@ -9,12 +11,21 @@ export default {
     Form,
   },
   setup() {
+    const router = useRouter();
     const user = ref({
       username: '',
       password: '',
     });
     function login() {
-      apiMethod.login(user.value);
+      apiMethod.login(user.value).then((res) => {
+        console.log(res);
+
+        if (res === 'success') {
+          router.push('/admin/products');
+        } else {
+          console.log('帳密錯誤');
+        }
+      });
     }
     return {
       user,
