@@ -1,16 +1,15 @@
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import MyUploadAdapter from '@/methods/myUploadAdapter';
-import { ref, watch } from '@vue/reactivity';
+import { ref } from '@vue/reactivity';
 function MyCustomUploadAdapterPlugin(editor) {
   editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
     return new MyUploadAdapter(loader);
   };
 }
 export default {
-  props: ['child-data', 'input-id', 'input-name', 'text-holder'],
-  setup(props, { emit }) {
-    const textData = ref('');
+  props: ['modelValue', 'input-id', 'input-name', 'text-holder'],
+  setup() {
     const editor = ref(ClassicEditor);
     const editorData = ref('<p>請輸入</p>');
     const editorConfig = ref({
@@ -40,13 +39,7 @@ export default {
         ],
       },
     });
-    watch(props.childData, (newVal) => {
-      textData.value = newVal;
-    });
-    watch(textData, (newVal) => {
-      emit('update:childData', newVal);
-    });
-    return { textData, editor, editorData, editorConfig };
+    return { editor, editorData, editorConfig };
   },
 };
 </script>
@@ -65,7 +58,7 @@ export default {
       :config="editorConfig"
       :id="inputId"
       :name="inputName"
-      v-model="textData"
+      :value="modelValue"
     ></ckeditor>
   </div>
 </template>

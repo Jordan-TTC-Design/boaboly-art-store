@@ -194,7 +194,7 @@ export default {
               input-id="productContent"
               input-name="創作內容或文章"
               text-holder="請輸入創作內容或文章"
-              v-model:child-data="articleItem.content"
+              v-model="articleItem.content"
             />
           </div>
           <div class="col-span-6 grid grid-cols-6 gap-4">

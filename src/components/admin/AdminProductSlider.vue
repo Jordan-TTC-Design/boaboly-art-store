@@ -242,7 +242,7 @@ export default {
               input-id="productContent"
               input-name="商品介紹內容"
               text-holder="請輸入商品介紹內容"
-              v-model:child-data="productItem.content"
+              v-model="productItem.content"
             />
           </div>
           <h3
