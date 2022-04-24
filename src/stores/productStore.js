@@ -9,7 +9,19 @@ export const productStore = defineStore({
     hotProducts: [],
     collections: [],
   }),
-  getters: {},
+  getters: {
+    collectionProduct(state) {
+      let array = [];
+      state.collections.forEach((itemId) => {
+        state.products.forEach((item) => {
+          if (item.id == itemId) {
+            array.push(item);
+          }
+        });
+      });
+      return array;
+    },
+  },
   actions: {
     getProducts() {
       statusData.isLoading = true;

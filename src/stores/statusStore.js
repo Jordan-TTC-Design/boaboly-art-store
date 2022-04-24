@@ -5,6 +5,7 @@ export const statusStore = defineStore({
   state: () => ({
     isLoading: false,
     cartModel: false,
+    collectionModel: false,
   }),
   getters: {},
   actions: {},

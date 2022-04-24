@@ -1,9 +1,10 @@
 <script>
-import { ref, watch, computed, onUnmounted } from 'vue';
+import { watch, computed, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import emitter from '@/methods/emitter';
 import { productStore } from '@/stores/productStore';
 import { cartStore } from '@/stores/cartStore';
+import { statusStore } from '@/stores/statusStore';
 
 export default {
   emits: ['fix-window'],
@@ -11,26 +12,15 @@ export default {
     const route = useRoute();
     const productsData = productStore();
     const cartData = cartStore();
+    const statusData = statusStore();
     const nowPath = computed(() => route.path);
-    const modalOpen = ref(false);
-    const collectionProduct = computed(() => {
-      let array = [];
-      productsData.collections.forEach((itemId) => {
-        productsData.products.forEach((item) => {
-          if (item.id == itemId) {
-            array.push(item);
-          }
-        });
-      });
-      return array;
-    });
     watch(nowPath, (newValue, oldValue) => {
       if (newValue !== oldValue) {
-        modalOpen.value = false;
+        statusData.collectionModel = false;
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
-    watch(modalOpen, (newValue) => {
+    watch(statusData.collectionModel, (newValue) => {
       if (newValue === true) {
         emit('fix-window', true);
       } else {
@@ -40,14 +30,13 @@ export default {
     productsData.getProducts();
     productsData.getCollections();
     onUnmounted(() => {
-      modalOpen.value = false;
+      statusData.collectionModel = false;
     });
     return {
-      modalOpen,
-      collectionProduct,
       emitter,
       productsData,
       cartData,
+      statusData,
     };
   },
 };
@@ -57,7 +46,7 @@ export default {
   <button
     type="button"
     class="rounded py-2 px-3 hover:border-gray-300 hover:bg-white/50 relative"
-    @click="modalOpen = !modalOpen"
+    @click="statusData.collectionModel = !statusData.collectionModel"
   >
     <p v-show="productsData.collections.length > 0" class="cart__number">
       {{ productsData.collections.length }}
@@ -66,24 +55,27 @@ export default {
   </button>
   <div
     class="siderBg--x z-sider"
-    :class="{ active: modalOpen }"
-    @click="modalOpen = false"
+    :class="{ active: statusData.collectionModel }"
+    @click="statusData.collectionModel = false"
   ></div>
-  <div class="siderBox--x z-sider" :class="{ active: modalOpen }">
+  <div
+    class="siderBox--x z-sider"
+    :class="{ active: statusData.collectionModel }"
+  >
     <div class="relative h-full flex flex-col">
       <div class="p-8">
         <div class="flex justify-between mb-4">
           <button
             type="button"
             class="px-3 py-2 flex items-center"
-            @click="modalOpen = false"
+            @click="statusData.collectionModel = false"
           >
             <i class="bi bi-chevron-double-left mr-1"></i>
             <p>返回</p>
           </button>
           <button
             type="button"
-            v-if="collectionProduct.length > 0"
+            v-if="productsData.collectionProduct.length > 0"
             class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
             @click="productsData.deleteAllCollections"
           >
@@ -106,12 +98,13 @@ export default {
           </div>
         </li>
         <template
-          v-for="(product, index) in collectionProduct"
+          v-for="(product, index) in productsData.collectionProduct"
           :key="product.id"
         >
           <li
             :class="{
-              'border-b border-gray-300': index < collectionProduct.length - 1,
+              'border-b border-gray-300':
+                index < productsData.collectionProduct.length - 1,
             }"
             class="grid grid-cols-4 gap-2 hover:bg-gray-100/50 py-6"
           >
