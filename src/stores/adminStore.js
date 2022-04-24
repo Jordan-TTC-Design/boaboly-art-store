@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { apiMethod } from '@/methods/api.js';
 import { defaultProductData } from '@/methods/data.js';
+import { defaultArticleData } from '@/methods/article.js';
 
 export const adminStore = defineStore({
   id: 'adminStore',
@@ -9,6 +10,9 @@ export const adminStore = defineStore({
     productItem: JSON.parse(JSON.stringify(defaultProductData)),
     productModel: { open: false, state: '' },
     imagePopModel: false,
+    articles: [],
+    articleItem: JSON.parse(JSON.stringify(defaultArticleData)),
+    articleModel: { open: false, state: '' },
   }),
   getters: {},
   actions: {
@@ -59,6 +63,40 @@ export const adminStore = defineStore({
       } catch (err) {
         console.log(err);
       }
+    },
+    changeArticleState(articleData) {
+      apiMethod.adminGetArticle(articleData.id).then((res) => {
+        articleData = JSON.parse(JSON.stringify(res));
+        articleData.isPublic = !articleData.isPublic;
+        this.updateArticle(articleData.id, articleData);
+      });
+    },
+    getArticles() {
+      apiMethod.adminGetArticles().then((res) => {
+        if (res) {
+          this.articles = Object.values(res.articles);
+        }
+      });
+    },
+    async updateArticle(articleId, articleData) {
+      try {
+        await apiMethod.adminUpdateArticle(articleId, articleData);
+        this.getArticles();
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async deleteArticle(articleId) {
+      try {
+        await apiMethod.adminDeleteArticle(articleId);
+        this.getArticles();
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    clearArticleItem() {
+      this.articleModel.state = '';
+      this.articleItem = JSON.parse(JSON.stringify(defaultArticleData));
     },
   },
 });

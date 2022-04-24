@@ -27,11 +27,6 @@ export default {
       }
       return array;
     });
-    function clearItem() {
-      adminData.productModel.open = false;
-      adminData.productModel.state = '';
-      adminData.productItem = JSON.parse(JSON.stringify(defaultProductData));
-    }
     function openProductDetail(state, item) {
       if (state === 'isNew') {
         adminData.productItem = JSON.parse(JSON.stringify(defaultProductData));
@@ -48,7 +43,6 @@ export default {
       listState,
       productCategory,
       openProductDetail,
-      clearItem,
     };
   },
 };
@@ -144,12 +138,7 @@ export default {
         adminData.productModel.state === 'isNew',
     }"
   >
-    <AdminProductEdit
-      :select-item="adminData.productItem"
-      :modal-state="adminData.productModel.state"
-      @get-product="adminData.getProduct"
-      @clear-item="clearItem"
-    />
+    <AdminProductEdit />
   </div>
   <div
     class="siderBox z-sider"
@@ -159,12 +148,7 @@ export default {
         adminData.productModel.state === 'edit',
     }"
   >
-    <AdminProductSlider
-      :select-item="adminData.productItem"
-      :modal-state="adminData.productModel.state"
-      @get-product="adminData.getProduct"
-      @clear-item="clearItem"
-    />
+    <AdminProductSlider />
   </div>
 </template>
 

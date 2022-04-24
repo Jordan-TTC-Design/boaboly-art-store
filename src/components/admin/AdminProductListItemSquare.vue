@@ -39,16 +39,6 @@ export default {
         >
           <p>{{ product.is_enabled ? '下架商品' : '上架商品' }}</p>
         </button>
-        <!-- <button
-          v-if="!product.is_enabled"
-          type="button"
-          class="border border-gray-200 rounded py-2 px-3 hover:border-gray-300 bg-white"
-          data-action="remove"
-          data-id="product.id"
-          @click="$emit('deleteProduct', product.id)"
-        >
-          <i class="bi bi-trash2-fill text-xl"></i>
-        </button> -->
       </div>
     </div>
     <p class="group-hover:text-yellow-600 mb-1">{{ product.title }}</p>
