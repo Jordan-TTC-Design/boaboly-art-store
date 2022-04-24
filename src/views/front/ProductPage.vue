@@ -4,14 +4,15 @@ import { useRoute } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
 import emitter from '@/methods/emitter';
 import ProductSlider from '@/components/front/ProductSlider.vue';
-
+import { productStore } from '@/stores/productStore';
+import { statusStore } from '@/stores/statusStore';
 export default {
   components: { ProductSlider },
   setup() {
+    const productsData = productStore();
+    const statusData = statusStore();
     const route = useRoute();
     const productId = computed(() => route.params.id);
-    const collecitonList = ref([]);
-    const productList = ref([]);
     const buyNum = ref(1);
     const productImgArray = ref([]);
     const product = ref({});
@@ -27,23 +28,13 @@ export default {
       }
     });
     function getProduct(itemId) {
-      emitter.emit('open-loading');
+      statusData.isLoading = true;
       frontApiMethod.getProduct(itemId).then((res) => {
         product.value = res;
         mainImg.value = res.imageUrl;
         productImgArray.value = [res.imageUrl, ...res.imagesUrl];
-        emitter.emit('close-loading');
-        getProducts();
-      });
-    }
-    function getProducts() {
-      emitter.emit('open-loading');
-      frontApiMethod.getProductAll().then((res) => {
-        productList.value = JSON.parse(JSON.stringify(res)).filter(
-          (item) => item.id !== product.value.id && item.promoted.star > 0
-        );
-        emitter.emit('send-check-collection');
-        emitter.emit('close-loading');
+        statusData.isLoading = false;
+        productsData.getProducts();
       });
     }
     function addCart() {
@@ -62,21 +53,17 @@ export default {
       window.onresize = () => {
         fullWidth.value = window.innerWidth;
       };
-      emitter.on('check-collection', (data) => {
-        collecitonList.value = data;
-      });
     });
     getProduct(productId.value);
     return {
       product,
-      productList,
-      collecitonList,
       productImgArray,
       buyNum,
       mainImg,
       emitter,
       swiperNum1,
       addCart,
+      productsData,
     };
   },
 };
@@ -167,8 +154,10 @@ export default {
               >
                 <i
                   :class="{
-                    'bi-heart': collecitonList.indexOf(product.id) < 0,
-                    'bi-heart-fill': collecitonList.indexOf(product.id) >= 0,
+                    'bi-heart':
+                      productsData.collections.indexOf(product.id) < 0,
+                    'bi-heart-fill':
+                      productsData.collections.indexOf(product.id) >= 0,
                   }"
                   class="bi text-xl text-black"
                 ></i>
@@ -228,7 +217,10 @@ export default {
         <h3 class="text-center font-bold text-3xl text-black mb-12">
           其他推薦商品
         </h3>
-        <ProductSlider :swiper-num="swiperNum1" :product-list="productList" />
+        <ProductSlider
+          :swiper-num="swiperNum1"
+          :product-list="productsData.products"
+        />
       </div>
       <div
         class="flex md:flex-row flex-col justify-end items-center gap-x-8 px-12"

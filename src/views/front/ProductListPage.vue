@@ -1,6 +1,5 @@
 <script>
 import { ref, computed, watch, onMounted } from 'vue';
-// import { frontApiMethod } from '@/methods/api.js';
 import { productCategory, materialCategory } from '@/methods/data.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
 import Pagination from '@/components/helpers/Pagination.vue';
@@ -66,17 +65,6 @@ export default {
       }
       return array;
     }
-    // eslint-disable-next-line no-unused-vars
-    // function getProducts() {
-    //   emitter.emit('open-loading');
-    //   frontApiMethod.getProductAll().then((res) => {
-    //     if (res) {
-    //       productList.value = JSON.parse(JSON.stringify(res));
-    //       emitter.emit('send-check-collection');
-    //       emitter.emit('close-loading');
-    //     }
-    //   });
-    // }
     watch(productfilterList, (newValue, oldValue) => {
       if (newValue.length !== oldValue.length) {
         paginationData.value.nowPage = 1;
