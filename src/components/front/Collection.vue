@@ -3,12 +3,14 @@ import { ref, watch, computed, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import emitter from '@/methods/emitter';
 import { productStore } from '@/stores/productStore';
+import { cartStore } from '@/stores/cartStore';
 
 export default {
   emits: ['fix-window'],
   setup(props, { emit }) {
     const route = useRoute();
     const productsData = productStore();
+    const cartData = cartStore();
     const nowPath = computed(() => route.path);
     const modalOpen = ref(false);
     const collectionProduct = computed(() => {
@@ -35,28 +37,6 @@ export default {
         emit('fix-window', false);
       }
     });
-    function deleteAll() {
-      localStorage.setItem('boaboly-store-collection', JSON.stringify([]));
-      productsData.getCollections();
-    }
-    function addCollection(product) {
-      const newId = product.id;
-      const check = productsData.collections.indexOf(newId);
-      if (check < 0) {
-        productsData.collections.push(newId);
-        localStorage.setItem(
-          'boaboly-store-collection',
-          JSON.stringify(productsData.collections)
-        );
-      } else {
-        productsData.collections.splice(check, 1);
-        localStorage.setItem(
-          'boaboly-store-collection',
-          JSON.stringify(productsData.collections)
-        );
-      }
-      productsData.getCollections();
-    }
     productsData.getProducts();
     productsData.getCollections();
     onUnmounted(() => {
@@ -66,9 +46,8 @@ export default {
       modalOpen,
       collectionProduct,
       emitter,
-      addCollection,
-      deleteAll,
       productsData,
+      cartData,
     };
   },
 };
@@ -106,7 +85,7 @@ export default {
             type="button"
             v-if="collectionProduct.length > 0"
             class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-            @click="deleteAll"
+            @click="productsData.deleteAllCollections"
           >
             <p>刪除全部</p>
           </button>
@@ -151,14 +130,14 @@ export default {
               <button
                 type="button"
                 class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-                @click="emitter.emit('add-cart', product)"
+                @click="cartData.addCart(product.id, product.num)"
               >
                 <i class="bi bi-cart text-xl"></i>
               </button>
               <button
                 type="button"
                 class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-                @click="addCollection(product)"
+                @click="productsData.addCollection(product)"
               >
                 <i class="bi bi-x text-xl"></i>
               </button>

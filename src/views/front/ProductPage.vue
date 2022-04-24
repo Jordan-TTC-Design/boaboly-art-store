@@ -6,11 +6,13 @@ import emitter from '@/methods/emitter';
 import ProductSlider from '@/components/front/ProductSlider.vue';
 import { productStore } from '@/stores/productStore';
 import { statusStore } from '@/stores/statusStore';
+import { cartStore } from '@/stores/cartStore';
 export default {
   components: { ProductSlider },
   setup() {
     const productsData = productStore();
     const statusData = statusStore();
+    const cartData = cartStore();
     const route = useRoute();
     const productId = computed(() => route.params.id);
     const buyNum = ref(1);
@@ -38,10 +40,7 @@ export default {
       });
     }
     function addCart() {
-      emitter.emit('add-cart', {
-        id: product.value.id,
-        num: buyNum.value,
-      });
+      cartData.addCart(product.value.id, buyNum.value);
       buyNum.value = 1;
     }
     watch(productId, (newValue, oldValue) => {

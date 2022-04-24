@@ -160,12 +160,6 @@ export default {
           :product="product"
           :list-index="index"
           :collection-list="productsData.collections"
-          @add-cart="
-            emitter.emit('add-cart', {
-              id: product.id,
-              num: 1,
-            })
-          "
         />
       </template>
     </div>

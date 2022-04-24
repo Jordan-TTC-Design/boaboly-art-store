@@ -2,16 +2,17 @@
 import { computed } from 'vue';
 import emitter from '@/methods/emitter';
 import { productStore } from '@/stores/productStore';
+import { cartStore } from '@/stores/cartStore';
 export default {
   props: ['product', 'collection-list'],
-  emits: ['addCart'],
-  setup(props, { emit }) {
+  setup(props) {
     const productsData = productStore();
+    const cartData = cartStore();
     let collection = computed(() => productsData.collections);
     let isCollection = computed(() =>
       collection.value.indexOf(props.product.id)
     );
-    return { isCollection, emit, emitter, productsData };
+    return { isCollection, emitter, productsData, cartData };
   },
 };
 </script>
@@ -65,7 +66,7 @@ export default {
           type="button"
           class="rounded py-2 px-3 bg-white border-gray-300"
           data-id="product.id"
-          @click="$emit('addCart', product.id)"
+          @click="cartData.addCart(product.id, 1)"
         >
           <i class="bi bi-cart text-xl text-black"></i>
         </button>
