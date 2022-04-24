@@ -1,17 +1,20 @@
 <script>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import emitter from '@/methods/emitter';
+import { statusStore } from '@/stores/statusStore';
+import { storeToRefs } from 'pinia';
 
 export default {
   components: {
     Loading,
   },
   setup() {
-    const isLoading = ref(false);
+    const statusData = statusStore();
+    const { isLoading } = storeToRefs(statusData);
     function openLoadingSetTime() {
-      isLoading.value = true;
+      statusData.isLoading = true;
       setTimeout(() => {
         isLoading.value = false;
       }, 2000);

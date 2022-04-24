@@ -1,21 +1,20 @@
 <script>
 import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { frontApiMethod } from '@/methods/api.js';
 import emitter from '@/methods/emitter';
+import { productStore } from '@/stores/productStore';
 
 export default {
   emits: ['fix-window'],
   setup(props, { emit }) {
     const route = useRoute();
+    const productsData = productStore();
     const nowPath = computed(() => route.path);
     const modalOpen = ref(false);
-    const collection = ref([]);
-    const productList = ref([]);
     const collectionProduct = computed(() => {
       let array = [];
-      collection.value.forEach((itemId) => {
-        productList.value.forEach((item) => {
+      productsData.collections.forEach((itemId) => {
+        productsData.products.forEach((item) => {
           if (item.id == itemId) {
             array.push(item);
           }
@@ -36,49 +35,35 @@ export default {
         emit('fix-window', false);
       }
     });
-    function getCollection() {
-      const temJobCollectionsArray = JSON.parse(
-        localStorage.getItem('boaboly-store-collection')
-      );
-      if (temJobCollectionsArray) {
-        collection.value = temJobCollectionsArray;
-      }
-      emitter.emit('check-collection', collection.value);
-    }
     function deleteAll() {
       localStorage.setItem('boaboly-store-collection', JSON.stringify([]));
-      getCollection();
+      productsData.getCollections();
     }
     function addCollection(product) {
       const newId = product.id;
-      const check = collection.value.indexOf(newId);
+      const check = productsData.collections.indexOf(newId);
       if (check < 0) {
-        collection.value.push(newId);
+        productsData.collections.push(newId);
         localStorage.setItem(
           'boaboly-store-collection',
-          JSON.stringify(collection.value)
+          JSON.stringify(productsData.collections)
         );
       } else {
-        collection.value.splice(check, 1);
+        productsData.collections.splice(check, 1);
         localStorage.setItem(
           'boaboly-store-collection',
-          JSON.stringify(collection.value)
+          JSON.stringify(productsData.collections)
         );
       }
-      getCollection();
-    }
-    function getProducts() {
-      frontApiMethod.getProductAll().then((res) => {
-        productList.value = JSON.parse(JSON.stringify(res));
-      });
+      productsData.getCollections();
     }
     function sendCheckCollection() {
-      emitter.emit('check-collection', collection.value);
+      emitter.emit('check-collection', productsData.collections);
     }
-    getProducts();
-    getCollection();
+    productsData.getProducts();
+    productsData.getCollections();
     onMounted(() => {
-      emitter.on('get-collection', getCollection);
+      emitter.on('get-collection', productsData.getCollections);
       emitter.on('send-check-collection', sendCheckCollection);
       emitter.on('add-collection', (data) => {
         addCollection(data);
@@ -89,11 +74,11 @@ export default {
     });
     return {
       modalOpen,
-      collection,
       collectionProduct,
       emitter,
       addCollection,
       deleteAll,
+      productsData,
     };
   },
 };
@@ -105,8 +90,8 @@ export default {
     class="rounded py-2 px-3 hover:border-gray-300 hover:bg-white/50 relative"
     @click="modalOpen = !modalOpen"
   >
-    <p v-show="collection.length > 0" class="cart__number">
-      {{ collection.length }}
+    <p v-show="productsData.collections.length > 0" class="cart__number">
+      {{ productsData.collections.length }}
     </p>
     <i class="bi bi-heart text-xl text-white"></i>
   </button>

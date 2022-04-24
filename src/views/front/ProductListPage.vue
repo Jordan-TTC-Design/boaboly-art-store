@@ -1,12 +1,12 @@
 <script>
 import { ref, computed, watch, onMounted } from 'vue';
-import { frontApiMethod } from '@/methods/api.js';
+// import { frontApiMethod } from '@/methods/api.js';
 import { productCategory, materialCategory } from '@/methods/data.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
 import Pagination from '@/components/helpers/Pagination.vue';
 import SideNav from '@/components/helpers/SideNav.vue';
 import emitter from '@/methods/emitter';
-
+import { productStore } from '@/stores/productStore';
 export default {
   components: {
     ProductListItemSquare,
@@ -14,7 +14,7 @@ export default {
     Pagination,
   },
   setup() {
-    const productList = ref([]);
+    const productsData = productStore();
     const filterKeyword = ref('');
     const filterProductCategory = ref('');
     const filterMaterialCategory = ref('');
@@ -22,7 +22,7 @@ export default {
     const paginationData = ref({ totalPages: 1, nowPage: 1 });
     const productfilterList = computed(() => {
       let array = [];
-      array = productList.value;
+      array = productsData.products;
       array = filterWord(filterKeyword.value, array);
       array = filterCategory(filterProductCategory.value, array);
       array = filterMaterial(filterMaterialCategory.value, array);
@@ -66,16 +66,17 @@ export default {
       }
       return array;
     }
-    function getProducts() {
-      emitter.emit('open-loading');
-      frontApiMethod.getProductAll().then((res) => {
-        if (res) {
-          productList.value = JSON.parse(JSON.stringify(res));
-          emitter.emit('send-check-collection');
-          emitter.emit('close-loading');
-        }
-      });
-    }
+    // eslint-disable-next-line no-unused-vars
+    // function getProducts() {
+    //   emitter.emit('open-loading');
+    //   frontApiMethod.getProductAll().then((res) => {
+    //     if (res) {
+    //       productList.value = JSON.parse(JSON.stringify(res));
+    //       emitter.emit('send-check-collection');
+    //       emitter.emit('close-loading');
+    //     }
+    //   });
+    // }
     watch(productfilterList, (newValue, oldValue) => {
       if (newValue.length !== oldValue.length) {
         paginationData.value.nowPage = 1;
@@ -90,7 +91,8 @@ export default {
         collecitonList.value = data;
       });
     });
-    getProducts();
+    productsData.getProducts();
+    productsData.getCollections();
     return {
       filterKeyword,
       filterProductCategory,
@@ -101,6 +103,7 @@ export default {
       materialCategory,
       emitter,
       paginationData,
+      productsData,
     };
   },
 };
@@ -175,7 +178,7 @@ export default {
         <ProductListItemSquare
           :product="product"
           :list-index="index"
-          :collection-list="collecitonList"
+          :collection-list="productsData.collections"
           @add-cart="
             emitter.emit('add-cart', {
               id: product.id,

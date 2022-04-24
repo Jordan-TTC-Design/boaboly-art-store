@@ -10,9 +10,13 @@ export default {
         top: homeMainBannerHeight.value + 180,
         behavior: 'smooth',
       });
+      console.log(homeMainBannerHeight.value + 180);
     }
     onMounted(() => {
-      homeMainBannerHeight.value = homeMainBanner.value.clientHeight;
+      setTimeout(() => {
+        homeMainBannerHeight.value = homeMainBanner.value.clientHeight;
+        console.log(window);
+      }, 100);
     });
     return {
       homeMainBanner,
