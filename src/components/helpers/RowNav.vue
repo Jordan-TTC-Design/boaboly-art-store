@@ -9,6 +9,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <ul class="flex w-full">
     <li v-for="(item, index) in navArray" :key="item">
@@ -23,4 +24,5 @@ export default {
     </li>
   </ul>
 </template>
+
 <style lang="scss"></style>

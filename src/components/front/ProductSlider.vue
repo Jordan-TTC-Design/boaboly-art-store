@@ -19,10 +19,11 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="relative">
     <div class="swiperBox">
-      <swiper
+      <Swiper
         :slides-per-view="swiperNum"
         :modules="modules"
         :speed="3000"
@@ -32,12 +33,12 @@ export default {
           disableOnInteraction: false,
         }"
       >
-        <swiper-slide
+        <Swiper-slide
           v-for="productItem in productList"
           :key="productItem.id"
           class="px-8 sliderItem group"
         >
-          <router-link :to="productItem.id" class="relative cursor-pointer">
+          <RouterLink :to="productItem.id" class="relative cursor-pointer">
             <img
               class="w-100"
               :src="productItem.imageUrl"
@@ -58,12 +59,13 @@ export default {
                 NT$ {{ productItem.price }}
               </p>
             </div>
-          </router-link>
-        </swiper-slide>
-      </swiper>
+          </RouterLink>
+        </Swiper-slide>
+      </Swiper>
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .viewMoreBtn {
   font-size: 1.5rem;

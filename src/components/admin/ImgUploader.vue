@@ -76,6 +76,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="w-full mb-2">
     <input
@@ -148,4 +149,5 @@ export default {
   </div>
   <ImgCropperPopModal @send-img-data="getImg" :img-name="imgName" />
 </template>
+
 <style lang="scss"></style>

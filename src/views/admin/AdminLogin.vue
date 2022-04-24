@@ -1,7 +1,7 @@
 <script>
 import { ref } from 'vue';
-import { apiMethod } from '@/methods/api.js';
 import { useRouter } from 'vue-router';
+import { apiMethod } from '@/methods/api.js';
 import { Form } from 'vee-validate';
 import VeeFormInput from '@/components/form/VeeFormInput.vue';
 export default {
@@ -17,8 +17,12 @@ export default {
     });
     function login() {
       apiMethod.login(user.value).then((res) => {
-        if (res) {
-          router.push('admin');
+        console.log(res);
+
+        if (res === 'success') {
+          router.push('/admin/products');
+        } else {
+          console.log('帳密錯誤');
         }
       });
     }
@@ -29,6 +33,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="w-72 mx-auto p-4 border border-gray-300 rounded mt-6 h-full">
     <h1 class="text-2xl font-bold text-center mb-6">請先登入</h1>
@@ -59,4 +64,5 @@ export default {
     </Form>
   </div>
 </template>
+
 <style lang="scss"></style>

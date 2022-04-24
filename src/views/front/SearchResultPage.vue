@@ -5,8 +5,7 @@ import { frontApiMethod } from '@/methods/api.js';
 import Pagination from '@/components/helpers/Pagination.vue';
 import SideNav from '@/components/helpers/SideNav.vue';
 import SearchResultListItem from '@/components/front/SearchResultListItem.vue';
-import emitter from '@/methods/emitter';
-
+import { statusStore } from '@/stores/statusStore';
 export default {
   components: {
     SideNav,
@@ -14,11 +13,12 @@ export default {
     SearchResultListItem,
   },
   setup() {
+    const statusData = statusStore();
     const route = useRoute();
     let keyword = computed(() => route.query.keyword);
     const allResultList = ref([]);
-    let filterKeyword = ref(keyword.value || '');
-    let resultCategory = ref('');
+    const filterKeyword = ref(keyword.value || '');
+    const resultCategory = ref('');
     const paginationData = ref({ totalPages: 1, nowPage: 1 });
     const resultfilterList = computed(() => {
       let array = allResultList.value;
@@ -47,7 +47,7 @@ export default {
       }
     });
     watch(paginationData.value, () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      statusData.mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
     });
     watch(keyword, (newValue) => {
       filterKeyword.value = newValue;
@@ -70,16 +70,16 @@ export default {
       return array;
     }
     function getProducts() {
-      emitter.emit('open-loading');
+      statusData.isLoading = true;
       frontApiMethod.getProductAll().then((res) => {
         allResultList.value = JSON.parse(JSON.stringify(res));
         allResultList.value.forEach((item) => (item.searchCategory = '商品'));
-        emitter.emit('close-loading');
+        statusData.isLoading = false;
         getArts();
       });
     }
     function getArts(pageNum = 1) {
-      emitter.emit('open-loading');
+      statusData.isLoading = true;
       frontApiMethod.getArts(pageNum).then((res) => {
         res.articles.forEach((item) => {
           item.searchCategory = '創作';
@@ -88,11 +88,9 @@ export default {
         if (res.pagination.has_next) {
           getArts(res.pagination.current_page + 1);
         }
-        emitter.emit('close-loading');
+        statusData.isLoading = false;
         // 打亂順序：避免產品先顯示
-        allResultList.value.sort(function () {
-          return 0.5 - Math.random();
-        });
+        allResultList.value.sort(() => 0.5 - Math.random());
       });
     }
     getProducts();
@@ -101,12 +99,12 @@ export default {
       filterKeyword,
       resultCategory,
       nowPageItems,
-      emitter,
       paginationData,
     };
   },
 };
 </script>
+
 <template>
   <div
     class="relative bg-white grid grid-cols-12 lg:px-24 md:px-16 px-4 md:py-32 py-16 md:gap-x-8 w-full"
@@ -126,6 +124,7 @@ export default {
             v-model="filterKeyword"
           />
           <button
+            type="button"
             class="py-1.5 px-2 searchBtn group"
             @click="filterKeyword = ''"
           >
@@ -171,10 +170,11 @@ export default {
       <Pagination
         :pagination-data="paginationData"
         @change-page-number="paginationData.nowPage = $event"
-      ></Pagination>
+      />
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .pageSelectBox {
   position: relative;

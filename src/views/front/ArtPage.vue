@@ -2,47 +2,45 @@
 import { ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
-import emitter from '@/methods/emitter';
 import { changeTime } from '@/methods/filter';
+import { statusStore } from '@/stores/statusStore';
+import { artStore } from '@/stores/artStore';
 
 export default {
   setup() {
     const router = useRouter();
     const route = useRoute();
+    const statusData = statusStore();
+    const artData = artStore();
     const articleId = computed(() => route.params.id);
     const artItem = ref({});
-    const artList = ref([]);
-    const pagination = ref({});
     function getArt(itemId) {
-      emitter.emit('open-loading');
+      statusData.isLoading = true;
       frontApiMethod.getArt(itemId).then((res) => {
         artItem.value = res;
-        getArts();
-      });
-    }
-    function getArts() {
-      frontApiMethod.getArts().then((res) => {
-        artList.value = JSON.parse(JSON.stringify(res.articles));
-        pagination.value = JSON.parse(JSON.stringify(res.pagination));
-        emitter.emit('close-loading');
+        artData.getArts();
+        statusData.isLoading = false;
       });
     }
     function toOtherSamePage(itemId) {
       router.push(`/arts/${itemId}`);
     }
-    watch(articleId, () => {
-      getArt(articleId.value);
+    watch(articleId, (newValue) => {
+      if (newValue !== undefined) {
+        getArt(articleId.value);
+      }
     });
     getArt(articleId.value);
     return {
       artItem,
-      artList,
+      artData,
       changeTime,
       toOtherSamePage,
     };
   },
 };
 </script>
+
 <template>
   <div class="bg-gray-100 relative md:py-16 pt-4 pb-16 min-h-screen">
     <div class="bg-primaryLight w-full h-96 absolute top-0"></div>
@@ -54,12 +52,18 @@ export default {
       >
         <div>
           <div class="artContentBox">
-            <h2 class="text-3xl font-bold mb-4">{{ artItem.title }}</h2>
-            <div class="flex items-center mb-12 pb-12 border-b border-gray-300">
+            <h2 class="sm:text-3xl text-xl font-bold mb-4">
+              {{ artItem.title }}
+            </h2>
+            <div
+              class="flex sm:flex-row flex-col flex-wrap sm:items-center items-start md:mb-12 md:pb-12 mb-8 pb-8 border-b border-gray-300 gap-3"
+            >
               <p class="border border-gray-300 py-0.5 px-2 mr-2">
                 {{ artItem.category }}
               </p>
-              <p class="text-gray-500">{{ changeTime(artItem.create_at) }}</p>
+              <p class="text-gray-500 sm:self-center self-end">
+                {{ changeTime(artItem.create_at) }}
+              </p>
             </div>
             <div
               v-html="artItem.content"
@@ -81,21 +85,21 @@ export default {
       </div>
       <h4 class="mb-12 text-center text-3xl font-bold text-black">其他創作</h4>
       <ul class="grid grid-cols-1 gap-4 mb-24">
-        <template v-for="(art, index) in artList" :key="art.id">
+        <template v-for="(art, index) in artData.arts" :key="art.id">
           <li
             v-if="index < 3"
             class="otherArtItem flex md:flex-row flex-col justify-between items-center pb-4 group border-b border-gray-line"
           >
             <div class="flex md:flex-row flex-col items-center">
               <img
-                class="md:w-40 w-64 group-hover:bg-gray-100 p-4"
+                class="md:w-40 w-64 group-hover:bg-gray-100 p-4 cursor-pointer"
                 :src="art.imagesUrl[0]"
                 :alt="`文章圖片${index}`"
                 @click="toOtherSamePage(art.id)"
               />
               <div class="p-6">
                 <p
-                  class="text-xl font-medium text-black mb-2"
+                  class="text-xl font-medium text-black mb-2 cursor-pointer"
                   @click="toOtherSamePage(art.id)"
                 >
                   {{ art.title }}
@@ -119,14 +123,15 @@ export default {
       <div
         class="flex md:flex-row flex-col justify-end items-center gap-x-8 px-12"
       >
-        <router-link to="/arts" class="lg:text-3xl tex-xl font-bold"
-          >BACK TO WORKS</router-link
+        <RouterLink to="/arts" class="lg:text-3xl tex-xl font-bold"
+          >BACK TO WORKS</RouterLink
         >
-        <router-link to="/arts" class="arrow"></router-link>
+        <RouterLink to="/arts" class="arrow" />
       </div>
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .artContentBox {
   position: sticky;

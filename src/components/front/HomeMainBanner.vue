@@ -1,18 +1,22 @@
 <script>
 import { ref, onMounted } from 'vue';
+import { statusStore } from '@/stores/statusStore';
 
 export default {
   setup() {
-    let homeMainBanner = ref(null);
-    let homeMainBannerHeight = ref(0);
+    const statusData = statusStore();
+    const homeMainBanner = ref(null);
+    const homeMainBannerHeight = ref(0);
     function goToSection() {
-      window.scrollTo({
-        top: homeMainBannerHeight.value + 180,
+      statusData.mainContainer.scrollTo({
+        top: homeMainBannerHeight.value + 100,
         behavior: 'smooth',
       });
     }
     onMounted(() => {
-      homeMainBannerHeight.value = homeMainBanner.value.clientHeight;
+      setTimeout(() => {
+        homeMainBannerHeight.value = homeMainBanner.value.clientHeight;
+      }, 100);
     });
     return {
       homeMainBanner,
@@ -21,6 +25,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div
     ref="homeMainBanner"
@@ -92,6 +97,7 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .homeMainBanner__flower {
   position: absolute;
@@ -189,19 +195,15 @@ export default {
   position: absolute;
   left: calc(50% - 1rem);
   top: 100%;
-  -webkit-transform-origin: 50% 50%;
   transform-origin: 50% 50%;
-  -webkit-transform: translate3d(-50%, -50%, 0);
   transform: translate3d(-50%, -50%, 0);
 }
 
 .arrow-1 {
-  -webkit-animation: arrow-movement 2s ease-in-out infinite;
   animation: arrow-movement 2s ease-in-out infinite;
 }
 
 .arrow-2 {
-  -webkit-animation: arrow-movement 2s 1s ease-in-out infinite;
   animation: arrow-movement 2s 1s ease-in-out infinite;
 }
 
@@ -218,30 +220,13 @@ export default {
 }
 
 .arrow:before {
-  -webkit-transform: rotate(45deg) translateX(-16%);
   transform: rotate(45deg) translateX(-16%);
-  -webkit-transform-origin: top left;
   transform-origin: top left;
 }
 
 .arrow:after {
-  -webkit-transform: rotate(-45deg) translateX(16%);
   transform: rotate(-45deg) translateX(16%);
-  -webkit-transform-origin: top right;
   transform-origin: top right;
-}
-
-@-webkit-keyframes arrow-movement {
-  0% {
-    opacity: 0;
-    top: 70%;
-  }
-  70% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
 }
 
 @keyframes arrow-movement {

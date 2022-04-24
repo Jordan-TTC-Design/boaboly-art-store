@@ -16,6 +16,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div
     class="bg-white group p-4 hover:bg-gray-100/50 cursor-pointer"
@@ -44,4 +45,5 @@ export default {
     </p>
   </div>
 </template>
+
 <style lang="scss"></style>

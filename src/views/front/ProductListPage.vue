@@ -1,12 +1,11 @@
 <script>
-import { ref, computed, watch, onMounted } from 'vue';
-import { frontApiMethod } from '@/methods/api.js';
+import { ref, computed, watch } from 'vue';
 import { productCategory, materialCategory } from '@/methods/data.js';
 import ProductListItemSquare from '@/components/front/ProductListItemSquare.vue';
 import Pagination from '@/components/helpers/Pagination.vue';
 import SideNav from '@/components/helpers/SideNav.vue';
-import emitter from '@/methods/emitter';
-
+import { productStore } from '@/stores/productStore';
+import { statusStore } from '@/stores/statusStore';
 export default {
   components: {
     ProductListItemSquare,
@@ -14,15 +13,15 @@ export default {
     Pagination,
   },
   setup() {
-    const productList = ref([]);
-    let filterKeyword = ref('');
-    let filterProductCategory = ref('');
-    let filterMaterialCategory = ref('');
-    const collecitonList = ref([]);
+    const productsData = productStore();
+    const statusData = statusStore();
+    const filterKeyword = ref('');
+    const filterProductCategory = ref('');
+    const filterMaterialCategory = ref('');
     const paginationData = ref({ totalPages: 1, nowPage: 1 });
     const productfilterList = computed(() => {
       let array = [];
-      array = productList.value;
+      array = productsData.products;
       array = filterWord(filterKeyword.value, array);
       array = filterCategory(filterProductCategory.value, array);
       array = filterMaterial(filterMaterialCategory.value, array);
@@ -66,16 +65,6 @@ export default {
       }
       return array;
     }
-    function getProducts() {
-      emitter.emit('open-loading');
-      frontApiMethod.getProductAll().then((res) => {
-        if (res) {
-          productList.value = JSON.parse(JSON.stringify(res));
-          emitter.emit('send-check-collection');
-          emitter.emit('close-loading');
-        }
-      });
-    }
     watch(productfilterList, (newValue, oldValue) => {
       if (newValue.length !== oldValue.length) {
         paginationData.value.nowPage = 1;
@@ -83,35 +72,33 @@ export default {
       }
     });
     watch(paginationData.value, () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      statusData.mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    onMounted(() => {
-      emitter.on('check-collection', (data) => {
-        collecitonList.value = data;
-      });
-    });
-    getProducts();
+    productsData.getProducts();
+    productsData.getCollections();
     return {
       filterKeyword,
       filterProductCategory,
       filterMaterialCategory,
-      collecitonList,
       nowPageProducts,
       productCategory,
       materialCategory,
-      emitter,
       paginationData,
+      productsData,
     };
   },
 };
 </script>
+
 <template>
   <div
     class="relative bg-white grid grid-cols-12 lg:px-24 md:px-16 px-4 md:py-32 py-16 md:gap-x-8 w-full"
   >
     <div class="col-start-2 col-span-10 lg:mb-32 md:mb-24 mb-16">
       <h4 class="text-xl text-black uppercase mb-8">All Products</h4>
-      <h3 class="lg:text-8xl text-5xl text-black font-medium md:mb-16 mb-8">
+      <h3
+        class="lg:text-8xl sm:text-5xl text-4xl text-black font-medium md:mb-16 mb-8"
+      >
         全部商品
       </h3>
       <div class="flex md:flex-row flex-col md:gap-8 gap-4">
@@ -123,7 +110,7 @@ export default {
             placeholder="搜尋關鍵字"
             v-model="filterKeyword"
           />
-          <button class="py-1.5 px-2 searchBtn group">
+          <button type="button" class="py-1.5 px-2 searchBtn group">
             <i class="bi bi-x text-xl group-hover:text-red-600"></i>
           </button>
           <div class="underLine"></div>
@@ -174,13 +161,7 @@ export default {
         <ProductListItemSquare
           :product="product"
           :list-index="index"
-          :collection-list="collecitonList"
-          @add-cart="
-            emitter.emit('add-cart', {
-              id: product.id,
-              num: 1,
-            })
-          "
+          :collection-list="productsData.collections"
         />
       </template>
     </div>
@@ -191,10 +172,11 @@ export default {
       <Pagination
         :pagination-data="paginationData"
         @change-page-number="paginationData.nowPage = $event"
-      ></Pagination>
+      />
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .pageSelectBox {
   position: relative;

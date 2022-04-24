@@ -1,8 +1,10 @@
 <script>
+import { statusStore } from '@/stores/statusStore';
 export default {
   setup() {
+    const statusData = statusStore();
     function scrollToTop() {
-      window.scrollTo({
+      statusData.mainContainer.scrollTo({
         top: 0,
         left: 100,
         behavior: 'smooth',
@@ -12,6 +14,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <footer
     class="bg-primaryLight py-12 md:pb-12 pb-24 px-6 flex xl:flex-row flex-col justify-between lg:items-center gap-y-8"
@@ -19,30 +22,20 @@ export default {
     <div
       class="flex items-center flex-col lg:flex-row gap-x-12 gap-y-4 lg:pb-0 pb-8 lg:border-0 border-b border-black"
     >
-      <router-link to="/" class="text-2xl font-bold text-black"
-        >Boaboly</router-link
+      <RouterLink to="/" class="text-2xl font-bold text-black"
+        >Boaboly</RouterLink
       >
       <ul class="footerNav">
         <li>
-          <router-link :to="{ name: 'ArtList' }" class="footerNav__item">
+          <RouterLink :to="{ name: 'ArtList' }" class="footerNav__item">
             WORKS
-          </router-link>
+          </RouterLink>
         </li>
         <li>
-          <router-link :to="{ name: 'ProductList' }" class="footerNav__item">
+          <RouterLink :to="{ name: 'ProductList' }" class="footerNav__item">
             PRODUCTS
-          </router-link>
+          </RouterLink>
         </li>
-        <!-- <li>
-          <router-link :to="{ name: 'About' }" class="footerNav__item">
-            ABOUT
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'Contact' }" class="footerNav__item">
-            CONTACT
-          </router-link>
-        </li> -->
       </ul>
     </div>
     <div
@@ -67,9 +60,12 @@ export default {
       </ul>
       <p class="text-black text-xs">© 2022 Boaboly Art All Rights Reserved</p>
     </div>
-    <button @click="scrollToTop" class="pageUpBtn z-30">BACK TO TOP</button>
+    <button type="button" @click="scrollToTop" class="pageUpBtn z-30">
+      BACK TO TOP
+    </button>
   </footer>
 </template>
+
 <style lang="scss" scoped>
 .footerNav {
   display: flex;

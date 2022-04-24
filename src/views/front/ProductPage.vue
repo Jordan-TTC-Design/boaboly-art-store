@@ -2,21 +2,23 @@
 import { ref, watch, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
-import emitter from '@/methods/emitter';
 import ProductSlider from '@/components/front/ProductSlider.vue';
-
+import { productStore } from '@/stores/productStore';
+import { statusStore } from '@/stores/statusStore';
+import { cartStore } from '@/stores/cartStore';
 export default {
   components: { ProductSlider },
   setup() {
+    const productsData = productStore();
+    const statusData = statusStore();
+    const cartData = cartStore();
     const route = useRoute();
     const productId = computed(() => route.params.id);
-    const collecitonList = ref([]);
-    const productList = ref([]);
     const buyNum = ref(1);
     const productImgArray = ref([]);
     const product = ref({});
     const mainImg = ref(null);
-    let fullWidth = ref(window.innerWidth);
+    const fullWidth = ref(window.innerWidth);
     let swiperNum1 = computed(() => {
       if (fullWidth.value >= 1280) {
         return 3;
@@ -27,34 +29,21 @@ export default {
       }
     });
     function getProduct(itemId) {
-      emitter.emit('open-loading');
+      statusData.isLoading = true;
       frontApiMethod.getProduct(itemId).then((res) => {
         product.value = res;
         mainImg.value = res.imageUrl;
         productImgArray.value = [res.imageUrl, ...res.imagesUrl];
-        emitter.emit('close-loading');
-        getProducts();
-      });
-    }
-    function getProducts() {
-      emitter.emit('open-loading');
-      frontApiMethod.getProductAll().then((res) => {
-        productList.value = JSON.parse(JSON.stringify(res)).filter(
-          (item) => item.id !== product.value.id && item.promoted.star > 0
-        );
-        emitter.emit('send-check-collection');
-        emitter.emit('close-loading');
+        statusData.isLoading = false;
+        productsData.getProducts();
       });
     }
     function addCart() {
-      emitter.emit('add-cart', {
-        id: product.value.id,
-        num: buyNum.value,
-      });
+      cartData.addCart(product.value.id, buyNum.value);
       buyNum.value = 1;
     }
-    watch(productId, (newValue, oldValue) => {
-      if (newValue !== oldValue) {
+    watch(productId, (newValue) => {
+      if (newValue !== undefined) {
         getProduct(productId.value);
       }
     });
@@ -62,25 +51,21 @@ export default {
       window.onresize = () => {
         fullWidth.value = window.innerWidth;
       };
-      emitter.on('check-collection', (data) => {
-        collecitonList.value = data;
-      });
     });
     getProduct(productId.value);
     return {
       product,
-      productList,
-      collecitonList,
       productImgArray,
       buyNum,
       mainImg,
-      emitter,
       swiperNum1,
       addCart,
+      productsData,
     };
   },
 };
 </script>
+
 <template>
   <div class="bg-gray-100 relative md:py-16 pt-4 pb-16 min-h-screen">
     <div class="bg-primaryLight w-full h-96 absolute top-0"></div>
@@ -118,7 +103,9 @@ export default {
             <p class="productTag bg-primaryLight mb-4">
               {{ product.category }}
             </p>
-            <h2 class="text-3xl font-bold mb-3">{{ product.title }}</h2>
+            <h2 class="sm:text-3xl text-xl font-bold mb-3">
+              {{ product.title }}
+            </h2>
             <h4 class="text-2xl mb-1">NT$ {{ product.price }}</h4>
             <p
               v-show="product.origin_price == product.price"
@@ -162,12 +149,14 @@ export default {
                 type="button"
                 class="rounded py-2 px-3 bg-white border border-gray-300"
                 data-id="product.id"
-                @click="emitter.emit('add-collection', product)"
+                @click="productsData.addCollection(product)"
               >
                 <i
                   :class="{
-                    'bi-heart': collecitonList.indexOf(product.id) < 0,
-                    'bi-heart-fill': collecitonList.indexOf(product.id) >= 0,
+                    'bi-heart':
+                      productsData.collections.indexOf(product.id) < 0,
+                    'bi-heart-fill':
+                      productsData.collections.indexOf(product.id) >= 0,
                   }"
                   class="bi text-xl text-black"
                 ></i>
@@ -227,19 +216,23 @@ export default {
         <h3 class="text-center font-bold text-3xl text-black mb-12">
           其他推薦商品
         </h3>
-        <ProductSlider :swiper-num="swiperNum1" :product-list="productList" />
+        <ProductSlider
+          :swiper-num="swiperNum1"
+          :product-list="productsData.products"
+        />
       </div>
       <div
         class="flex md:flex-row flex-col justify-end items-center gap-x-8 px-12"
       >
-        <router-link to="/products" class="lg:text-3xl tex-xl font-bold"
-          >BACK TO PRODUCTS</router-link
+        <RouterLink to="/products" class="lg:text-3xl tex-xl font-bold"
+          >BACK TO PRODUCTS</RouterLink
         >
-        <router-link to="/products" class="arrow"></router-link>
+        <RouterLink to="/products" class="arrow" />
       </div>
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .arrow {
   position: relative;

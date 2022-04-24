@@ -1,11 +1,11 @@
 <script>
 import { ref, watch, computed } from 'vue';
-import { frontApiMethod } from '@/methods/api.js';
 import { articleCategory } from '@/methods/article.js';
 import ArtListItemSquare from '@/components/front/ArtListItemSquare.vue';
 import Pagination from '@/components/helpers/Pagination.vue';
 import SideNav from '@/components/helpers/SideNav.vue';
-import emitter from '@/methods/emitter';
+import { artStore } from '@/stores/artStore';
+import { statusStore } from '@/stores/statusStore';
 
 export default {
   components: {
@@ -14,13 +14,13 @@ export default {
     Pagination,
   },
   setup() {
-    const artList = ref([]);
-    let filterKeyword = ref('');
-    let filterArticleCategory = ref('');
-    const paginationData = ref({ totalPages: 1, nowPage: 1 });
+    const artData = artStore();
+    const statusData = statusStore();
+    const filterKeyword = ref('');
+    const filterArticleCategory = ref('');
     const artfilterList = computed(() => {
       let array = [];
-      array = artList.value;
+      array = artData.arts;
       array = filterWord(filterKeyword.value, array);
       array = filterCategory(filterArticleCategory.value, array);
       return array;
@@ -30,9 +30,9 @@ export default {
       if (artfilterList.value.length <= 8) {
         return artfilterList.value;
       } else {
-        const pageFrist = paginationData.value.nowPage * 8 - 8;
+        const pageFrist = artData.pagination.nowPage * 8 - 8;
         artfilterList.value.forEach((item, index) => {
-          if (pageFrist <= index && index < paginationData.value.nowPage * 8) {
+          if (pageFrist <= index && index < artData.pagination.nowPage * 8) {
             array.push(item);
           }
         });
@@ -41,12 +41,12 @@ export default {
     });
     watch(artfilterList, (newValue, oldValue) => {
       if (newValue.length !== oldValue.length) {
-        paginationData.value.nowPage = 1;
-        paginationData.value.totalPages = Math.ceil(newValue.length / 8);
+        artData.pagination.nowPage = 1;
+        artData.pagination.totalPages = Math.ceil(newValue.length / 8);
       }
     });
-    watch(paginationData.value, () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    watch(artData.pagination, () => {
+      statusData.mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
     });
     function filterWord(filterData, dataList) {
       let array = dataList;
@@ -60,43 +60,35 @@ export default {
     }
     function filterCategory(filterData, dataList) {
       let array = dataList;
+      console.log(filterData, dataList);
       if (filterData !== '' && filterData !== undefined) {
         array = dataList.filter((item) => item.category === filterData);
+      } else {
+        return dataList;
       }
       return array;
     }
-    function getArts(pageNum = 1) {
-      emitter.emit('open-loading');
-      frontApiMethod.getArts(pageNum).then((res) => {
-        paginationData.value.totalPages = res.pagination.total_pages;
-        res.articles.forEach((item) => {
-          artList.value.push(item);
-        });
-        if (res.pagination.has_next) {
-          getArts(res.pagination.current_page + 1);
-        }
-        emitter.emit('close-loading');
-      });
-    }
-    getArts();
+    artData.getArtList();
     return {
       filterKeyword,
       filterArticleCategory,
       articleCategory,
       nowPageArts,
-      emitter,
-      paginationData,
+      artData,
     };
   },
 };
 </script>
+
 <template>
   <div
     class="relative bg-white grid grid-cols-12 lg:px-24 md:px-16 px-4 md:py-32 py-16 md:gap-x-8 w-full"
   >
     <div class="col-start-2 col-span-10 lg:mb-32 md:mb-24 mb-16">
       <h4 class="text-xl text-black uppercase mb-8">All Works</h4>
-      <h3 class="lg:text-8xl text-5xl text-black font-medium md:mb-16 mb-8">
+      <h3
+        class="lg:text-8xl sm:text-5xl text-4xl text-black font-medium md:mb-16 mb-8"
+      >
         全部圖文創作
       </h3>
       <div class="flex md:flex-row flex-col md:gap-8 gap-4">
@@ -108,7 +100,7 @@ export default {
             placeholder="搜尋關鍵字"
             v-model="filterKeyword"
           />
-          <button class="py-1.5 px-2 searchBtn group">
+          <button type="button" class="py-1.5 px-2 searchBtn group">
             <i class="bi bi-x text-xl group-hover:text-red-600"></i>
           </button>
           <div class="underLine"></div>
@@ -147,15 +139,16 @@ export default {
     </div>
     <div
       class="lg:col-start-3 md:col-start-4 lg:col-span-10 md:col-span-9 col-span-12 flex justify-center"
-      v-if="paginationData.totalPages >= 2"
+      v-if="artData.pagination.totalPages >= 2"
     >
       <Pagination
-        :pagination-data="paginationData"
-        @change-page-number="paginationData.nowPage = $event"
-      ></Pagination>
+        :pagination-data="artData.pagination"
+        @change-page-number="artData.pagination.nowPage = $event"
+      />
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .pageSelectBox {
   position: relative;

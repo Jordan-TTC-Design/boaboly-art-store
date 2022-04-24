@@ -1,10 +1,9 @@
 <script>
 import { ref } from 'vue';
-import { frontApiMethod } from '@/methods/api.js';
-import emitter from '@/methods/emitter';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import { Autoplay, FreeMode } from 'swiper';
+import { artStore } from '@/stores/artStore';
 export default {
   components: {
     Swiper,
@@ -12,29 +11,20 @@ export default {
   },
   props: ['swiper-num'],
   setup() {
+    const artData = artStore();
     const modules = ref([Autoplay, FreeMode]);
-    const artList = ref([]);
-    function getArts() {
-      emitter.emit('open-loading');
-      frontApiMethod.getArts().then((res) => {
-        if (res.success) {
-          artList.value = JSON.parse(JSON.stringify(res.articles));
-          emitter.emit('close-loading');
-        }
-      });
-    }
-    getArts();
+    artData.getArts();
     return {
-      artList,
+      artData,
       modules,
-      emitter,
     };
   },
 };
 </script>
+
 <template>
   <div class="swiperBox">
-    <swiper
+    <Swiper
       :slides-per-view="swiperNum"
       :modules="modules"
       :speed="4000"
@@ -46,12 +36,12 @@ export default {
         disableOnInteraction: false,
       }"
     >
-      <swiper-slide
-        v-for="artItem in artList"
+      <Swiper-slide
+        v-for="artItem in artData.arts"
         :key="artItem.id"
         class="px-8 group"
       >
-        <router-link
+        <RouterLink
           :to="`/arts/${artItem.id}`"
           class="flex justify-center relative"
         >
@@ -70,16 +60,15 @@ export default {
               </p>
             </div>
           </div>
-        </router-link>
-      </swiper-slide>
-    </swiper>
+        </RouterLink>
+      </Swiper-slide>
+    </Swiper>
   </div>
 </template>
+
 <style lang="scss">
 // 搭配上freemode
 .swiper-free-mode > .swiper-wrapper {
-  -webkit-transition-timing-function: linear;
-  -o-transition-timing-function: linear;
   transition-timing-function: linear;
   margin: 0 auto;
 }

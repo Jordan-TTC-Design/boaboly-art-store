@@ -7,9 +7,9 @@ export default {
   props: ['imgName'],
   emits: ['send-img-data'],
   setup(props, { emit }) {
-    let showed = ref(false);
-    let isImg = ref(false);
-    let cropsrc = ref('');
+    const showed = ref(false);
+    const isImg = ref(false);
+    const cropsrc = ref('');
     let cropper = {};
     let imgData = {};
     const cropperImage = ref(null);
@@ -99,6 +99,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div
     :class="[
@@ -191,7 +192,8 @@ export default {
     </div>
   </div>
 </template>
-<style lang="scss">
+
+<style lang="scss" scoped>
 .imgCropperPopModal {
   transform: translateY(-5%);
 }
@@ -212,10 +214,10 @@ export default {
     display: block;
     height: 100%;
     image-orientation: 0deg;
-    max-height: none !important;
-    max-width: none !important;
-    min-height: 0 !important;
-    min-width: 0 !important;
+    max-height: none;
+    max-width: none;
+    min-height: 0;
+    min-width: 0;
     width: 100%;
   }
 }
@@ -225,14 +227,14 @@ export default {
   &__img {
     object-fit: contain;
     border-radius: 0.25rem;
-    width: 160px !important;
-    height: 90px !important;
+    width: 160px;
+    height: 90px;
   }
   &__img--circle {
     object-fit: contain;
     border-radius: 50%;
-    width: 132px !important;
-    height: 132px !important;
+    width: 132px;
+    height: 132px;
   }
 }
 </style>

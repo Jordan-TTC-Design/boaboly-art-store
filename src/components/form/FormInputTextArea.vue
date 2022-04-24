@@ -3,6 +3,7 @@ export default {
   props: ['modelValue', 'input-id', 'input-type', 'textAreaRow', 'text-holder'],
 };
 </script>
+
 <template>
   <div class="w-full mb-6 md:mb-0">
     <label
@@ -21,4 +22,5 @@ export default {
     ></textarea>
   </div>
 </template>
+
 <style lang="scss"></style>
