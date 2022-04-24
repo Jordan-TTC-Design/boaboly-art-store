@@ -11,8 +11,7 @@ export default {
     const nowPath = computed(() => route.path);
     watch(nowPath, (newValue, oldValue) => {
       if (newValue !== oldValue) {
-        statusStore.cartModel = false;
-        statusData.mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        statusData.cartModel = false;
       }
     });
     cartData.getCart();

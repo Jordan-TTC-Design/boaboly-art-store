@@ -135,11 +135,8 @@ export default {
                     : `NT$ ${cartData.shippingFee}`
                 }}
               </p>
-              <p v-show="cartData.cartTotal < 1000" class="text-red-500">
-                尚未達到免運門檻
-              </p>
             </div>
-            <div class="mb-3 flex xs:flex-row flex-col xs:items-center">
+            <!-- <div class="mb-3 flex xs:flex-row flex-col xs:items-center">
               <label
                 class="block uppercase tracking-wide text-sm text-gray-400 mr-4"
                 for="discountTicket"
@@ -152,11 +149,14 @@ export default {
                 id="discountTicket"
                 v-model="orderFormData.user.discount.ticket"
               />
+              <p class="text-red-400 text-sm">
+                {{ checkTicket.text }}
+              </p>
             </div>
             <p class="mb-3">
               <span class="text-sm text-gray-400 mr-4">折扣金額</span>NT$
               {{ orderFormData.user.discount.price }}
-            </p>
+            </p> -->
             <div
               class="border-t border-gray-300 bg-white pt-6 mt-6 xs:flex-row flex-col xs:justify-between items-center"
             >
