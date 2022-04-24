@@ -1,5 +1,5 @@
 <script>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
 import {
@@ -8,11 +8,11 @@ import {
   shippingWay,
   payWay,
 } from '@/methods/order.js';
-import emitter from '@/methods/emitter';
 import VeeFormInput from '@/components/form/VeeFormInput.vue';
 import FormInputTextArea from '@/components/form/FormInputTextArea.vue';
 import { Form } from 'vee-validate';
-
+import { cartStore } from '@/stores/cartStore';
+import { statusStore } from '@/stores/statusStore';
 export default {
   components: {
     VeeFormInput,
@@ -21,62 +21,47 @@ export default {
   },
   setup() {
     const router = useRouter();
-    let cartTotal = ref(0);
-    let checkStage = ref(1);
-    const cartList = ref([]);
-    let shipping = computed(() => {
-      let num = 60;
-      if (cartTotal.value >= 1000) {
-        num = 0;
-      }
-      return num;
-    });
-    let finalTotal = computed(() => cartTotal.value + shipping.value);
+    const cartData = cartStore();
+    const statusData = statusStore();
+    const checkStage = ref(1);
     const orderFormData = ref(JSON.parse(JSON.stringify(defaultOrderData)));
-    function getCart() {
-      frontApiMethod.getCart().then((res) => {
-        cartList.value = JSON.parse(JSON.stringify(res.carts));
-        cartTotal.value = res.total;
-      });
-    }
     function sendOrder() {
-      orderFormData.value.user.shipping.price = shipping.value;
-      orderFormData.value.user.finalPrice = finalTotal.value;
+      orderFormData.value.user.shipping.price = cartData.shippingFee;
+      orderFormData.value.user.finalPrice = cartData.orderTotal;
       frontApiMethod.postOrder(orderFormData.value).then(() => {
-        emitter.emit('get-cart');
+        cartData.getCart();
         router.push({ name: 'Home' });
-        emitter.emit('open-pop-reminder', '購買成功 !');
+        statusData.popReminderModel = true;
+        statusData.popReminderText = '購買成功 !';
       });
     }
-    getCart();
+    cartData.getCart();
     return {
-      cartTotal,
-      shipping,
-      finalTotal,
-      cartList,
+      cartData,
       checkStage,
       orderFormData,
-      sendOrder,
       orderStatus,
       shippingWay,
       payWay,
+      sendOrder,
     };
   },
 };
 </script>
+
 <template>
   <div class="bg-gray-100 relative md:py-16 pt-4 pb-16 min-h-screen">
     <div class="bg-primaryLight w-full h-96 absolute top-0"></div>
     <div
       class="sm:container sm:mx-auto mx-4 bg-white shadow-sm lg:p-24 md:p-12 p-8 pb-24"
     >
-      <router-link
+      <RouterLink
         :to="{ name: 'Home' }"
         class="px-3 py-2 flex items-center mb-4"
       >
         <i class="bi bi-chevron-double-left mr-1"></i>
         <p>返回繼續購物</p>
-      </router-link>
+      </RouterLink>
       <div
         class="grid lg:grid-cols-12 grid-cols-1 gap-y-8"
         v-if="checkStage === 1"
@@ -96,10 +81,10 @@ export default {
                 <p class="text-sm text-gray-400 mb-2">金額</p>
               </div>
             </li>
-            <template v-for="(item, index) in cartList" :key="item.id">
+            <template v-for="(item, index) in cartData.carts" :key="item.id">
               <li
                 :class="{
-                  'border-b border-gray-300': index < cartList.length - 1,
+                  'border-b border-gray-300': index < cartData.carts.length - 1,
                 }"
                 class="grid md:grid-cols-6 grid-cols-2 gap-2 hover:bg-gray-100/50 py-4"
               >
@@ -128,7 +113,7 @@ export default {
               class="col border-t border-gray-300 bg-white p-2 flex items-center"
             >
               <p class="text-sm text-gray-400 mr-3">總金額</p>
-              <p class="text font-bold">NT$ {{ cartTotal }}</p>
+              <p class="text font-bold">NT$ {{ cartData.cartTotal }}</p>
             </li>
           </ul>
         </div>
@@ -139,18 +124,19 @@ export default {
             </div>
             <p class="mb-3">
               <span class="text-sm text-gray-400 mr-4">商品總計</span>NT$
-              {{ cartTotal }}
+              {{ cartData.cartTotal }}
             </p>
             <div class="xs:flex-row flex-col xs: justify-between mb-3">
               <p>
                 <span class="text-sm text-gray-400 mr-4">運費</span>
-                {{ cartTotal >= 1000 ? '免運' : `NT$ ${shipping}` }}
-              </p>
-              <p v-show="cartTotal < 1000" class="text-red-500">
-                尚未達到免運門檻
+                {{
+                  cartData.cartTotal >= 1000
+                    ? '免運'
+                    : `NT$ ${cartData.shippingFee}`
+                }}
               </p>
             </div>
-            <div class="mb-3 flex xs:flex-row flex-col xs:items-center">
+            <!-- <div class="mb-3 flex xs:flex-row flex-col xs:items-center">
               <label
                 class="block uppercase tracking-wide text-sm text-gray-400 mr-4"
                 for="discountTicket"
@@ -163,17 +149,20 @@ export default {
                 id="discountTicket"
                 v-model="orderFormData.user.discount.ticket"
               />
+              <p class="text-red-400 text-sm">
+                {{ checkTicket.text }}
+              </p>
             </div>
             <p class="mb-3">
               <span class="text-sm text-gray-400 mr-4">折扣金額</span>NT$
               {{ orderFormData.user.discount.price }}
-            </p>
+            </p> -->
             <div
               class="border-t border-gray-300 bg-white pt-6 mt-6 xs:flex-row flex-col xs:justify-between items-center"
             >
               <div class="xs:mb-0 mb-4">
                 <p class="text-sm text-gray-400 mb-1">總金額</p>
-                <p class="text-xl font-bold">NT$ {{ finalTotal }}</p>
+                <p class="text-xl font-bold">NT$ {{ cartData.orderTotal }}</p>
               </div>
               <button
                 type="button"
@@ -290,16 +279,18 @@ export default {
             >
               <div class="xs:mb-0 mb-4">
                 <p class="text-sm text-gray-400 mb-1">總金額</p>
-                <p class="text-xl font-bold">NT$ {{ finalTotal }}</p>
+                <p class="text-xl font-bold">NT$ {{ cartData.orderTotal }}</p>
               </div>
               <button
                 :disabled="
-                  Object.keys(errors).length === 0 && cartList.length === 0
+                  Object.keys(errors).length === 0 &&
+                  cartData.carts.length === 0
                 "
                 type="submit"
                 :class="{
                   'bg-opacity-50 hover:bg-opacity-50':
-                    Object.keys(errors).length === 0 && cartList.length === 0,
+                    Object.keys(errors).length === 0 &&
+                    cartData.carts.length === 0,
                 }"
                 class="bg-black rounded py-2 px-3 hover:bg-gray-800 text-white"
               >
@@ -312,4 +303,5 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss"></style>

@@ -1,48 +1,27 @@
 <script>
-import { ref, onMounted, onUnmounted } from 'vue';
-import emitter from '@/methods/emitter';
-
+import { statusStore } from '@/stores/statusStore';
 export default {
   setup() {
-    let showed = ref(false);
-    let showText = ref('');
-    function closeModal() {
-      showed.value = false;
-    }
-    function openModal(data) {
-      showText.value = data;
-      showed.value = true;
-      setTimeout(() => {
-        closeModal();
-      }, 1500);
-    }
-    onMounted(() => {
-      emitter.on('open-pop-reminder', (data) => {
-        openModal(data);
-      });
-    });
-    onUnmounted(() => {
-      emitter.off('open-pop-reminder', (data) => {
-        openModal(data);
-      });
-    });
+    const statusData = statusStore();
     return {
-      showed,
-      showText,
-      closeModal,
+      statusData,
     };
   },
 };
 </script>
+
 <template>
   <div
     :class="[
       'fixed right-3 top-24 max-w-sm py-4 px-8 flex items-center justify-center bg-black rounded-md overflow-hidden z-popModal shadow-md',
-      showed ? 'scale-100' : 'scale-0',
+      statusData.popReminderModel ? 'scale-100' : 'scale-0',
       'transition-all duration-300',
     ]"
   >
-    <p class="font-bold text-white text-right">{{ showText }}</p>
+    <p class="font-bold text-white text-right">
+      {{ statusData.popReminderText }}
+    </p>
   </div>
 </template>
+
 <style lang="scss"></style>

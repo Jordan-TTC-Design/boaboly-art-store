@@ -4,6 +4,7 @@ export default {
   emits: ['changeArticleState', 'openArticleDetail', 'deleteArticle'],
 };
 </script>
+
 <template>
   <div class="group">
     <div class="relative mb-2">
@@ -59,4 +60,5 @@ export default {
     <p>{{ article.create_at }}</p>
   </div>
 </template>
+
 <style lang="scss"></style>

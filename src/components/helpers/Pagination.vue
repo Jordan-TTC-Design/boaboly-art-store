@@ -30,6 +30,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <ul class="pagination bg-gray-100 rounded">
     <li
@@ -63,6 +64,7 @@ export default {
     </li>
   </ul>
 </template>
+
 <style lang="scss" scoped>
 .pagination {
   display: flex;

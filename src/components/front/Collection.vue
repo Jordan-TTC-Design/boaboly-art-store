@@ -1,136 +1,73 @@
 <script>
-import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
+import { watch, computed, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { frontApiMethod } from '@/methods/api.js';
-import emitter from '@/methods/emitter';
+import { productStore } from '@/stores/productStore';
+import { cartStore } from '@/stores/cartStore';
+import { statusStore } from '@/stores/statusStore';
 
 export default {
-  emits: ['fix-window'],
-  setup(props, { emit }) {
+  setup() {
     const route = useRoute();
+    const productsData = productStore();
+    const cartData = cartStore();
+    const statusData = statusStore();
     const nowPath = computed(() => route.path);
-    let modalOpen = ref(false);
-    let collection = ref([]);
-    const productList = ref([]);
-    const collectionProduct = computed(() => {
-      let array = [];
-      collection.value.forEach((itemId) => {
-        productList.value.forEach((item) => {
-          if (item.id == itemId) {
-            array.push(item);
-          }
-        });
-      });
-      return array;
-    });
     watch(nowPath, (newValue, oldValue) => {
       if (newValue !== oldValue) {
-        modalOpen.value = false;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        statusData.collectionModel = false;
+        statusData.mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
-    watch(modalOpen, (newValue) => {
-      if (newValue === true) {
-        emit('fix-window', true);
-      } else {
-        emit('fix-window', false);
-      }
-    });
-    function getCollection() {
-      const temJobCollectionsArray = JSON.parse(
-        localStorage.getItem('boaboly-store-collection')
-      );
-      if (temJobCollectionsArray) {
-        collection.value = temJobCollectionsArray;
-      }
-      emitter.emit('check-collection', collection.value);
-    }
-    function deleteAll() {
-      localStorage.setItem('boaboly-store-collection', JSON.stringify([]));
-      getCollection();
-    }
-    function addCollection(product) {
-      const newId = product.id;
-      const check = collection.value.indexOf(newId);
-      if (check < 0) {
-        collection.value.push(newId);
-        localStorage.setItem(
-          'boaboly-store-collection',
-          JSON.stringify(collection.value)
-        );
-      } else {
-        collection.value.splice(check, 1);
-        localStorage.setItem(
-          'boaboly-store-collection',
-          JSON.stringify(collection.value)
-        );
-      }
-      getCollection();
-    }
-    function getProducts() {
-      frontApiMethod.getProductAll().then((res) => {
-        productList.value = JSON.parse(JSON.stringify(res));
-      });
-    }
-    function sendCheckCollection() {
-      emitter.emit('check-collection', collection.value);
-    }
-    getProducts();
-    getCollection();
-    onMounted(() => {
-      emitter.on('get-collection', getCollection);
-      emitter.on('send-check-collection', sendCheckCollection);
-      emitter.on('add-collection', (data) => {
-        addCollection(data);
-      });
-    });
+    productsData.getProducts();
+    productsData.getCollections();
     onUnmounted(() => {
-      modalOpen.value = false;
+      statusData.collectionModel = false;
     });
     return {
-      modalOpen,
-      collection,
-      collectionProduct,
-      emitter,
-      addCollection,
-      deleteAll,
+      productsData,
+      cartData,
+      statusData,
     };
   },
 };
 </script>
+
 <template>
   <button
     type="button"
     class="rounded py-2 px-3 hover:border-gray-300 hover:bg-white/50 relative"
-    @click="modalOpen = !modalOpen"
+    @click="statusData.collectionModel = !statusData.collectionModel"
   >
-    <p v-show="collection.length > 0" class="cart__number">
-      {{ collection.length }}
+    <p v-show="productsData.collections.length > 0" class="cart__number">
+      {{ productsData.collections.length }}
     </p>
     <i class="bi bi-heart text-xl text-white"></i>
   </button>
   <div
     class="siderBg--x z-sider"
-    :class="{ active: modalOpen }"
-    @click="modalOpen = false"
+    :class="{ active: statusData.collectionModel }"
+    @click="statusData.collectionModel = false"
   ></div>
-  <div class="siderBox--x z-sider" :class="{ active: modalOpen }">
+  <div
+    class="siderBox--x z-sider"
+    :class="{ active: statusData.collectionModel }"
+  >
     <div class="relative h-full flex flex-col">
       <div class="p-8">
         <div class="flex justify-between mb-4">
           <button
             type="button"
             class="px-3 py-2 flex items-center"
-            @click="modalOpen = false"
+            @click="statusData.collectionModel = false"
           >
             <i class="bi bi-chevron-double-left mr-1"></i>
             <p>返回</p>
           </button>
           <button
             type="button"
-            v-if="collectionProduct.length > 0"
+            v-if="productsData.collectionProduct.length > 0"
             class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-            @click="deleteAll"
+            @click="productsData.deleteAllCollections"
           >
             <p>刪除全部</p>
           </button>
@@ -141,7 +78,7 @@ export default {
           收藏商品
         </h2>
       </div>
-      <ul class="cartList grid grid-cols-1 flex-grow-1 overflow-y-auto px-8">
+      <ul class="cartList flex flex-col flex-grow-1 overflow-y-auto px-8">
         <li class="grid md:grid-cols-4 gap-2 border-b border-gray-300">
           <div class="md:col-span-3">
             <p class="text-sm text-gray-400 mb-2">品項</p>
@@ -151,12 +88,13 @@ export default {
           </div>
         </li>
         <template
-          v-for="(product, index) in collectionProduct"
+          v-for="(product, index) in productsData.collectionProduct"
           :key="product.id"
         >
           <li
             :class="{
-              'border-b border-gray-300': index < collectionProduct.length - 1,
+              'border-b border-gray-300':
+                index < productsData.collectionProduct.length - 1,
             }"
             class="grid grid-cols-4 gap-2 hover:bg-gray-100/50 py-6"
           >
@@ -175,22 +113,34 @@ export default {
               <button
                 type="button"
                 class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-                @click="emitter.emit('add-cart', product)"
+                @click="cartData.addCart(product.id, product.num)"
               >
                 <i class="bi bi-cart text-xl"></i>
               </button>
               <button
                 type="button"
                 class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-                @click="addCollection(product)"
+                @click="productsData.addCollection(product)"
               >
                 <i class="bi bi-x text-xl"></i>
               </button>
             </div>
           </li>
         </template>
+        <li
+          v-if="productsData.collectionProduct.length === 0"
+          class="flex flex-col justify-center items-center pt-6 gap-4"
+        >
+          <p class="text-gray-400">目前尚無任何商品</p>
+          <RouterLink
+            to="/products"
+            class="bg-black rounded py-2 px-3 hover:bg-gray-800 text-white"
+            >去看看有什麼喜歡的
+          </RouterLink>
+        </li>
       </ul>
     </div>
   </div>
 </template>
+
 <style lang="scss"></style>

@@ -167,8 +167,7 @@ const apiMethod = {
         document.cookie = `ttcDesignToken=${token}; expires=${new Date(
           expired
         )};`;
-        console.log(res.data.success);
-        return res.data.success;
+        return 'success';
       })
       .catch((err) => {
         console.log(err.data);
@@ -189,9 +188,7 @@ const apiMethod = {
       })
       .catch((err) => {
         console.log(err.response);
-        if (err.response === 401 || err.response === 403) {
-          return '/admin-login';
-        }
+        return false;
       });
   },
   adminGetProductsAll() {

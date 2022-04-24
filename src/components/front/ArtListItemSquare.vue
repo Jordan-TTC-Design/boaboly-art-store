@@ -9,41 +9,48 @@ export default {
   },
 };
 </script>
+
 <template>
-  <div class="artItem group bg-white border-b border-gray-300 py-12">
+  <RouterLink
+    class="artItem group bg-white border-b border-gray-300 py-12"
+    :to="`/arts/${artItem.id}`"
+  >
     <div class="flex sm:flex-row flex-col sm:items-end sm:mb-8 gap-4">
-      <router-link
+      <RouterLink
         class="relative block sm:p-4 group-hover:bg-gray-100 flex-shrink-0"
         :to="`/arts/${artItem.id}`"
       >
         <img
-          class="w-48 bg-gray-300 rounded"
+          class="sm:w-48 w-full bg-gray-300 rounded"
           :src="artItem.imagesUrl[0]"
           :alt="`${artItem.title}產品圖片`"
         />
-      </router-link>
+      </RouterLink>
       <div class="flex flex-col items-start sm:mb-8 mb-4 gap-y-2">
         <p class="border border-gray-300 px-2 py-0.5 text-sm">
           {{ artItem.category }}
         </p>
-        <router-link
+        <RouterLink
           :to="`/arts/${artItem.id}`"
           class="cursor-pointer text-xl text-black font-medium block"
         >
           {{ artItem.title }}
-        </router-link>
+        </RouterLink>
       </div>
     </div>
-    <div class="flex justify-between items-start gap-2 sm:pl-4">
+    <div
+      class="flex sm:flex-row flex-col justify-between items-start gap-2 sm:pl-4"
+    >
       <div class="flex flex-wrap">
         <p v-for="tag in artItem.tags" :key="tag" class="mr-2">#{{ tag }}</p>
       </div>
-      <p class="text-gray-500 text-right">
+      <p class="text-gray-500 text-right whitespace-nowrap self-end">
         {{ changeTime(artItem.create_at) }}
       </p>
     </div>
-  </div>
+  </RouterLink>
 </template>
+
 <style lang="scss" scoped>
 .artItem {
   min-height: 360px;

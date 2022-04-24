@@ -18,6 +18,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div
     class="group border-b border-gray-200 py-4 flex items-center space-x-6 hover:bg-gray-50 hover:bg-opacity-50 relative cursor-pointer"
@@ -55,4 +56,5 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss"></style>

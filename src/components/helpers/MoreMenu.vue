@@ -4,13 +4,14 @@ export default {
   props: ['item-id'],
   emits: ['delete-item', 'edit-item'],
   setup() {
-    let modalOpen = ref(false);
+    const modalOpen = ref(false);
     return {
       modalOpen,
     };
   },
 };
 </script>
+
 <template>
   <div class="moreMenu">
     <button
@@ -44,6 +45,7 @@ export default {
     @click="modalOpen = false"
   ></div>
 </template>
+
 <style lang="scss" scoped>
 .moreMenu {
   position: relative;

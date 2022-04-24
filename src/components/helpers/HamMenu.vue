@@ -1,25 +1,18 @@
 <script>
 import { ref, watch, computed, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { statusStore } from '@/stores/statusStore';
 
 export default {
-  emits: ['fix-window'],
-  setup(props, { emit }) {
+  setup() {
     const route = useRoute();
     const router = useRouter();
-    let modalOpen = ref(false);
-    let searchKeyword = ref('');
+    const statusData = statusStore();
+    const searchKeyword = ref('');
     const nowPath = computed(() => route.path);
     watch(nowPath, (newValue, oldValue) => {
       if (newValue !== oldValue) {
-        modalOpen.value = false;
-      }
-    });
-    watch(modalOpen, (newValue) => {
-      if (newValue === true) {
-        emit('fix-window', true);
-      } else {
-        emit('fix-window', false);
+        statusData.hamMenuModel = false;
       }
     });
     function searchItem() {
@@ -27,43 +20,44 @@ export default {
       if (keyword.length > 0) {
         router.push(`/search?keyword=${keyword}`);
         searchKeyword.value = '';
-        modalOpen.value = false;
+        statusData.hamMenuModel = false;
       } else {
         return;
       }
     }
     onUnmounted(() => {
-      modalOpen.value = false;
+      statusData.hamMenuModel = false;
     });
     return {
       searchKeyword,
-      modalOpen,
+      statusData,
       searchItem,
     };
   },
 };
 </script>
+
 <template>
   <button
     type="button"
     class="rounded py-2 px-3 hover:border-gray-300 hover:bg-white/50 relative"
-    @click="modalOpen = !modalOpen"
+    @click="statusData.hamMenuModel = !statusData.hamMenuModel"
   >
     <i class="bi bi-list text-xl text-white"></i>
   </button>
   <div
     class="siderBox--y--full z-sider bg-black flex flex-col"
-    :class="{ active: modalOpen }"
+    :class="{ active: statusData.hamMenuModel }"
   >
     <header class="flex justify-between items-center flex-shrink-0">
-      <router-link to="/" class="text-2xl font-bold ml-6 text-white"
-        >Boaboly<span class="text-xs block">寶兒寶莉美學商店</span></router-link
+      <RouterLink to="/" class="text-2xl font-bold ml-6 text-white"
+        >Boaboly<span class="text-xs block">寶兒寶莉美學商店</span></RouterLink
       >
       <div class="bg-black py-4 px-6 flex">
         <button
           type="button"
           class="rounded py-2 px-3 hover:border-gray-300 hover:bg-white/50 relative"
-          @click="modalOpen = !modalOpen"
+          @click="statusData.hamMenuModel = !statusData.hamMenuModel"
         >
           <i class="bi bi-list text-xl text-white"></i>
         </button>
@@ -73,25 +67,15 @@ export default {
       class="container grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 flex-grow gap-4 mx-auto my-12 md:px-0 px-6"
     >
       <li class="flex items-center">
-        <router-link :to="{ name: 'ArtList' }" class="hamListLink w-full">
+        <RouterLink :to="{ name: 'ArtList' }" class="hamListLink w-full">
           WORKS <span>寶莉圖文作品</span>
-        </router-link>
+        </RouterLink>
       </li>
       <li class="flex items-center">
-        <router-link :to="{ name: 'ProductList' }" class="hamListLink w-full">
+        <RouterLink :to="{ name: 'ProductList' }" class="hamListLink w-full">
           PRODUCTS <span>寶莉自製商品</span>
-        </router-link>
+        </RouterLink>
       </li>
-      <!-- <li class="flex items-center">
-        <router-link :to="{ name: 'About' }" class="hamListLink w-full">
-          ABOUT <span>美學商店理念</span>
-        </router-link>
-      </li>
-      <li class="flex items-center">
-        <router-link :to="{ name: 'Contact' }" class="hamListLink w-full">
-          CONTACT <span>合作＆聯絡</span>
-        </router-link>
-      </li> -->
       <li class="md:col-span-3 sm:col-span-2 hamSearchBox sm:w-1/2">
         <label
           class="hamListLink w-full search"
@@ -146,6 +130,7 @@ export default {
     </footer>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .hamListLink {
   display: flex;

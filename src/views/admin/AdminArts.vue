@@ -1,10 +1,10 @@
 <script>
 import { ref, computed } from 'vue';
-import { apiMethod } from '@/methods/api.js';
 import { defaultArticleData, articleCategory } from '@/methods/article.js';
 import AdminArtSlider from '@/components/admin/AdminArtSlider.vue';
 import RowNav from '@/components/helpers/RowNav.vue';
 import AdminArticleListItemSquare from '@/components/admin/AdminArticleListItemSquare.vue';
+import { adminStore } from '@/stores/adminStore';
 
 export default {
   components: {
@@ -13,73 +13,39 @@ export default {
     AdminArticleListItemSquare,
   },
   setup() {
-    const articles = ref([]);
-    let listState = ref(1);
-    let showed = ref(true);
+    const adminData = adminStore();
+    const listState = ref(1);
     const articleList = computed(() => {
       let array = [];
       if (listState.value === 2) {
-        array = articles.value.filter((product) => product.isPublic);
+        array = adminData.articles.filter((item) => item.isPublic);
       } else if (listState.value === 3) {
-        array = articles.value.filter((product) => !product.isPublic);
+        array = adminData.articles.filter((item) => !item.isPublic);
       } else {
-        array = articles.value;
+        array = adminData.articles;
       }
       return array;
     });
-    let selectItem = ref(JSON.parse(JSON.stringify(defaultArticleData)));
-    let modalState = ref(null);
-    function clearItem() {
-      modalState.value = null;
-      selectItem.value = JSON.parse(JSON.stringify(defaultArticleData));
-    }
     function openArticleDetail(state, item) {
       if (state === 'isNew') {
-        selectItem.value = JSON.parse(JSON.stringify(defaultArticleData));
+        adminData.articleItem = JSON.parse(JSON.stringify(defaultArticleData));
       } else if (state === 'edit') {
-        selectItem.value = JSON.parse(JSON.stringify(item));
+        adminData.articleItem = JSON.parse(JSON.stringify(item));
       }
-      modalState.value = state;
+      adminData.articleModel.state = state;
     }
-    function changeArticleState(articleData) {
-      apiMethod.adminGetArticle(articleData.id).then((res) => {
-        articleData = JSON.parse(JSON.stringify(res));
-        articleData.isPublic = !articleData.isPublic;
-        updateArticle(articleData.id, articleData);
-      });
-    }
-    async function updateArticle(articleId, articleData) {
-      await apiMethod.adminUpdateArticle(articleId, articleData);
-      getArticles();
-    }
-    async function deleteArticle(articleId) {
-      await apiMethod.adminDeleteArticle(articleId);
-      getArticles();
-    }
-    function getArticles() {
-      apiMethod.adminGetArticles().then((res) => {
-        if (res) {
-          articles.value = Object.values(res.articles);
-        }
-      });
-    }
-    getArticles();
+    adminData.getArticles();
     return {
+      adminData,
       articleList,
       listState,
-      modalState,
-      selectItem,
-      showed,
       articleCategory,
       openArticleDetail,
-      deleteArticle,
-      changeArticleState,
-      clearItem,
-      getArticles,
     };
   },
 };
 </script>
+
 <template>
   <div class="relative bg-white">
     <div
@@ -93,7 +59,7 @@ export default {
           <button
             type="button"
             class="border border-gray-200 rounded py-2 px-3 hover:border-gray-300"
-            @click="openArticleDetail('isNew', selectItem)"
+            @click="openArticleDetail('isNew', adminData.articleItem)"
           >
             新增文章
           </button>
@@ -141,9 +107,9 @@ export default {
           <template v-for="article in articleList" :key="article.id">
             <AdminArticleListItemSquare
               :article="article"
-              @change-article-state="changeArticleState"
+              @change-article-state="adminData.changeArticleState"
               @open-article-detail="openArticleDetail"
-              @delete-article="deleteArticle"
+              @delete-article="adminData.deleteArticle"
             />
           </template>
         </div>
@@ -151,10 +117,11 @@ export default {
     </div>
   </div>
   <AdminArtSlider
-    :select-item="selectItem"
-    :modal-state="modalState"
-    @get-article="getArticles"
-    @clear-item="clearItem"
+    :select-item="adminData.articleItem"
+    :modal-state="adminData.articleModel.state"
+    @get-article="adminData.getArticles"
+    @clear-item="adminData.clearArticleItem"
   />
 </template>
+
 <style lang="scss"></style>

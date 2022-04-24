@@ -1,57 +1,49 @@
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import MyUploadAdapter from '@/methods/myUploadAdapter';
+import { ref } from '@vue/reactivity';
 function MyCustomUploadAdapterPlugin(editor) {
   editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
     return new MyUploadAdapter(loader);
   };
 }
 export default {
-  props: ['child-data', 'input-id', 'input-name', 'text-holder'],
-  data() {
-    return {
-      textData: '',
-      editor: ClassicEditor,
-      editorData: '<p>Content of the editor.</p>',
-      editorConfig: {
-        toolbar: ['heading', '|', 'bold', 'italic', 'link'],
-        extraPlugins: [MyCustomUploadAdapterPlugin],
-        language: 'zh',
-        placeholder: `${this.textHolder}`,
-        heading: {
-          options: [
-            {
-              model: 'paragraph',
-              title: 'Paragraph',
-              class: 'ck-heading_paragraph',
-            },
-            {
-              model: 'heading1',
-              view: 'h2',
-              title: 'Heading 1',
-              class: 'ck-heading_heading1',
-            },
-            {
-              model: 'heading2',
-              view: 'h3',
-              title: 'Heading 2',
-              class: 'ck-heading_heading2',
-            },
-          ],
-        },
+  props: ['modelValue', 'input-id', 'input-name', 'text-holder'],
+  setup(props) {
+    const editor = ref(ClassicEditor);
+    const editorData = ref('<p>請輸入</p>');
+    const editorConfig = ref({
+      toolbar: ['heading', '|', 'bold', 'italic', 'link'],
+      extraPlugins: [MyCustomUploadAdapterPlugin],
+      language: 'zh',
+      placeholder: `${props.textHolder}`,
+      heading: {
+        options: [
+          {
+            model: 'paragraph',
+            title: 'Paragraph',
+            class: 'ck-heading_paragraph',
+          },
+          {
+            model: 'heading1',
+            view: 'h2',
+            title: 'Heading 1',
+            class: 'ck-heading_heading1',
+          },
+          {
+            model: 'heading2',
+            view: 'h3',
+            title: 'Heading 2',
+            class: 'ck-heading_heading2',
+          },
+        ],
       },
-    };
-  },
-  watch: {
-    childData(val) {
-      this.textData = val;
-    },
-    textData(val) {
-      this.$emit('update:childData', val);
-    },
+    });
+    return { editor, editorData, editorConfig };
   },
 };
 </script>
+
 <template>
   <div class="w-full mb-6 md:mb-0 form__infoEditBox">
     <label
@@ -66,10 +58,11 @@ export default {
       :config="editorConfig"
       :id="inputId"
       :name="inputName"
-      v-model="textData"
+      :value="modelValue"
     ></ckeditor>
   </div>
 </template>
+
 <style lang="scss">
 .form__infoEditBox {
   .ck-editor__editable_inline {

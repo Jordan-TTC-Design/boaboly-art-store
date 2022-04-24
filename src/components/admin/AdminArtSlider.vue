@@ -21,7 +21,7 @@ export default {
     const modalOpen = ref(false);
     const modalState = computed(() => props.modalState);
     const selectItemId = computed(() => props.selectItem.id);
-    let listState = ref(1);
+    const listState = ref(1);
     const imgCoverUploader = ref(null);
     const imgsData = ref([{ useUrl: true, url: '' }]);
     function upload() {
@@ -91,6 +91,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div
     class="siderBg z-sider"
@@ -193,7 +194,7 @@ export default {
               input-id="productContent"
               input-name="創作內容或文章"
               text-holder="請輸入創作內容或文章"
-              v-model:child-data="articleItem.content"
+              v-model="articleItem.content"
             />
           </div>
           <div class="col-span-6 grid grid-cols-6 gap-4">
@@ -245,7 +246,7 @@ export default {
               </div>
             </div>
             <div class="col-span-6 mb-12">
-              <div class="grid grid-cols-3 gap-4 flex items-end">
+              <div class="grid grid-cols-3 gap-4">
                 <div
                   v-for="(tag, index) in articleItem.tags"
                   :key="index"
@@ -286,7 +287,7 @@ export default {
                     articleItem.tags[articleItem.tags.length - 1] !== ''
                   "
                   type="button"
-                  class="w-full py-1.5 border border-gray-300 py-2 px-3 hover:bg-gray-100"
+                  class="w-full border border-gray-300 py-1.5 px-3 hover:bg-gray-100"
                   @click="articleItem.tags.push('')"
                 >
                   新增標籤欄位
@@ -314,4 +315,5 @@ export default {
     </div>
   </div>
 </template>
+
 <style lang="scss"></style>

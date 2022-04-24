@@ -1,133 +1,64 @@
 <script>
-import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
+import { watch, computed, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { frontApiMethod } from '@/methods/api.js';
-import emitter from '@/methods/emitter';
-
+import { cartStore } from '@/stores/cartStore';
+import { statusStore } from '@/stores/statusStore';
 export default {
-  emits: ['fix-window'],
-  setup(props, { emit }) {
+  setup() {
+    const cartData = cartStore();
+    const statusData = statusStore();
     const route = useRoute();
-    let modalOpen = ref(false);
-    let cartTotal = ref(0);
-    const cartList = ref([]);
-    const cartAmount = computed(() => {
-      let num = 0;
-      cartList.value.forEach((item) => {
-        num += item.qty;
-      });
-      return num;
-    });
-    function addCart(productId, buyNum) {
-      emitter.emit('open-loading');
-      frontApiMethod.addCart(productId, buyNum).then(() => {
-        getCart();
-        emitter.emit('open-pop-reminder', '成功加入購物車 !');
-      });
-    }
-    function updateCart(cartItemNum, cartItemId) {
-      emitter.emit('open-loading');
-      frontApiMethod.editCart(cartItemNum, cartItemId).then(() => {
-        getCart();
-      });
-    }
-    function editAmout(num, index) {
-      if (cartList.value[index].qty > 1) {
-        if (num > 0) {
-          cartList.value[index].qty += 1;
-        } else {
-          cartList.value[index].qty -= 1;
-        }
-        updateCart(cartList.value[index].qty, cartList.value[index].id);
-      }
-    }
-    function getCart() {
-      frontApiMethod.getCart().then((res) => {
-        cartList.value = JSON.parse(JSON.stringify(res.carts));
-        cartTotal.value = res.total;
-        emitter.emit('close-loading');
-      });
-    }
-    function deleteCart(cartItemId) {
-      emitter.emit('open-loading');
-      frontApiMethod.deleteCart(cartItemId).then(() => {
-        getCart();
-      });
-    }
-    function deleteCartAll() {
-      emitter.emit('open-loading');
-      frontApiMethod.deleteCartAll().then(() => {
-        getCart();
-      });
-    }
     const nowPath = computed(() => route.path);
     watch(nowPath, (newValue, oldValue) => {
       if (newValue !== oldValue) {
-        modalOpen.value = false;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        statusData.cartModel = false;
       }
     });
-    watch(modalOpen, (newValue) => {
-      if (newValue === true) {
-        emit('fix-window', true);
-      } else {
-        emit('fix-window', false);
-      }
-    });
-    getCart();
-    onMounted(() => {
-      emitter.on('get-cart', getCart);
-      emitter.on('add-cart', (data) => {
-        addCart(data.id, data.num);
-      });
-    });
+    cartData.getCart();
     onUnmounted(() => {
-      modalOpen.value = false;
+      statusData.cartModel = false;
     });
     return {
-      cartAmount,
-      cartTotal,
-      cartList,
-      modalOpen,
-      addCart,
-      deleteCart,
-      editAmout,
-      deleteCartAll,
+      cartData,
+      statusData,
     };
   },
 };
 </script>
+
 <template>
   <button
     type="button"
     class="rounded py-2 px-3 hover:border-gray-300 hover:bg-white/50 relative"
-    @click="modalOpen = !modalOpen"
+    @click="statusData.cartModel = !statusData.cartModel"
   >
-    <p v-show="cartAmount > 0" class="cart__number">{{ cartAmount }}</p>
+    <p v-show="cartData.cartAmount > 0" class="cart__number">
+      {{ cartData.cartAmount }}
+    </p>
     <i class="bi bi-cart text-xl text-white"></i>
   </button>
   <div
     class="siderBg--x z-sider"
-    :class="{ active: modalOpen }"
-    @click="modalOpen = false"
+    :class="{ active: statusData.cartModel }"
+    @click="statusData.cartModel = false"
   ></div>
-  <div class="siderBox--x z-sider" :class="{ active: modalOpen }">
+  <div class="siderBox--x z-sider" :class="{ active: statusData.cartModel }">
     <div class="relative h-full flex flex-col">
       <div class="p-8">
         <div class="flex justify-between mb-4">
           <button
             type="button"
             class="px-3 py-2 flex items-center"
-            @click="modalOpen = false"
+            @click="statusData.cartModel = false"
           >
             <i class="bi bi-chevron-double-left mr-1"></i>
             <p>返回</p>
           </button>
           <button
             type="button"
-            v-if="cartList.length > 0"
+            v-if="cartData.carts.length > 0"
             class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-            @click="deleteCartAll"
+            @click="cartData.deleteCartAll"
           >
             <p>刪除全部</p>
           </button>
@@ -138,9 +69,7 @@ export default {
           購物車
         </h2>
       </div>
-      <ul
-        class="cartList grid grid-cols-1 flex-grow-1 overflow-y-auto px-8 pb-36"
-      >
+      <ul class="cartList flex flex-col flex-grow-1 overflow-y-auto px-8 pb-36">
         <li class="grid md:grid-cols-6 gap-2 border-b border-gray-300">
           <div class="md:col-span-3">
             <p class="text-sm text-gray-400 mb-2">品項</p>
@@ -152,10 +81,10 @@ export default {
             <p class="text-sm text-gray-400 mb-2">刪除</p>
           </div>
         </li>
-        <template v-for="(item, index) in cartList" :key="item.id">
+        <template v-for="(item, index) in cartData.carts" :key="item.id">
           <li
             :class="{
-              'border-b border-gray-300': index < cartList.length - 1,
+              'border-b border-gray-300': index < cartData.carts.length - 1,
             }"
             class="grid md:grid-cols-6 grid-cols-2 gap-2 hover:bg-gray-100/50 py-6"
           >
@@ -181,7 +110,7 @@ export default {
                     'text-gray-300': item.qty <= 1,
                     'cursor-default': item.qty <= 1,
                   }"
-                  @click="editAmout(-1, index)"
+                  @click="cartData.editCartAmount(-1, index)"
                 >
                   <i class="bi bi-dash text-xl"></i>
                 </button>
@@ -193,7 +122,7 @@ export default {
                 <button
                   type="button"
                   class="numberSwitcher__btn"
-                  @click="editAmout(1, index)"
+                  @click="cartData.editCartAmount(1, index)"
                 >
                   <i class="bi bi-plus text-xl"></i>
                 </button>
@@ -205,30 +134,42 @@ export default {
               <button
                 type="button"
                 class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-                @click="deleteCart(item.id)"
+                @click="cartData.deleteCart(item.id)"
               >
                 <i class="bi bi-x text-xl"></i>
               </button>
             </div>
           </li>
         </template>
+        <li
+          v-if="cartData.carts.length === 0"
+          class="flex flex-col justify-center items-center pt-6 gap-4"
+        >
+          <p class="text-gray-400">目前尚無任何商品</p>
+          <RouterLink
+            to="/products"
+            class="bg-black rounded py-2 px-3 hover:bg-gray-800 text-white"
+            >去看看有什麼喜歡的
+          </RouterLink>
+        </li>
       </ul>
       <div
         class="w-full absolute left-0 bottom-0 border-t border-gray-300 bg-white p-5 flex justify-between items-center"
       >
         <div>
           <p class="text-sm text-gray-400 mb-1">總金額</p>
-          <p class="text-xl font-bold">NT$ {{ cartTotal }}</p>
+          <p class="text-xl font-bold">NT$ {{ cartData.cartTotal }}</p>
         </div>
-        <router-link
-          :to="cartList.length === 0 ? '' : '/checkout'"
-          :class="{ 'opacity-50': cartList.length === 0 }"
+        <RouterLink
+          :to="cartData.carts.length === 0 ? '' : '/checkout'"
+          :class="{ 'opacity-50': cartData.carts.length === 0 }"
           class="bg-black rounded py-2 px-3 hover:bg-gray-800 text-white"
         >
           前往結賬
-        </router-link>
+        </RouterLink>
       </div>
     </div>
   </div>
 </template>
+
 <style lang="scss"></style>
