@@ -76,6 +76,11 @@ export default {
     });
     productsData.getProducts();
     productsData.getCollections();
+    if (Math.ceil(productfilterList.value.length / 12) > 1) {
+      paginationData.value.totalPages = Math.ceil(
+        productfilterList.value.length / 12
+      );
+    }
     return {
       filterKeyword,
       filterProductCategory,

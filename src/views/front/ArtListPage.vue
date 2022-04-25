@@ -21,23 +21,25 @@ export default {
     const artfilterList = computed(() => {
       let array = [];
       array = artData.arts;
-      array = filterWord(filterKeyword.value, array);
-      array = filterCategory(filterArticleCategory.value, array);
+      array = filterWord(filterKeyword.value, artData.arts);
+      array = filterCategory(filterArticleCategory.value, artData.arts);
       return array;
     });
     const nowPageArts = computed(() => {
-      let array = [];
+      let array = artfilterList.value;
       if (artfilterList.value.length <= 8) {
-        return artfilterList.value;
+        array = [];
+        array = artfilterList.value;
       } else {
-        const pageFrist = artData.pagination.nowPage * 8 - 8;
+        array = [];
+        const pageFrist = artData.pagination.nowPage * 8 - 8 || 0;
         artfilterList.value.forEach((item, index) => {
-          if (pageFrist <= index && index < artData.pagination.nowPage * 8) {
+          if (pageFrist <= index && index < pageFrist + 1 * 8) {
             array.push(item);
           }
         });
-        return array;
       }
+      return array;
     });
     watch(artfilterList, (newValue, oldValue) => {
       if (newValue.length !== oldValue.length) {
@@ -60,15 +62,13 @@ export default {
     }
     function filterCategory(filterData, dataList) {
       let array = dataList;
-      console.log(filterData, dataList);
       if (filterData !== '' && filterData !== undefined) {
         array = dataList.filter((item) => item.category === filterData);
-      } else {
-        return dataList;
       }
       return array;
     }
-    artData.getArtList();
+    artData.arts.length = 0;
+    artData.getArtList(1);
     return {
       filterKeyword,
       filterArticleCategory,

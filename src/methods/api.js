@@ -65,6 +65,7 @@ const frontApiMethod = {
     return axios
       .get(`${frontApiPath.getArticle}s?page=${pageNum}`)
       .then((res) => {
+        console.log(res);
         return res.data;
       })
       .catch((err) => {
