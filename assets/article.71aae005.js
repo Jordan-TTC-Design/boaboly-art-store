@@ -1,0 +1,1 @@
+const t=["\u5FC3\u60C5\u8CBC\u6587","\u5275\u4F5C\u63D2\u756B","\u65B0\u5546\u54C1\u63D2\u756B","\u7BC0\u65E5\u63D2\u756B"],a={title:"",creat_at:null,category:0,description:"",image:"",imagesUrl:[""],tags:[""],author:"Boaboly",isPublic:!1,content:"",promoted:{star:0}};export{t as a,a as d};
