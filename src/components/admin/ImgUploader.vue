@@ -1,8 +1,8 @@
 <script>
 import { ref, computed, watch } from 'vue';
 import { apiMethod } from '@/methods/api.js';
-import emitter from '@/methods/emitter';
 import ImgCropperPopModal from '@/components/helpers/ImgCropperPopModal.vue';
+import { adminStore } from '@/stores/adminStore';
 
 export default {
   props: ['imgName', 'existImgUrl'],
@@ -11,6 +11,7 @@ export default {
     ImgCropperPopModal,
   },
   setup(props, { emit }) {
+    const adminData = adminStore();
     const imgCoverUploader = ref(null);
     const sentUrl = computed(() => props.existImgUrl);
     const imgsData = ref({
@@ -52,7 +53,7 @@ export default {
     }
     function toogleCropper() {
       const [file] = imgCoverUploader.value.files;
-      emitter.emit(`open-pop-modal-${props.imgName}`, file);
+      adminData.getImgToCrop(props.imgName, file);
     }
     function imgsDataDefault() {
       imgsData.value.url = '';

@@ -38,7 +38,7 @@ export default {
     class="rounded py-2 px-3 hover:border-gray-300 hover:bg-white/50 relative"
     @click="statusData.collectionModel = !statusData.collectionModel"
   >
-    <p v-show="productsData.collections.length > 0" class="cart__number">
+    <p v-if="productsData.collections.length > 0" class="cart__number">
       {{ productsData.collections.length }}
     </p>
     <i class="bi bi-heart text-xl text-white"></i>

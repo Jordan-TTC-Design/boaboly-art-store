@@ -1,6 +1,5 @@
 <script>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
 import {
   defaultOrderData,
@@ -20,22 +19,23 @@ export default {
     Form,
   },
   setup() {
-    const router = useRouter();
     const cartData = cartStore();
     const statusData = statusStore();
     const checkStage = ref(1);
     const orderFormData = ref(JSON.parse(JSON.stringify(defaultOrderData)));
     function sendOrder() {
-      statusData.openPopInfoBox('送出訂單', '將要下訂', function () {
-        orderFormData.value.user.shipping.price = cartData.shippingFee;
-        orderFormData.value.user.finalPrice = cartData.orderTotal;
-        frontApiMethod.postOrder(orderFormData.value).then(() => {
-          cartData.getCart();
-          router.push({ name: 'Home' });
-          statusData.popReminderModel = true;
-          statusData.popReminderText = '購買成功 !';
-        });
-      });
+      statusData.openPopInfoBox(
+        '送出訂單',
+        '請點擊下方確定，將會送出訂單',
+        function () {
+          orderFormData.value.user.shipping.price = cartData.shippingFee;
+          orderFormData.value.user.finalPrice = cartData.orderTotal;
+          frontApiMethod.postOrder(orderFormData.value).then(() => {
+            cartData.getCart();
+            changeStage(3);
+          });
+        }
+      );
     }
     function changeStage(number) {
       checkStage.value = number;
@@ -64,6 +64,7 @@ export default {
       class="sm:container sm:mx-auto mx-4 bg-white shadow-sm lg:p-24 md:p-12 p-8 pb-24"
     >
       <div
+        v-if="checkStage < 3"
         class="flex sm:flex-row flex-col sm:items-center mb-4 sm:gap-6 gap-2"
       >
         <RouterLink :to="{ name: 'Home' }" class="px-3 py-2 flex items-center">
@@ -332,6 +333,38 @@ export default {
           </div>
         </div>
       </Form>
+      <div
+        class="grid lg:grid-cols-5 md:grid-cols-6 grid-cols-1"
+        v-if="checkStage === 3"
+      >
+        <div
+          class="lg:col-span-3 lg:col-start-2 md:col-span-4 md:col-start-2 flex flex-col items-center gap-4"
+        >
+          <h2 class="text-center md:text-4xl text-xl font-bold">完成購買</h2>
+          <p class="text-center">
+            非常感謝您的購買與支持，我們將持續推出新的設計商品。歡迎隨時追蹤～
+          </p>
+          <img
+            class="lg:w-3/6 md:w-5/6 w-full mb-4"
+            src="@/assets/images/img-cat-dance.svg"
+            alt="感謝購買"
+          />
+          <div class="flex lg:flex-row flex-col sm:gap-4 gap-2 p-4 pt-0 w-full">
+            <RouterLink
+              :to="{ name: 'Home' }"
+              class="text-center w-full border border-gray-400 rounded py-2 px-3 hover:border-gray-300"
+            >
+              回到首頁
+            </RouterLink>
+            <RouterLink
+              :to="{ name: 'ProductList' }"
+              class="text-center w-full bg-black text-white rounded py-2 px-3 hover:border-gray-300"
+            >
+              繼續購物
+            </RouterLink>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
