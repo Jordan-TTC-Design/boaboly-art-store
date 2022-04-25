@@ -45,6 +45,9 @@ export const productStore = defineStore({
       this.collections = JSON.parse(
         localStorage.getItem('boaboly-store-collection')
       );
+      if (this.collections === null) {
+        this.collections = [];
+      }
     },
     addCollection(product) {
       const newId = product.id;
