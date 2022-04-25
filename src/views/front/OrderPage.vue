@@ -26,17 +26,24 @@ export default {
     const checkStage = ref(1);
     const orderFormData = ref(JSON.parse(JSON.stringify(defaultOrderData)));
     function sendOrder() {
-      orderFormData.value.user.shipping.price = cartData.shippingFee;
-      orderFormData.value.user.finalPrice = cartData.orderTotal;
-      frontApiMethod.postOrder(orderFormData.value).then(() => {
-        cartData.getCart();
-        router.push({ name: 'Home' });
-        statusData.popReminderModel = true;
-        statusData.popReminderText = '購買成功 !';
+      statusData.openPopInfoBox('送出訂單', '將要下訂', function () {
+        orderFormData.value.user.shipping.price = cartData.shippingFee;
+        orderFormData.value.user.finalPrice = cartData.orderTotal;
+        frontApiMethod.postOrder(orderFormData.value).then(() => {
+          cartData.getCart();
+          router.push({ name: 'Home' });
+          statusData.popReminderModel = true;
+          statusData.popReminderText = '購買成功 !';
+        });
       });
+    }
+    function changeStage(number) {
+      checkStage.value = number;
+      statusData.mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
     }
     cartData.getCart();
     return {
+      statusData,
       cartData,
       checkStage,
       orderFormData,
@@ -44,6 +51,7 @@ export default {
       shippingWay,
       payWay,
       sendOrder,
+      changeStage,
     };
   },
 };
@@ -55,13 +63,37 @@ export default {
     <div
       class="sm:container sm:mx-auto mx-4 bg-white shadow-sm lg:p-24 md:p-12 p-8 pb-24"
     >
-      <RouterLink
-        :to="{ name: 'Home' }"
-        class="px-3 py-2 flex items-center mb-4"
+      <div
+        class="flex sm:flex-row flex-col sm:items-center mb-4 sm:gap-6 gap-2"
       >
-        <i class="bi bi-chevron-double-left mr-1"></i>
-        <p>返回繼續購物</p>
-      </RouterLink>
+        <RouterLink :to="{ name: 'Home' }" class="px-3 py-2 flex items-center">
+          <i class="bi bi-chevron-double-left mr-1"></i>
+          <p>返回繼續購物</p>
+        </RouterLink>
+        <div class="bg-gray-300 sm:w-px sm:h-8 h-px w-full sm:mb-0 mb-2"></div>
+        <ul class="flex gap-2 md:mx-0 mx-auto items-center">
+          <li>
+            <p
+              class="cursor-pointer sm:px-3 sm:py-2"
+              :class="{ 'text-gray-300': checkStage < 1 }"
+              @click="changeStage(1)"
+            >
+              購買項目
+            </p>
+          </li>
+          <li>
+            <i class="bi bi-chevron-right block"></i>
+          </li>
+          <li>
+            <p
+              class="sm:px-3 sm:py-2"
+              :class="{ 'text-gray-300': checkStage < 2 }"
+            >
+              填寫收件資料＆付款
+            </p>
+          </li>
+        </ul>
+      </div>
       <div
         class="grid lg:grid-cols-12 grid-cols-1 gap-y-8"
         v-if="checkStage === 1"
@@ -167,7 +199,7 @@ export default {
               <button
                 type="button"
                 class="bg-black rounded py-2 px-3 hover:bg-gray-800 text-white"
-                @click="checkStage = 2"
+                @click="changeStage(2)"
               >
                 填寫收件人資料
               </button>
@@ -176,7 +208,7 @@ export default {
         </div>
       </div>
       <Form
-        class="grid lg:grid-cols-12 grid-cols-1 gap-x-6"
+        class="grid lg:grid-cols-12 grid-cols-1 gap-6"
         v-if="checkStage === 2"
         v-slot="{ errors }"
         @submit="sendOrder"
@@ -223,7 +255,7 @@ export default {
                     'bg-black text-white':
                       orderFormData.user.shipping.way === index,
                   }"
-                  class="border border-gray-300 py-1 px-2 hover:border-gray-300 bg-white"
+                  class="border border-gray-300 py-1 px-2 hover:border-gray-300"
                   @click="orderFormData.user.shipping.way = index"
                 >
                   <p>{{ shipping }}</p>
@@ -267,7 +299,7 @@ export default {
                   :class="{
                     'bg-black text-white': orderFormData.user.pay.way === index,
                   }"
-                  class="border border-gray-300 py-1 px-2 hover:border-gray-300 bg-white"
+                  class="border border-gray-300 py-1 px-2 hover:border-gray-300"
                   @click="orderFormData.user.pay.way = index"
                 >
                   <p>{{ pay }}</p>

@@ -67,7 +67,15 @@ export default {
             type="button"
             v-if="productsData.collectionProduct.length > 0"
             class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-            @click="productsData.deleteAllCollections"
+            @click="
+              statusData.openPopInfoBox(
+                '刪除全部',
+                `請問你要刪除收藏中全部商品？`,
+                function () {
+                  productsData.deleteAllCollections();
+                }
+              )
+            "
           >
             <p>刪除全部</p>
           </button>
@@ -120,7 +128,15 @@ export default {
               <button
                 type="button"
                 class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-                @click="productsData.addCollection(product)"
+                @click="
+                  statusData.openPopInfoBox(
+                    '刪除收藏',
+                    `請問你要從收藏中刪除${product.title}商品？`,
+                    function () {
+                      productsData.addCollection(product);
+                    }
+                  )
+                "
               >
                 <i class="bi bi-x text-xl"></i>
               </button>
