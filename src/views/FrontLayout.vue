@@ -5,6 +5,7 @@ import FrontFooter from '@/components/front/FrontFooter.vue';
 import HamMenu from '@/components/helpers/HamMenu.vue';
 import Loading from '@/components/helpers/Loading.vue';
 import PopReminder from '@/components/helpers/PopReminder.vue';
+import PopInfoBox from '@/components/helpers/PopInfoBox.vue';
 import { statusStore } from '@/stores/statusStore';
 import { ref, onMounted } from 'vue';
 
@@ -15,6 +16,7 @@ export default {
     HamMenu,
     Loading,
     PopReminder,
+    PopInfoBox,
     FrontFooter,
   },
   setup() {
@@ -58,6 +60,7 @@ export default {
     </div>
     <Loading />
     <PopReminder />
+    <PopInfoBox />
     <FrontFooter />
   </div>
 </template>

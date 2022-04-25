@@ -26,13 +26,15 @@ export default {
     const checkStage = ref(1);
     const orderFormData = ref(JSON.parse(JSON.stringify(defaultOrderData)));
     function sendOrder() {
-      orderFormData.value.user.shipping.price = cartData.shippingFee;
-      orderFormData.value.user.finalPrice = cartData.orderTotal;
-      frontApiMethod.postOrder(orderFormData.value).then(() => {
-        cartData.getCart();
-        router.push({ name: 'Home' });
-        statusData.popReminderModel = true;
-        statusData.popReminderText = '購買成功 !';
+      statusData.openPopInfoBox('送出訂單', '將要下訂', function () {
+        orderFormData.value.user.shipping.price = cartData.shippingFee;
+        orderFormData.value.user.finalPrice = cartData.orderTotal;
+        frontApiMethod.postOrder(orderFormData.value).then(() => {
+          cartData.getCart();
+          router.push({ name: 'Home' });
+          statusData.popReminderModel = true;
+          statusData.popReminderText = '購買成功 !';
+        });
       });
     }
     cartData.getCart();
@@ -44,6 +46,7 @@ export default {
       shippingWay,
       payWay,
       sendOrder,
+      statusData,
     };
   },
 };

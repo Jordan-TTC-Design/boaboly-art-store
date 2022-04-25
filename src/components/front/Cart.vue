@@ -58,7 +58,15 @@ export default {
             type="button"
             v-if="cartData.carts.length > 0"
             class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-            @click="cartData.deleteCartAll"
+            @click="
+              statusData.openPopInfoBox(
+                '刪除全部',
+                `請問你要刪除購物車中全部商品？`,
+                function () {
+                  cartData.deleteCartAll();
+                }
+              )
+            "
           >
             <p>刪除全部</p>
           </button>
@@ -134,7 +142,15 @@ export default {
               <button
                 type="button"
                 class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-                @click="cartData.deleteCart(item.id)"
+                @click="
+                  statusData.openPopInfoBox(
+                    '刪除項目',
+                    `請問你要刪除購物車中的${item.product.title}？`,
+                    function () {
+                      cartData.deleteCart(item.id);
+                    }
+                  )
+                "
               >
                 <i class="bi bi-x text-xl"></i>
               </button>
