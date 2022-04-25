@@ -9,13 +9,30 @@ export const adminStore = defineStore({
     products: [],
     productItem: JSON.parse(JSON.stringify(defaultProductData)),
     productModel: { open: false, state: '' },
-    imagePopModel: false,
     articles: [],
     articleItem: JSON.parse(JSON.stringify(defaultArticleData)),
     articleModel: { open: false, state: '' },
+    imgCropperModel: false,
+    cropImg: { imgName: '', file: null, imgUrl: '' },
+    toCropImg: {},
   }),
   getters: {},
   actions: {
+    getImgToCrop(name, file) {
+      console.log(name, file);
+      this.toCropImg['imgName'] = name;
+      this.toCropImg['file'] = file;
+      this.imgCropperModel = true;
+      console.log(this.toCropImg);
+    },
+    closeImgToCrop() {
+      this.imgCropperModel = false;
+      this.cleanImgToCrop();
+    },
+    cleanImgToCrop() {
+      this.toCropImg = {};
+      console.log(this.toCropImg);
+    },
     getProduct() {
       apiMethod.adminGetProductsAll().then((res) => {
         if (res) {

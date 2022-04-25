@@ -1,26 +1,32 @@
 <script>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, watch } from 'vue';
 import Cropper from 'cropperjs';
-import emitter from '@/methods/emitter';
+import { adminStore } from '@/stores/adminStore';
 
 export default {
   props: ['imgName'],
   emits: ['send-img-data'],
   setup(props, { emit }) {
-    const showed = ref(false);
+    const adminData = adminStore();
     const isImg = ref(false);
-    const cropsrc = ref('');
     let cropper = {};
     let imgData = {};
     const cropperImage = ref(null);
     const destination = ref({});
-    function closeModal() {
-      showed.value = false;
-      cleanImg();
-    }
-    function openModal(data) {
-      showed.value = true;
-      emitOpenImageCropper(data);
+    const targetItem = ref(adminData.toCropImg);
+    watch(targetItem.value, (newValue) => {
+      if (
+        Object.keys(newValue).length !== 0 &&
+        adminData.toCropImg.file !== null
+      ) {
+        processToCropImg(adminData.toCropImg.file);
+      }
+    });
+    function processToCropImg(data) {
+      Object.keys(cropper).forEach((k) => delete cropper[k]);
+      setTimeout(() => {
+        putImage(data);
+      }, 100);
     }
     function putImage(data) {
       const reader = new FileReader();
@@ -50,12 +56,7 @@ export default {
         };
       }
     }
-    function convertCanvasToImage(canvas) {
-      const image = new Image();
-      image.src = canvas.toDataURL('image/jpeg');
-      return image;
-    }
-    function processImage() {
+    function croppingImg() {
       const canvas = cropper.getCroppedCanvas({
         maxWidth: 4096,
         maxHeight: 4096,
@@ -67,34 +68,23 @@ export default {
       emit('send-img-data', imgData);
       closeModal();
     }
-    function cleanImg() {
-      if (isImg.value) {
-        cropsrc.value = '';
-        cropper.destroy();
-        isImg.value = false;
-      }
+    function closeModal() {
+      adminData.closeImgToCrop();
+      cropper.destroy();
+      Object.keys(cropper).forEach((k) => delete cropper[k]);
+      console.log(cropper);
     }
-    function emitOpenImageCropper(data) {
-      // 檢查有無之前遺留的
-      if (cropper !== {}) {
-        cleanImg();
-      }
-      setTimeout(() => {
-        putImage(data);
-      }, 100);
+    function convertCanvasToImage(canvas) {
+      const image = new Image();
+      image.src = canvas.toDataURL('image/jpeg');
+      return image;
     }
-    onMounted(() => {
-      emitter.on(`open-pop-modal-${props.imgName}`, openModal);
-    });
-    onUnmounted(() => {
-      emitter.off(`open-pop-modal-${props.imgName}`, openModal);
-    });
     return {
-      showed,
+      adminData,
       cropperImage,
       destination,
       closeModal,
-      processImage,
+      croppingImg,
     };
   },
 };
@@ -108,7 +98,9 @@ export default {
       'p-5',
       'flex justify-center items-center',
       'transition-all duration-300',
-      showed ? 'opacity-100' : 'opacity-0 pointer-events-none',
+      imgName === adminData.toCropImg.imgName && adminData.imgCropperModel
+        ? 'opacity-100'
+        : 'opacity-0 pointer-events-none',
     ]"
   >
     <!-- Modal-Overlay -->
@@ -121,7 +113,9 @@ export default {
     <div
       :class="[
         'w-full max-w-4xl bg-white rounded-md overflow-hidden z-popModal',
-        showed ? 'scale-100' : 'scale-0',
+        imgName === adminData.toCropImg.imgName && adminData.imgCropperModel
+          ? 'scale-100'
+          : 'scale-0',
         'transition-all duration-300',
       ]"
       class="imgCropperPopModal"
@@ -183,7 +177,7 @@ export default {
           <button
             type="button"
             class="border border-gray-200 rounded py-2 px-3 hover:border-gray-300"
-            @click="processImage"
+            @click="croppingImg"
           >
             確定
           </button>
