@@ -22,6 +22,9 @@ export const artStore = defineStore({
       statusData.isLoading = true;
       frontApiMethod.getArts(pageNum).then((res) => {
         this.pagination.totalPages = res.pagination.total_pages;
+        if (res.articles.length > 8) {
+          this.pagination.totalPages = res.pagination.total_pages + 1;
+        }
         res.articles.forEach((item) => {
           this.arts.push(item);
         });
