@@ -3,6 +3,7 @@ import { watch, computed, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { cartStore } from '@/stores/cartStore';
 import { statusStore } from '@/stores/statusStore';
+
 export default {
   setup() {
     const cartData = cartStore();

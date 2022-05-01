@@ -6,12 +6,14 @@ import Pagination from '@/components/helpers/Pagination.vue';
 import SideNav from '@/components/helpers/SideNav.vue';
 import SearchResultListItem from '@/components/front/SearchResultListItem.vue';
 import { statusStore } from '@/stores/statusStore';
+
 export default {
   components: {
     SideNav,
     Pagination,
     SearchResultListItem,
   },
+
   setup() {
     const statusData = statusStore();
     const route = useRoute();

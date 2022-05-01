@@ -1,5 +1,6 @@
 <script>
 import { ref } from 'vue';
+
 export default {
   props: ['item-id'],
   emits: ['delete-item', 'edit-item'],

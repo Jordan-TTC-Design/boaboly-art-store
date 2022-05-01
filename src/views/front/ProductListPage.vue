@@ -6,6 +6,7 @@ import Pagination from '@/components/helpers/Pagination.vue';
 import SideNav from '@/components/helpers/SideNav.vue';
 import { productStore } from '@/stores/productStore';
 import { statusStore } from '@/stores/statusStore';
+
 export default {
   components: {
     ProductListItemSquare,

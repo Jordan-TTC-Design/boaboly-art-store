@@ -1,5 +1,6 @@
 <script>
 import { ref } from 'vue';
+
 export default {
   props: ['nav-list'],
   emits: ['change-side-nav'],

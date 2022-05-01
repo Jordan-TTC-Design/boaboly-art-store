@@ -5,6 +5,7 @@ import HomeMainBanner from '@/components/front/HomeMainBanner.vue';
 import CharactorsSlider from '@/components/front/CharactorsSlider.vue';
 import ArtSlider from '@/components/front/ArtSlider.vue';
 import { productStore } from '@/stores/productStore';
+
 export default {
   components: {
     ProductListItemSquare,

@@ -1,7 +1,7 @@
 <script>
-// import { ref } from 'vue';
 import { statusStore } from '@/stores/statusStore';
 import { cartStore } from '@/stores/cartStore';
+
 export default {
   setup() {
     const statusData = statusStore();

@@ -2,6 +2,7 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import MyUploadAdapter from '@/methods/myUploadAdapter';
 import { ref } from '@vue/reactivity';
+
 function MyCustomUploadAdapterPlugin(editor) {
   editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
     return new MyUploadAdapter(loader);

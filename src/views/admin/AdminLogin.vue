@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { apiMethod } from '@/methods/api.js';
 import { Form } from 'vee-validate';
 import VeeFormInput from '@/components/form/VeeFormInput.vue';
+
 export default {
   components: {
     VeeFormInput,
