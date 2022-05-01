@@ -19,11 +19,9 @@ export const adminStore = defineStore({
   getters: {},
   actions: {
     getImgToCrop(name, file) {
-      console.log(name, file);
       this.toCropImg['imgName'] = name;
       this.toCropImg['file'] = file;
       this.imgCropperModel = true;
-      console.log(this.toCropImg);
     },
     closeImgToCrop() {
       this.imgCropperModel = false;
@@ -31,7 +29,6 @@ export const adminStore = defineStore({
     },
     cleanImgToCrop() {
       this.toCropImg = {};
-      console.log(this.toCropImg);
     },
     getProduct() {
       apiMethod.adminGetProductsAll().then((res) => {

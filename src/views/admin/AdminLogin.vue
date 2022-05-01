@@ -18,12 +18,8 @@ export default {
     });
     function login() {
       apiMethod.login(user.value).then((res) => {
-        console.log(res);
-
         if (res === 'success') {
           router.push('/admin/products');
-        } else {
-          console.log('帳密錯誤');
         }
       });
     }

@@ -65,7 +65,6 @@ const frontApiMethod = {
     return axios
       .get(`${frontApiPath.getArticle}s?page=${pageNum}`)
       .then((res) => {
-        console.log(res);
         return res.data;
       })
       .catch((err) => {
@@ -86,8 +85,6 @@ const frontApiMethod = {
     return axios
       .get(frontApiPath.cart)
       .then((res) => {
-        console.log('成功取得購物車資料');
-        console.log(res);
         return res.data.data;
       })
       .catch((err) => {
@@ -136,8 +133,6 @@ const frontApiMethod = {
     return axios
       .delete(`${frontApiPath.cart}s`)
       .then((res) => {
-        console.log('修改成功');
-        console.log(res);
         return res.data;
       })
       .catch((err) => {
@@ -146,7 +141,6 @@ const frontApiMethod = {
   },
   postOrder(formData) {
     const data = formData;
-    console.log({ data });
     return axios
       .post(frontApiPath.order, { data })
       .then((res) => {
@@ -162,7 +156,6 @@ const apiMethod = {
     return axios
       .post(adminApiPath.signin, user)
       .then((res) => {
-        console.log(res);
         //把 token 和 expired 儲存在 cookie
         const { token, expired } = res.data;
         document.cookie = `ttcDesignToken=${token}; expires=${new Date(
@@ -184,7 +177,6 @@ const apiMethod = {
     return axios
       .post(adminApiPath.checkLogin)
       .then((res) => {
-        console.log(res);
         return res.data.success;
       })
       .catch((err) => {
@@ -196,8 +188,6 @@ const apiMethod = {
     return axios
       .get(adminApiPath.adminGetProductsAll)
       .then((res) => {
-        console.log('取得成功');
-        console.log(res);
         return res.data.products;
       })
       .catch((err) => {
@@ -205,7 +195,6 @@ const apiMethod = {
       });
   },
   adminPostProduct(productData) {
-    console.log(productData);
     const product = {
       data: {
         ...productData,
@@ -214,8 +203,7 @@ const apiMethod = {
     return axios
       .post(adminApiPath.adminPostProduct, product)
       .then((res) => {
-        console.log('新增成功');
-        console.log(res);
+        return res;
       })
       .catch((err) => {
         console.log(err.response);
@@ -225,8 +213,7 @@ const apiMethod = {
     return axios
       .delete(`${adminApiPath.adminDeleteProduct}/${itemId}`)
       .then((res) => {
-        console.log(res);
-        console.log('刪除成功');
+        return res;
       })
       .catch((err) => {
         console.log(err.response);
@@ -241,8 +228,7 @@ const apiMethod = {
     return axios
       .put(`${adminApiPath.adminUpdateProduct}/${itemId}`, product)
       .then((res) => {
-        console.log(res);
-        console.log('更新成功');
+        return res;
       })
       .catch((err) => {
         console.log(err);
@@ -251,7 +237,6 @@ const apiMethod = {
   adminImageUpload(file) {
     const formData = new FormData(); // 產生表單格式
     formData.append('file-to-upload', file);
-    console.log(formData);
     return axios
       .post(`${adminApiPath.imgUpload}`, formData, {
         headers: {
@@ -259,7 +244,6 @@ const apiMethod = {
         },
       })
       .then((res) => {
-        console.log(res);
         return res.data.imageUrl;
       })
       .catch((err) => {
@@ -270,8 +254,6 @@ const apiMethod = {
     return axios
       .get(adminApiPath.adminOrders)
       .then((res) => {
-        console.log('取得成功');
-        console.log(res);
         return res.data.orders;
       })
       .catch((err) => {
@@ -280,12 +262,9 @@ const apiMethod = {
   },
   adminPutOrder(orderId, formData) {
     const data = formData;
-    console.log({ data });
     return axios
       .put(`${adminApiPath.adminOrder}/${orderId}`, { data })
       .then((res) => {
-        console.log('修改成功');
-        console.log(res);
         return res.data.orders;
       })
       .catch((err) => {
@@ -296,8 +275,6 @@ const apiMethod = {
     return axios
       .delete(`${adminApiPath.adminOrders}/all`)
       .then((res) => {
-        console.log('刪除成功');
-        console.log(res);
         return res.data.orders;
       })
       .catch((err) => {
@@ -308,8 +285,6 @@ const apiMethod = {
     return axios
       .delete(`${adminApiPath.adminOrder}/${orderId}`)
       .then((res) => {
-        console.log('刪除成功');
-        console.log(res);
         return res.data.orders;
       })
       .catch((err) => {
@@ -320,8 +295,6 @@ const apiMethod = {
     return axios
       .get(`${adminApiPath.adminArticle}s?page=${pageNum}`)
       .then((res) => {
-        console.log('取得成功');
-        console.log(res.data.articles);
         return res.data;
       })
       .catch((err) => {
@@ -332,7 +305,6 @@ const apiMethod = {
     return axios
       .get(`${adminApiPath.adminArticle}/${articleId}`)
       .then((res) => {
-        console.log('取得成功');
         return res.data.article;
       })
       .catch((err) => {
@@ -340,7 +312,6 @@ const apiMethod = {
       });
   },
   adminPostArticle(ArticleData) {
-    console.log(ArticleData);
     const article = {
       data: {
         ...ArticleData,
@@ -349,8 +320,7 @@ const apiMethod = {
     return axios
       .post(adminApiPath.adminArticle, article)
       .then((res) => {
-        console.log('新增成功');
-        console.log(res);
+        return res;
       })
       .catch((err) => {
         console.log(err.response);
@@ -358,12 +328,10 @@ const apiMethod = {
   },
   adminUpdateArticle(articleId, articleData) {
     const data = articleData;
-    console.log({ data });
     return axios
       .put(`${adminApiPath.adminArticle}/${articleId}`, { data })
       .then((res) => {
-        console.log('修改成功');
-        console.log(res);
+        return res;
         // return res.data.Articls;
       })
       .catch((err) => {
@@ -374,8 +342,6 @@ const apiMethod = {
     return axios
       .delete(`${adminApiPath.adminArticle}/${articleId}`)
       .then((res) => {
-        console.log('刪除成功');
-        console.log(res.data);
         return res.data;
       })
       .catch((err) => {

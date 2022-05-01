@@ -33,9 +33,7 @@ export const statusStore = defineStore({
       this.popInfoBox.open = true;
       this.popInfoBox.title = title;
       this.popInfoBox.text = text;
-      // this.popInfoBox.action = Function(action);
       this.popInfoBox.action = action;
-      console.log(this.popInfoBox);
     },
     closePopInfoBox() {
       this.popInfoBox.open = false;
