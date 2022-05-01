@@ -32,9 +32,9 @@ export default {
         array = artfilterList.value;
       } else {
         array = [];
-        const pageFrist = artData.pagination.nowPage * 8 - 8 || 0;
+        const pageFirst = artData.pagination.nowPage * 8 - 8 || 0;
         artfilterList.value.forEach((item, index) => {
-          if (pageFrist <= index && index < pageFrist + 1 * 8) {
+          if (pageFirst <= index && index < pageFirst + 1 * 8) {
             array.push(item);
           }
         });

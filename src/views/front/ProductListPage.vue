@@ -32,9 +32,9 @@ export default {
       if (productfilterList.value.length <= 12) {
         return productfilterList.value;
       } else {
-        const pageFrist = paginationData.value.nowPage * 12 - 12;
+        const pageFirst = paginationData.value.nowPage * 12 - 12;
         productfilterList.value.forEach((item, index) => {
-          if (pageFrist <= index && index < paginationData.value.nowPage * 12) {
+          if (pageFirst <= index && index < paginationData.value.nowPage * 12) {
             array.push(item);
           }
         });

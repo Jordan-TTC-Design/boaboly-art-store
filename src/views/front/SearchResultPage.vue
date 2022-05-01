@@ -15,7 +15,7 @@ export default {
   setup() {
     const statusData = statusStore();
     const route = useRoute();
-    let keyword = computed(() => route.query.keyword);
+    const keyword = computed(() => route.query.keyword);
     const allResultList = ref([]);
     const filterKeyword = ref(keyword.value || '');
     const resultCategory = ref('');
@@ -31,9 +31,9 @@ export default {
       if (resultfilterList.value.length <= 12) {
         return resultfilterList.value;
       } else {
-        const pageFrist = paginationData.value.nowPage * 12 - 12;
+        const pageFirst = paginationData.value.nowPage * 12 - 12;
         resultfilterList.value.forEach((item, index) => {
-          if (pageFrist <= index && index < paginationData.value.nowPage * 12) {
+          if (pageFirst <= index && index < paginationData.value.nowPage * 12) {
             array.push(item);
           }
         });
