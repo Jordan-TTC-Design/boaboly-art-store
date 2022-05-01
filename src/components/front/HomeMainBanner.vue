@@ -78,7 +78,7 @@ export default {
       <img
         :class="flower.name"
         class="homeMainBanner__flower"
-        src="@/assets/images/flower-yellow.svg"
+        :src="`@/assets/images/${flower.imgUrl}.svg`"
         alt="花瓣"
     /></template>
     <div class="md:col-start-2 col-span-1">
