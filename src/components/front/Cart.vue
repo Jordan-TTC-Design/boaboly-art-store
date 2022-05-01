@@ -98,7 +98,7 @@ export default {
         </li>
         <template v-for="(item, index) in cartData.carts" :key="item.id">
           <li
-            @click.self="goToPage(`/products/${item.product.id}`)"
+            @click="goToPage(`/products/${item.product.id}`)"
             :class="{
               'border-b border-gray-300': index < cartData.carts.length - 1,
             }"
@@ -106,12 +106,12 @@ export default {
           >
             <div class="md:col-span-3 col-span-2 flex items-center">
               <img
-                class="w-20"
+                class="w-20 cursor-pointer"
                 :src="item.product.imageUrl"
                 :alt="`${item.product}圖片`"
               />
               <div class="ml-3">
-                <p>{{ item.product.title }}</p>
+                <p class="cursor-pointer">{{ item.product.title }}</p>
                 <p>NT$ {{ item.product.price }}</p>
               </div>
             </div>
