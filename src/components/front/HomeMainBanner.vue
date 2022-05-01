@@ -7,6 +7,48 @@ export default {
     const statusData = statusStore();
     const homeMainBanner = ref(null);
     const homeMainBannerHeight = ref(0);
+    const flowerImgData = ref([
+      {
+        name: 'flower-white-pink',
+        imgUrl: 'flower-white-pink',
+      },
+      {
+        name: 'flower-white-pink-2',
+        imgUrl: 'flower-white-pink',
+      },
+      {
+        name: 'flower-white-red',
+        imgUrl: 'flower-white-red',
+      },
+      {
+        name: 'flower-white-red-2',
+        imgUrl: 'flower-white-red',
+      },
+      {
+        name: 'flower-white-red-3',
+        imgUrl: 'flower-white-red',
+      },
+      {
+        name: 'flower-blue',
+        imgUrl: 'flower-blue',
+      },
+      {
+        name: 'flower-blue-2',
+        imgUrl: 'flower-blue',
+      },
+      {
+        name: 'flower-yellow',
+        imgUrl: 'flower-yellow',
+      },
+      {
+        name: 'flower-yellow-2',
+        imgUrl: 'flower-yellow',
+      },
+      {
+        name: 'flower-yellow-3',
+        imgUrl: 'flower-yellow',
+      },
+    ]);
     function goToSection() {
       statusData.mainContainer.scrollTo({
         top: homeMainBannerHeight.value + 100,
@@ -20,6 +62,7 @@ export default {
     });
     return {
       homeMainBanner,
+      flowerImgData,
       goToSection,
     };
   },
@@ -31,56 +74,13 @@ export default {
     ref="homeMainBanner"
     class="homeMainBanner grid md:grid-cols-3 grid-cols-1 py-36 md:px-0 px-12 relative"
   >
-    <img
-      class="homeMainBanner__flower flower-white-pink"
-      src="@/assets/images/flower-white-pink.svg"
-      alt="花瓣"
-    />
-    <img
-      class="homeMainBanner__flower flower-white-pink-2"
-      src="@/assets/images/flower-white-pink.svg"
-      alt="花瓣"
-    />
-    <img
-      class="homeMainBanner__flower flower-white-red"
-      src="@/assets/images/flower-white-red.svg"
-      alt="花瓣"
-    />
-    <img
-      class="homeMainBanner__flower flower-white-red-2"
-      src="@/assets/images/flower-white-red.svg"
-      alt="花瓣"
-    />
-    <img
-      class="homeMainBanner__flower flower-white-red-3"
-      src="@/assets/images/flower-white-red.svg"
-      alt="花瓣"
-    />
-    <img
-      class="homeMainBanner__flower flower-blue"
-      src="@/assets/images/flower-blue.svg"
-      alt="花瓣"
-    />
-    <img
-      class="homeMainBanner__flower flower-blue-2"
-      src="@/assets/images/flower-blue.svg"
-      alt="花瓣"
-    />
-    <img
-      class="homeMainBanner__flower flower-yellow"
-      src="@/assets/images/flower-yellow.svg"
-      alt="花瓣"
-    />
-    <img
-      class="homeMainBanner__flower flower-yellow-2"
-      src="@/assets/images/flower-yellow.svg"
-      alt="花瓣"
-    />
-    <img
-      class="homeMainBanner__flower flower-yellow-3"
-      src="@/assets/images/flower-yellow.svg"
-      alt="花瓣"
-    />
+    <template v-for="flower in flowerImgData" :key="flower.name">
+      <img
+        :class="flower.name"
+        class="homeMainBanner__flower"
+        :src="`src/assets/images/${flower.imgUrl}.svg`"
+        alt="花瓣"
+    /></template>
     <div class="md:col-start-2 col-span-1">
       <div class="bg-primaryLight">
         <img

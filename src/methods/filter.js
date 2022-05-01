@@ -10,4 +10,4 @@ const changeTime = function (targetTime) {
   return time;
 };
 
-export { changeTime };
+export default changeTime;
