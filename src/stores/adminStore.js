@@ -57,26 +57,30 @@ export const adminStore = defineStore({
       this.productModel.state = '';
       this.productItem = JSON.parse(JSON.stringify(defaultProductData));
     },
-    async deleteProduct(itemId) {
-      try {
-        await apiMethod.adminDeleteProduct(itemId);
-        this.getProduct();
-        this.productItem = JSON.parse(JSON.stringify(defaultProductData));
-      } catch (err) {
-        console.log(err);
-      }
+    deleteProduct(itemId) {
+      apiMethod
+        .adminDeleteProduct(itemId)
+        .then(() => {
+          this.getProduct();
+          this.productItem = JSON.parse(JSON.stringify(defaultProductData));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     changeProductState(productData) {
       productData.is_enabled = !productData.is_enabled;
       this.updateProduct(productData.id, productData);
     },
-    async updateProduct(itemId, productData) {
-      try {
-        await apiMethod.adminUpdateProduct(itemId, productData);
-        this.getProduct();
-      } catch (err) {
-        console.log(err);
-      }
+    updateProduct(itemId, productData) {
+      apiMethod
+        .adminUpdateProduct(itemId, productData)
+        .then(() => {
+          this.getProduct();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     changeArticleState(articleData) {
       apiMethod.adminGetArticle(articleData.id).then((res) => {
@@ -92,21 +96,25 @@ export const adminStore = defineStore({
         }
       });
     },
-    async updateArticle(articleId, articleData) {
-      try {
-        await apiMethod.adminUpdateArticle(articleId, articleData);
-        this.getArticles();
-      } catch (err) {
-        console.log(err);
-      }
+    updateArticle(articleId, articleData) {
+      apiMethod
+        .adminUpdateArticle(articleId, articleData)
+        .then(() => {
+          this.getArticles();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    async deleteArticle(articleId) {
-      try {
-        await apiMethod.adminDeleteArticle(articleId);
-        this.getArticles();
-      } catch (err) {
-        console.log(err);
-      }
+    deleteArticle(articleId) {
+      apiMethod
+        .adminDeleteArticle(articleId)
+        .then(() => {
+          this.getArticles();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     clearArticleItem() {
       this.articleModel.state = '';
