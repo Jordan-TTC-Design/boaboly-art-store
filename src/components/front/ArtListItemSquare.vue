@@ -1,5 +1,5 @@
 <script>
-import { changeTime } from '@/methods/filter';
+import changeTime from '@/methods/filter';
 
 export default {
   props: ['artItem', 'listIndex'],

@@ -1,5 +1,6 @@
 <script>
 import { computed } from 'vue';
+
 export default {
   props: ['order', 'listIndex'],
   setup(props) {

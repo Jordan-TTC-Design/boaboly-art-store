@@ -72,7 +72,6 @@ export default {
       adminData.closeImgToCrop();
       cropper.destroy();
       Object.keys(cropper).forEach((k) => delete cropper[k]);
-      console.log(cropper);
     }
     function convertCanvasToImage(canvas) {
       const image = new Image();

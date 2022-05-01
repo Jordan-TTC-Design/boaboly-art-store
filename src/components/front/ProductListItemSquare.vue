@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { productStore } from '@/stores/productStore';
 import { cartStore } from '@/stores/cartStore';
 import { useRouter } from 'vue-router';
+
 export default {
   props: ['product', 'collection-list'],
   setup(props) {

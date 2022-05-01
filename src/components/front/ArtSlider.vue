@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import { Autoplay, FreeMode } from 'swiper';
 import { artStore } from '@/stores/artStore';
+
 export default {
   components: {
     Swiper,

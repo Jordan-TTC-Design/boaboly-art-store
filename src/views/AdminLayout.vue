@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router';
 import { apiMethod } from '@/methods/api.js';
 import AdminMainNav from '@/components/admin/AdminMainNav.vue';
+
 export default {
   components: {
     AdminMainNav,

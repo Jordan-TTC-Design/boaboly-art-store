@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import { Autoplay, FreeMode } from 'swiper';
+
 export default {
   components: {
     Swiper,

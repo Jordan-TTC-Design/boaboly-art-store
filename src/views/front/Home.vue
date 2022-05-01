@@ -5,6 +5,7 @@ import HomeMainBanner from '@/components/front/HomeMainBanner.vue';
 import CharactorsSlider from '@/components/front/CharactorsSlider.vue';
 import ArtSlider from '@/components/front/ArtSlider.vue';
 import { productStore } from '@/stores/productStore';
+
 export default {
   components: {
     ProductListItemSquare,
@@ -15,7 +16,7 @@ export default {
   setup() {
     const productsData = productStore();
     const fullWidth = ref(window.innerWidth);
-    let swiperNum1 = computed(() => {
+    const swiperNum1 = computed(() => {
       if (fullWidth.value >= 1280) {
         return 4;
       } else if (fullWidth.value < 1280 && fullWidth.value > 767) {
@@ -24,7 +25,7 @@ export default {
         return 2;
       }
     });
-    let swiperNum2 = computed(() => {
+    const swiperNum2 = computed(() => {
       if (fullWidth.value >= 1280) {
         return 3;
       } else {

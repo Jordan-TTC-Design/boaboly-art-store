@@ -12,6 +12,7 @@ import FormInputTextArea from '@/components/form/FormInputTextArea.vue';
 import { Form } from 'vee-validate';
 import { cartStore } from '@/stores/cartStore';
 import { statusStore } from '@/stores/statusStore';
+
 export default {
   components: {
     VeeFormInput,
@@ -222,7 +223,8 @@ export default {
             :errors="errors"
             label-name="姓名"
             text-holder="請輸入姓名"
-          />
+            >(必填)</VeeFormInput
+          >
           <VeeFormInput
             v-model="orderFormData.user.tel"
             input-id="userTel"
@@ -230,7 +232,8 @@ export default {
             :errors="errors"
             label-name="聯絡電話"
             text-holder="請輸入聯絡電話"
-          />
+            >(必填)</VeeFormInput
+          >
           <VeeFormInput
             v-model="orderFormData.user.email"
             input-id="userEmail"
@@ -238,7 +241,8 @@ export default {
             :errors="errors"
             label-name="Email"
             text-holder="請輸入Email"
-          />
+            >(必填)</VeeFormInput
+          >
           <div>
             <p
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"
@@ -271,7 +275,8 @@ export default {
             :errors="errors"
             label-name="地址"
             text-holder="請輸入地址"
-          />
+            >(必填)</VeeFormInput
+          >
           <div>
             <FormInputTextArea
               v-model="orderFormData.messages"

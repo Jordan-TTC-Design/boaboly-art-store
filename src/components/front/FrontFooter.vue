@@ -1,5 +1,6 @@
 <script>
 import { statusStore } from '@/stores/statusStore';
+
 export default {
   setup() {
     const statusData = statusStore();

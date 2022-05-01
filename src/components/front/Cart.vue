@@ -3,8 +3,11 @@ import { watch, computed, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { cartStore } from '@/stores/cartStore';
 import { statusStore } from '@/stores/statusStore';
+import { useRouter } from 'vue-router';
+
 export default {
   setup() {
+    const router = useRouter();
     const cartData = cartStore();
     const statusData = statusStore();
     const route = useRoute();
@@ -14,6 +17,9 @@ export default {
         statusData.cartModel = false;
       }
     });
+    function goToPage(url) {
+      router.push(url);
+    }
     cartData.getCart();
     onUnmounted(() => {
       statusData.cartModel = false;
@@ -21,6 +27,7 @@ export default {
     return {
       cartData,
       statusData,
+      goToPage,
     };
   },
 };
@@ -91,6 +98,7 @@ export default {
         </li>
         <template v-for="(item, index) in cartData.carts" :key="item.id">
           <li
+            @click.self="goToPage(`/products/${item.product.id}`)"
             :class="{
               'border-b border-gray-300': index < cartData.carts.length - 1,
             }"
@@ -118,7 +126,7 @@ export default {
                     'text-gray-300': item.qty <= 1,
                     'cursor-default': item.qty <= 1,
                   }"
-                  @click="cartData.editCartAmount(-1, index)"
+                  @click.stop="cartData.editCartAmount(-1, index)"
                 >
                   <i class="bi bi-dash text-xl"></i>
                 </button>
@@ -126,11 +134,12 @@ export default {
                   class="numberSwitcher__numBox focus:outline-none"
                   type="number"
                   :value="item.qty"
+                  readonly
                 />
                 <button
                   type="button"
                   class="numberSwitcher__btn"
-                  @click="cartData.editCartAmount(1, index)"
+                  @click.stop="cartData.editCartAmount(1, index)"
                 >
                   <i class="bi bi-plus text-xl"></i>
                 </button>
@@ -142,7 +151,7 @@ export default {
               <button
                 type="button"
                 class="border border-gray-200 rounded py-1 px-2 hover:border-gray-300 bg-white"
-                @click="
+                @click.stop="
                   statusData.openPopInfoBox(
                     '刪除項目',
                     `請問你要刪除購物車中的${item.product.title}？`,

@@ -1,5 +1,6 @@
 <script>
 import { computed } from 'vue';
+
 export default {
   props: ['pagination-data'],
   emits: ['change-page-number'],

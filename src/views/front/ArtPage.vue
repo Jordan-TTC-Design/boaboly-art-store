@@ -2,7 +2,7 @@
 import { ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { frontApiMethod } from '@/methods/api.js';
-import { changeTime } from '@/methods/filter';
+import changeTime from '@/methods/filter';
 import { statusStore } from '@/stores/statusStore';
 import { artStore } from '@/stores/artStore';
 

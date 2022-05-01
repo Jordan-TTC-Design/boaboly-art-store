@@ -6,6 +6,7 @@ import AdminProductSlider from '@/components/admin/AdminProductSlider.vue';
 import RowNav from '@/components/helpers/RowNav.vue';
 import AdminProductListItemSquare from '@/components/admin/AdminProductListItemSquare.vue';
 import { adminStore } from '@/stores/adminStore';
+
 export default {
   components: {
     AdminProductEdit,

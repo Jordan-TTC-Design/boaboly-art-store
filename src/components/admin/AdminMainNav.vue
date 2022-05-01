@@ -11,16 +11,6 @@
       <div class="flex flex-col items-center w-full border-t border-white">
         <RouterLink
           class="group flex items-center w-full h-12 px-3 mt-3 rounded hover:bg-opacity-75 hover:bg-yellow-500"
-          :to="{ name: 'AdminHome' }"
-        >
-          <i class="bi bi-bar-chart-fill text-xl group-hover:text-gray-900"></i>
-          <span
-            class="ml-3 align-middle inline-block text-sm font-medium group-hover:text-gray-900"
-            >總覽</span
-          >
-        </RouterLink>
-        <RouterLink
-          class="group flex items-center w-full h-12 px-3 mt-3 rounded hover:bg-opacity-75 hover:bg-yellow-500"
           :to="{ name: 'AdminArts' }"
         >
           <i class="bi bi-brush-fill text-xl group-hover:text-gray-900"></i>

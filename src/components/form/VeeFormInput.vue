@@ -1,5 +1,6 @@
 <script>
 import { Field, ErrorMessage } from 'vee-validate';
+
 export default {
   components: {
     Field,
@@ -23,7 +24,7 @@ export default {
       class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 pl-2"
       :for="inputId"
     >
-      {{ labelName }}
+      {{ labelName }}<slot></slot>
     </label>
     <Field
       :id="inputId"
