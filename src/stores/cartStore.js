@@ -7,6 +7,7 @@ export const cartStore = defineStore({
   state: () => ({
     carts: [],
     cartTotal: 0,
+    targetItem: {},
   }),
   getters: {
     cartAmount: (state) => {
@@ -63,14 +64,21 @@ export const cartStore = defineStore({
         this.getCart();
       });
     },
-    editCartAmount(num, index) {
-      if (this.carts[index].qty > 1) {
-        if (num > 0) {
-          this.carts[index].qty += 1;
-        } else {
-          this.carts[index].qty -= 1;
+    editCartAmount(targetNum, targetIndex) {
+      if (targetNum > 0) {
+        this.carts[targetIndex].qty += 1;
+        this.updateCart(
+          this.carts[targetIndex].qty,
+          this.carts[targetIndex].id
+        );
+      } else {
+        if (this.carts[targetIndex].qty > 1) {
+          this.carts[targetIndex].qty -= 1;
+          this.updateCart(
+            this.carts[targetIndex].qty,
+            this.carts[targetIndex].id
+          );
         }
-        this.updateCart(this.carts[index].qty, this.carts[index].id);
       }
     },
   },
