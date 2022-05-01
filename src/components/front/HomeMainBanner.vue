@@ -1,6 +1,10 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { statusStore } from '@/stores/statusStore';
+import flowerWhitePink from '@/assets/images/flower-white-pink.svg';
+import flowerWhiteRed from '@/assets/images/flower-white-red.svg';
+import flowerBlue from '@/assets/images/flower-blue.svg';
+import flowerYellow from '@/assets/images/flower-yellow.svg';
 
 export default {
   setup() {
@@ -10,43 +14,43 @@ export default {
     const flowerImgData = ref([
       {
         name: 'flower-white-pink',
-        imgUrl: 'flower-white-pink',
+        imgUrl: flowerWhitePink,
       },
       {
         name: 'flower-white-pink-2',
-        imgUrl: 'flower-white-pink',
+        imgUrl: flowerWhitePink,
       },
       {
         name: 'flower-white-red',
-        imgUrl: 'flower-white-red',
+        imgUrl: flowerWhiteRed,
       },
       {
         name: 'flower-white-red-2',
-        imgUrl: 'flower-white-red',
+        imgUrl: flowerWhiteRed,
       },
       {
         name: 'flower-white-red-3',
-        imgUrl: 'flower-white-red',
+        imgUrl: flowerWhiteRed,
       },
       {
         name: 'flower-blue',
-        imgUrl: 'flower-blue',
+        imgUrl: flowerBlue,
       },
       {
         name: 'flower-blue-2',
-        imgUrl: 'flower-blue',
+        imgUrl: flowerBlue,
       },
       {
         name: 'flower-yellow',
-        imgUrl: 'flower-yellow',
+        imgUrl: flowerYellow,
       },
       {
         name: 'flower-yellow-2',
-        imgUrl: 'flower-yellow',
+        imgUrl: flowerYellow,
       },
       {
         name: 'flower-yellow-3',
-        imgUrl: 'flower-yellow',
+        imgUrl: flowerYellow,
       },
     ]);
     function goToSection() {
@@ -78,7 +82,7 @@ export default {
       <img
         :class="flower.name"
         class="homeMainBanner__flower"
-        :src="`@/assets/images/${flower.imgUrl}.svg`"
+        :src="flower.imgUrl"
         alt="花瓣"
     /></template>
     <div class="md:col-start-2 col-span-1">
